@@ -1,0 +1,175 @@
+const express = require('express');
+const router = express.Router();
+const pg = require('pg');
+const path = require('path');
+const connectionString = 'postgres://postgres:root@localhost:5432/serasinha';
+
+/* GET home page. */
+router.get('/', function(req, res, next) {
+	res.render('index', { title: 'Express' });
+});
+
+/* GET parceiro create page. */
+router.get('/create', function(req, res, next) {
+	res.render('parceiro/create', { title: 'Cadastrar Parceiro' });
+});
+
+/* GET parceiro read page. */
+router.get('/read', function(req, res, next) {
+	res.render('parceiro/read', { title: 'Ver Parceiros' });
+});
+
+/* GET parceiro edit page. */
+router.get('/edit', function(req, res, next) {
+	res.render('parceiro/edit', { title: 'Editar Parceiro' });
+});
+
+//GET pega os dados dos parceiros
+router.get('/api/parceiro', (req, res, next) => {
+	const results = [];
+	pg.connect(connectionString, (err, client, done) => {
+		if(err) {
+			done();
+			console.log(err);
+			return res.status(500).json({
+				success: false, data: err
+			});
+		}
+		const query = client.query('SELECT * FROM cad_parceiro ORDER BY id_parceiro ASC;');
+		query.on('row', (row) => {
+			results.push(row);
+		});
+		query.on('end', () => {
+			done();
+			if(!results.length) {
+				return res.status(500).json({success: false, data: 'Não há parceiros cadastrados ainda!'});
+			} else {
+				return res.json(results);
+			}
+		});
+	});
+});
+
+/* GET parceiro edit page (dados jasao). */
+router.get('/api/parceiro/:id_parceiro', function(req, res, next) {
+	const results = [];
+	const id_parceiro = req.params.id_parceiro
+	pg.connect(connectionString, (err, client, done) => {
+
+		if(err) {
+			done();
+			console.log(err);
+			return res.status(500).json({success: false, data: err});
+		}
+
+		const query = client.query("SELECT * FROM cad_parceiro WHERE id_parceiro=($1) ORDER BY id_parceiro ASC", [id_parceiro]);
+
+		query.on('row', (row) => {
+			results.push(row);
+		});
+
+		query.on('end', function() {
+			done();
+			if(!results.length) {
+				return res.status(500).json({success: false, data: 'Não há parceiro para o ID correspondente'});
+			} else {
+				return res.json({success: true, data: results});
+			}
+		});
+	});
+
+	
+});
+
+//faz um post e entao um insert na tabela cad_parceiro do banco serasa
+router.post('/api/parceiro', (req, res, next) => {
+	const results = [];
+	const data = {
+		id_usuario: req.body.id_usuario, 
+		cnpj: req.body.cnpj,
+		nome_fantasia: req.body.nome_fantasia,
+		razao_social: req.body.razao_social
+	};
+	pg.connect(connectionString, (err, client, done) => {
+		if(err) {
+			done();
+			console.log(err);
+			return res.status(500).json({success: false,data: err});
+		}
+		
+		client.query('INSERT INTO cad_parceiro(id_usuario, cnpj, nome_fantasia, razao_social) values($1, $2, $3, $4) RETURNING id_parceiro', 
+			[data.id_usuario, data.cnpj, data.nome_fantasia, data.razao_social],
+			function(err, result){
+				done();
+				if(!result.rows[0].id_parceiro) {
+					return res.status(500).json({success: false, data: 'Houve alguma falha na gravação, por favor contate o administrador do sistema.'});
+				} else {
+					return res.json({success: true, data: result.rows[0].id_parceiro});
+				}
+			}
+		);
+	});
+});
+
+//faz um update no parceiro
+router.put('/api/parceiro/:id_parceiro', (req, res, next) => {
+	const id_parceiro = req.params.id_parceiro
+	const data = {
+		id_usuario: req.body.id_usuario,
+		cnpj: req.body.cnpj,
+		nome_fantasia: req.body.nome_fantasia,
+		razao_social: req.body.razao_social
+	};
+
+	pg.connect(connectionString, (err, client, done) => {
+		if(err) {
+			done();
+			console.log(err);
+			return res.status(500).json({success: false, data: err});
+		}
+		client.query('UPDATE cad_parceiro SET id_usuario=($1), cnpj=($2), nome_fantasia=($3), razao_social=($4) WHERE id_parceiro=($5)',
+			[data.id_usuario, data.cnpj, data.nome_fantasia, data.razao_social, id_parceiro],
+			function(err, result){
+				done();
+				if(err) {
+					return res.status(500).json({success: false, data: 'Houve alguma falha na atualização do parceiro, por favor contate o administrador do sistema.'});
+				} else {
+					return res.json({success: true, data: 'Sucesso ao atualizar!'});
+				}
+			}
+		);
+	});
+});
+
+router.delete('/api/parceiro/:id_parceiro', (req, res, next) => {
+	const results = [];
+	const id_parceiro = req.params.id_parceiro;
+	pg.connect(connectionString, (err, client, done) => {
+		if(err) {
+			done();
+			console.log(err);
+			return res.status(500).json({success: false, data: err});
+		}
+
+		client.query('DELETE FROM cad_parceiro WHERE id_parceiro=($1)', [id_parceiro]);
+		var query = client.query('SELECT * FROM cad_parceiro WHERE id_parceiro=($1) ORDER BY id_parceiro ASC', [id_parceiro]);
+		
+		query.on('row', (row) => {
+			results.push(row);
+		});
+
+		query.on('end', function() {
+			done();
+			if(results.length) {
+				return res.status(500).json({success: false, data: 'Houve alguma falha na exclusão do parceiro, por favor contate o administrador do sistema.'});
+			} else {
+				return res.json({success: true, data: 'Sucesso ao excluir!'});
+			}
+		});
+		
+	});
+});
+
+
+
+module.exports = router;

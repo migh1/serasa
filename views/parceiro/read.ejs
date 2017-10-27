@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<title><%= title %></title>
+		
+		<link rel='stylesheet' href='/stylesheets/style.css' />
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+		
+		<script src="https://code.jquery.com/jquery-3.1.1.min.js" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+	</head>
+
+	<body class="body">
+		<div class="container">
+
+			<h1><%= title %></h1>
+			<p>Bem vindo ao <%= title %></p>
+
+			<div class="card" style="width: 80%;">
+					<div class="card-header"><h5>Lista de Parceiros</h5></div>
+					<div class="card-body">
+						<table class="table table-striped selector-table-parceiros">
+							<thead>
+								<tr>
+									<th>id_parceiro</th>
+									<th>id_usuario</th>
+									<th>cnpj</th>
+									<th>nome_fantasia</th>
+									<th>razao_social</th>
+								</tr>
+							</thead>
+							<tbody class="selector-tbody-parceiros"></tbody>
+						</table>
+					</div>
+
+			</div>
+		</div>
+
+	</body>
+</html>
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+	$.ajax({
+		url: '/api/parceiro',
+		type: 'GET',
+		dataType: 'JSON',
+		success: function(retorno){
+			$.each(retorno, function(key,value){
+				$('.selector-tbody-parceiros').append('\
+					<tr>\
+						<td>'+value.id_parceiro+'</td>\
+						<td>'+value.id_usuario+'</td>\
+						<td>'+value.cnpj+'</td>\
+						<td>'+value.nome_fantasia+'</td>\
+						<td>'+value.razao_social+'</td>\
+					</tr>\
+				');
+			});
+		},
+		error: function(error){console.log(error);},
+		complete: function(retorno){}
+	});
+});
+
+</script>
+ 
