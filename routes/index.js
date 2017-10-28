@@ -8,7 +8,12 @@ const connectionString = 'postgres://qbwibpqzpiyxfl:f31a707c4d8be72ef62d314accb5
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-	res.render('index', { title: 'Express' });
+	res.render('index', { title: 'Serasinha' });
+});
+
+/* GET home page. */
+router.get('/instrucoes', function(req, res, next) {
+	res.render('instrucoes', { title: 'Instruções de utilização' });
 });
 
 /* GET parceiro create page. */
@@ -171,7 +176,6 @@ router.delete('/api/parceiro/:id_parceiro', (req, res, next) => {
 		
 	});
 });
-
 
 
 module.exports = router;

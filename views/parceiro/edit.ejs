@@ -1,160 +1,57 @@
-<!DOCTYPE html>
-<html>
+<div class="container">
 
-	<head>
-		<title><%= title %></title>
-		
-		<link rel='stylesheet' href='/stylesheets/style.css' />
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-		
-		<script src="https://code.jquery.com/jquery-3.1.1.min.js" crossorigin="anonymous"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
-	</head>
+	<h1><%= title %></h1>
+	<p>Bem vindo ao <%= title %></p>
 
-	<body class="body">
-		<div class="container">
+	<div class="card" style="width: 40%;">
+		<div class="card-header">
+			<h5>Atualização de Parceiro</h5>
+			<div class="alert alert-success" role="alert" style="margin-top: 25px;" hidden>
+				<strong>Sucesso!</strong> Atualizado com perfeição.
+			</div>
+			<div class="alert alert-danger" role="alert" style="margin-top: 25px;" hidden>
+				<strong>Erro!</strong> Falha ao atualizar, contate o administrador.
+			</div>
+		</div>
+		<div class="card-body">
+			<div class="col-md-8" style="margin-top: 20px;float: left;">
+				<label for="id_parceiro">ID Parceiro</label>
+				<input type="text" class="form-control" name="id_parceiro" id="id_parceiro" value="" >
+			</div>
+			<div class="col-md-4" style="margin-top: 50px;float: left;">
+				<button class="btn btn-primary form-control btn-buscar-parceiro">Buscar</button>
+			</div>
 
-			<h1><%= title %></h1>
-			<p>Bem vindo ao <%= title %></p>
+			<div class="col-md-12" style="margin-top: 20px;float: left;">
+				<label for="id_usuario">ID Usuário</label>
+				<input type="text" class="form-control" name="id_usuario" id="id_usuario" value="">
+			</div>
 
-			<div class="card" style="width: 40%;">
-					<div class="card-header">
-						<h5>Atualização de Parceiro</h5>
-						<div class="alert alert-success" role="alert" style="margin-top: 25px;" hidden>
-							<strong>Sucesso!</strong> Atualizado com perfeição.
-						</div>
-						<div class="alert alert-danger" role="alert" style="margin-top: 25px;" hidden>
-							<strong>Erro!</strong> Falha ao atualizar, contate o administrador.
-						</div>
-					</div>
-					<div class="card-body">
-						<div class="col-md-8" style="margin-top: 20px;float: left;">
-							<label for="id_parceiro">ID Parceiro</label>
-							<input type="text" class="form-control" name="id_parceiro" id="id_parceiro" value="" >
-						</div>
-						<div class="col-md-4" style="margin-top: 50px;float: left;">
-							<button class="btn btn-primary form-control btn-buscar-parceiro">Buscar</button>
-						</div>
+			<div class="col-md-12" style="float: left;">
+				<label for="cnpj">CNPJ</label>
+				<input type="text" class="form-control" name="cnpj" id="cnpj" value="">
+			</div>
 
-						<div class="col-md-12" style="margin-top: 20px;float: left;">
-							<label for="id_usuario">ID Usuário</label>
-							<input type="text" class="form-control" name="id_usuario" id="id_usuario" value="">
-						</div>
+			<div class="col-md-12" style="float: left;">
+				<label for="nome_fantasia">Nome Fantasia</label>
+				<input type="text" class="form-control" name="nome_fantasia" id="nome_fantasia" value="">
+			</div>				
 
-						<div class="col-md-12" style="float: left;">
-							<label for="cnpj">CNPJ</label>
-							<input type="text" class="form-control" name="cnpj" id="cnpj" value="">
-						</div>
-						
-						<div class="col-md-12" style="float: left;">
-							<label for="nome_fantasia">Nome Fantasia</label>
-							<input type="text" class="form-control" name="nome_fantasia" id="nome_fantasia" value="">
-						</div>				
-
-						<div class="col-md-12" style="float: left;">
-							<label for="razao_social">Razão Social</label>
-							<input type="text" class="form-control" name="razao_social" id="razao_social" value="">
-						</div>
-					</div>
-
-					<div class="card-footer" style="margin-top: 25px;">
-						<div class="col-md-4" style="float: right;">
-							<button class="btn btn-success btn-atualizar-parceiro" name="submit">Atualizar</button>
-						</div>
-						<div class="col-md-4" style="float: right;">
-							<button class="btn btn-danger btn-excluir-parceiro" name="submit">Excluir</button>
-						</div>
-					</div>
-
+			<div class="col-md-12" style="float: left;">
+				<label for="razao_social">Razão Social</label>
+				<input type="text" class="form-control" name="razao_social" id="razao_social" value="">
 			</div>
 		</div>
 
-	</body>
-</html>
+		<div class="card-footer" style="margin-top: 25px;">
+			<div class="col-md-4" style="float: right;">
+				<button class="btn btn-success btn-atualizar-parceiro" name="submit">Atualizar</button>
+			</div>
+			<div class="col-md-4" style="float: right;">
+				<button class="btn btn-danger btn-excluir-parceiro" name="submit">Excluir</button>
+			</div>
+		</div>
 
-<script type="text/javascript">
+	</div>
+</div>
 
-	$(document).on('click', '.btn-buscar-parceiro', function(e){
-		e.preventDefault();
-		$('.alert-success').prop('hidden', true);
-		$('.alert-danger').prop('hidden', true);
-		$.ajax({
-			url: '/api/parceiro/'+$('#id_parceiro').val(),
-			type: 'GET',
-			dataType: 'JSON',
-			success: function(retorno){
-				if (retorno.success) {
-					$('.alert-danger').prop('hidden', true);
-					$('#id_usuario').val(retorno.data[0].id_usuario);
-					$('#cnpj').val(retorno.data[0].cnpj);
-					$('#nome_fantasia').val(retorno.data[0].nome_fantasia);
-					$('#razao_social').val(retorno.data[0].razao_social);
-				}
-			},
-			error: function(error){
-				if (!error.success) {
-					$('.alert-success').prop('hidden', true);
-					$('.alert-danger').prop('hidden', false).html('<strong>Erro!</strong> Falha ao pesquisar, contate o administrador.');
-				}
-			},
-			complete: function(retorno){}
-		});	
-	});
-
-	$(document).on('click', '.btn-atualizar-parceiro', function(e){
-		e.preventDefault();
-
-		$.ajax({
-			url: '/api/parceiro/'+$('#id_parceiro').val(),
-			type: 'PUT',
-			dataType: 'JSON',
-			data: {
-				id_usuario: 	$('#id_usuario').val(),
-				cnpj: 			$('#cnpj').val(),
-				nome_fantasia: 	$('#nome_fantasia').val(),
-				razao_social: 	$('#razao_social').val()
-			},
-			success: function(retorno){
-				if (retorno.success) {
-					$('.alert-danger').prop('hidden', true);
-					$('.alert-success').prop('hidden', false);
-				}
-			},
-			error: function(error){
-				if (!retorno.success) {
-					$('.alert-success').prop('hidden', true);
-					$('.alert-danger').prop('hidden', false);
-				}
-			},
-			complete: function(retorno){}
-		});
-	});
-
-	$(document).on('click', '.btn-excluir-parceiro', function(e){
-		e.preventDefault();
-
-		$.ajax({
-			url: '/api/parceiro/'+$('#id_parceiro').val(),
-			type: 'DELETE',
-			dataType: 'JSON',
-			success: function(retorno){
-				if (retorno.success) {
-					$('input').val('');
-					$('.alert-danger').prop('hidden', true);
-					$('.alert-success').prop('hidden', false).html('<strong>Sucesso!</strong> Excluído com perfeição.');
-				}
-			},
-			error: function(error){
-				if (!error.success) {
-					$('.alert-success').prop('hidden', true);
-					$('.alert-danger').prop('hidden', false).html('<strong>Erro!</strong> Falha ao exlcuir, contate o administrador.');
-				}
-			},
-			complete: function(retorno){}
-		});
-				
-	});
-
-</script>
- 

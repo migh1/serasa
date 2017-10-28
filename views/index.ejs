@@ -1,20 +1,343 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title><%= title %></title>
-		<link rel='stylesheet' href='/stylesheets/style.css' />
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-		<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
-		</head>
-	<body class="body">
-		<h1><%= title %></h1>
-		<p>Welcome to <%= title %></p>
+<head>
+	<title><%= title %></title>
+	<link rel='stylesheet' href='/stylesheets/style.css' />
+	<!-- FONTAWESOME -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<!-- JQUERY -->
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+	<!-- DATATABLES -->
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+	<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+	<!-- BOOTSTRAP -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 
-		<main>
-		
-		</main>
-	</body>
+	<style type="text/css">
+	body {
+		padding: 0px !important;
+	}
+	main {
+		padding-right: 0px !important;
+		max-width: 86% !important;
+	}
+	#sidebar {
+		overflow: hidden;
+		z-index: 3;
+	}
+	#sidebar .list-group {
+		min-width: 400px;
+		background-color: #333;
+		min-height: 100vh;
+	}
+	#sidebar i {
+		margin-right: 6px;
+	}
+
+	#sidebar .list-group-item {
+		border-radius: 0;
+		background-color: #333;
+		color: #ccc;
+		border-left: 0;
+		border-right: 0;
+		border-color: #2c2c2c;
+		white-space: nowrap;
+	}
+
+	/* highlight active menu */
+	#sidebar .list-group-item:not(.collapsed) {
+		background-color: #222;
+	}
+
+	/* closed state */
+	#sidebar .list-group .list-group-item[aria-expanded="false"]::after {
+		content: " \f0d7";
+		font-family: FontAwesome;
+		display: inline;
+		text-align: right;
+		padding-left: 5px;
+	}
+
+	/* open state */
+	#sidebar .list-group .list-group-item[aria-expanded="true"] {
+		background-color: #222;
+	}
+	#sidebar .list-group .list-group-item[aria-expanded="true"]::after {
+		content: " \f0da";
+		font-family: FontAwesome;
+		display: inline;
+		text-align: right;
+		padding-left: 5px;
+	}
+
+	/* level 1*/
+	#sidebar .list-group .collapse .list-group-item,
+	#sidebar .list-group .collapsing .list-group-item  {
+		padding-left: 20px;
+	}
+
+	/* level 2*/
+	#sidebar .list-group .collapse > .collapse .list-group-item,
+	#sidebar .list-group .collapse > .collapsing .list-group-item {
+		padding-left: 30px;
+	}
+
+	/* level 3*/
+	#sidebar .list-group .collapse > .collapse > .collapse .list-group-item {
+		padding-left: 40px;
+	}
+
+	@media (min-width:768px) {
+		.col-md-3 {
+			max-width: 14% !important;
+		}
+	}
+	@media (max-width:768px) {
+		.col-md-3 {
+			max-width: 14% !important;
+		}
+		#sidebar {
+			min-width: 35px;
+			max-width: 40px;
+			overflow-y: auto;
+			overflow-x: visible;
+			transition: all 0.25s ease;
+			transform: translateX(-45px);
+			position: fixed;
+		}
+
+		#sidebar.show {
+			transform: translateX(0);
+		}
+
+		#sidebar::-webkit-scrollbar{ width: 0px; }
+
+		#sidebar, #sidebar .list-group {
+			min-width: 35px;
+			overflow: visible;
+		}
+		/* overlay sub levels on small screens */
+		#sidebar .list-group .collapse.show, #sidebar .list-group .collapsing {
+			position: relative;
+			z-index: 1;
+			width: 190px;
+			top: 0;
+		}
+		#sidebar .list-group > .list-group-item {
+			text-align: center;
+			padding: .75rem .5rem;
+		}
+		/* hide caret icons of top level when collapsed */
+		#sidebar .list-group > .list-group-item[aria-expanded="true"]::after,
+		#sidebar .list-group > .list-group-item[aria-expanded="false"]::after {
+			display:none;
+		}
+	}
+
+	.collapse.show {
+		visibility: visible;
+	}
+	.collapsing {
+		visibility: visible;
+		height: 0;
+		-webkit-transition-property: height, visibility;
+		transition-property: height, visibility;
+		-webkit-transition-timing-function: ease-out;
+		transition-timing-function: ease-out;
+	}
+	.collapsing.width {
+		-webkit-transition-property: width, visibility;
+		transition-property: width, visibility;
+		width: 0;
+		height: 100%;
+		-webkit-transition-timing-function: ease-out;
+		transition-timing-function: ease-out;
+	}
+
+	</style>
+</head>
+<body class="body">
+	<div class="container-fluid">
+		<div class="row d-flex d-md-block flex-nowrap wrapper">
+			<div class="col-md-3 float-left col-1 pl-0 pr-0 collapse width" id="sidebar">
+				<div class="list-group border-0 card text-center text-md-left">
+					<a href="#parceiro" class="list-group-item d-inline-block collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="fa fa-handshake-o"></i> <span class="d-none d-md-inline">Parceiros</span> </a>
+					<div class="collapse" id="parceiro">
+						<a href="#" class="list-group-item parceiro-menu" data-parent="#parceiro" data-id="visualizar">Visualizar</a>
+						<a href="#" class="list-group-item parceiro-menu" data-parent="#parceiro" data-id="cadastrar">Cadastrar</a>
+						<a href="#" class="list-group-item parceiro-menu" data-parent="#parceiro" data-id="editar">Editar</a>
+					</div>
+					<a href="#" class="list-group-item d-inline-block collapsed" data-parent="#sidebar"><i class="fa fa-film"></i> <span class="d-none d-md-inline">Item 2</span></a>
+					<!-- <a href="#menu3" class="list-group-item d-inline-block collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="fa fa-book"></i> <span class="d-none d-md-inline">Item 3 </span></a>
+					<div class="collapse" id="menu3">
+						<a href="#" class="list-group-item" data-parent="#menu3">3.1</a>
+						<a href="#menu3sub2" class="list-group-item" data-toggle="collapse" aria-expanded="false">3.2 </a>
+						<div class="collapse" id="menu3sub2">
+							<a href="#" class="list-group-item" data-parent="#menu3sub2">3.2 a</a>
+							<a href="#" class="list-group-item" data-parent="#menu3sub2">3.2 b</a>
+							<a href="#" class="list-group-item" data-parent="#menu3sub2">3.2 c</a>
+						</div>
+						<a href="#" class="list-group-item" data-parent="#menu3">3.3</a>
+					</div> -->
+
+				</div>
+			</div>
+			<main class="col-md-9 float-left col px-5 pl-md-2 pt-2 main" id="conteudo-principal"></main>
+		</div>
+	</div>
+</body>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		$(document).ready(function(){
+			$("#conteudo-principal").load("instrucoes"); 
+		});
+	});
+
+	$(document).on('click', '.parceiro-menu', function(){
+		if ($(this).data('id') == 'visualizar') {
+			$("#conteudo-principal").load("read");
+			$.ajax({
+				url: '/api/parceiro',
+				type: 'GET',
+				dataType: 'JSON',
+				success: function(retorno){
+					$.each(retorno, function(key,value){
+						$('.selector-tbody-parceiros').append('\
+							<tr>\
+							<td>'+value.id_parceiro+'</td>\
+							<td>'+value.id_usuario+'</td>\
+							<td>'+value.cnpj+'</td>\
+							<td>'+value.nome_fantasia+'</td>\
+							<td>'+value.razao_social+'</td>\
+							</tr>\
+							');
+					});
+					window.history.replaceState(null, null, '/read');
+				},
+				error: function(error){console.log(error);},
+				complete: function(retorno){$('#parceiro-visualizar').DataTable();}
+			});
+			
+		}
+		if ($(this).data('id') == 'cadastrar') {
+			$("#conteudo-principal").load("create");
+			window.history.replaceState(null, null, '/create');
+		}
+		if ($(this).data('id') == 'editar') {
+			$("#conteudo-principal").load("edit");
+			window.history.replaceState(null, null, '/edit');
+		}
+	});
+
+	$(document).on('click', '.btn-cadastrar-parceiro', function(e){
+		e.preventDefault();
+
+		if ($('#id_usuario').val() == '') {		alert('Há campos vazios, por favor preencha');$('#id_usuario').focus();return false;}
+		if ($('#cnpj').val() == '') {			alert('Há campos vazios, por favor preencha');$('#cnpj').focus();return false;}
+		if ($('#nome_fantasia').val() == '') {	alert('Há campos vazios, por favor preencha');$('#nome_fantasia').focus();return false;}
+		if ($('#razao_social').val() == '') {	alert('Há campos vazios, por favor preencha');$('#razao_social').focus();return false;}
+
+		$.ajax({
+			url: '/api/parceiro',
+			type: 'POST',
+			dataType: 'JSON',
+			data: {
+				id_usuario: 	$('#id_usuario').val(),
+				cnpj: 			$('#cnpj').val(),
+				nome_fantasia: 	$('#nome_fantasia').val(),
+				razao_social: 	$('#razao_social').val()
+			},
+			success: function(retorno){if (retorno.success) {$('.alert-danger').prop('hidden', true);$('.alert-success').prop('hidden', false);}},
+			error: function(error){if (!retorno.success) {$('.alert-success').prop('hidden', true);$('.alert-danger').prop('hidden', false);}},
+			complete: function(retorno){}
+		});
+
+	});
+
+	$(document).on('click', '.btn-buscar-parceiro', function(e){
+		e.preventDefault();
+		$('.alert-success').prop('hidden', true);
+		$('.alert-danger').prop('hidden', true);
+		$.ajax({
+			url: '/api/parceiro/'+$('#id_parceiro').val(),
+			type: 'GET',
+			dataType: 'JSON',
+			success: function(retorno){
+				if (retorno.success) {
+					$('.alert-danger').prop('hidden', true);
+					$('#id_usuario').val(retorno.data[0].id_usuario);
+					$('#cnpj').val(retorno.data[0].cnpj);
+					$('#nome_fantasia').val(retorno.data[0].nome_fantasia);
+					$('#razao_social').val(retorno.data[0].razao_social);
+				}
+			},
+			error: function(error){
+				if (!error.success) {
+					$('.alert-success').prop('hidden', true);
+					$('.alert-danger').prop('hidden', false).html('<strong>Erro!</strong> Falha ao pesquisar, contate o administrador.');
+				}
+			},
+			complete: function(retorno){}
+		});	
+	});
+
+	$(document).on('click', '.btn-atualizar-parceiro', function(e){
+		e.preventDefault();
+
+		$.ajax({
+			url: '/api/parceiro/'+$('#id_parceiro').val(),
+			type: 'PUT',
+			dataType: 'JSON',
+			data: {
+				id_usuario: 	$('#id_usuario').val(),
+				cnpj: 			$('#cnpj').val(),
+				nome_fantasia: 	$('#nome_fantasia').val(),
+				razao_social: 	$('#razao_social').val()
+			},
+			success: function(retorno){
+				if (retorno.success) {
+					$('.alert-danger').prop('hidden', true);
+					$('.alert-success').prop('hidden', false);
+				}
+			},
+			error: function(error){
+				if (!retorno.success) {
+					$('.alert-success').prop('hidden', true);
+					$('.alert-danger').prop('hidden', false);
+				}
+			},
+			complete: function(retorno){}
+		});
+	});
+
+	$(document).on('click', '.btn-excluir-parceiro', function(e){
+		e.preventDefault();
+
+		$.ajax({
+			url: '/api/parceiro/'+$('#id_parceiro').val(),
+			type: 'DELETE',
+			dataType: 'JSON',
+			success: function(retorno){
+				if (retorno.success) {
+					$('input').val('');
+					$('.alert-danger').prop('hidden', true);
+					$('.alert-success').prop('hidden', false).html('<strong>Sucesso!</strong> Excluído com perfeição.');
+				}
+			},
+			error: function(error){
+				if (!error.success) {
+					$('.alert-success').prop('hidden', true);
+					$('.alert-danger').prop('hidden', false).html('<strong>Erro!</strong> Falha ao exlcuir, contate o administrador.');
+				}
+			},
+			complete: function(retorno){}
+		});
+
+	});
+
+</script>
 </html>
 

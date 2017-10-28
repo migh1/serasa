@@ -1,0 +1,55 @@
+<a href="#" data-target="#sidebar" data-toggle="collapse"><i class="fa fa-navicon fa-2x py-2 p-1"></i></a>
+<div class="page-header">
+	<h2>Serasa para Empresas</h2>
+</div>
+<p class="lead">Sistema para empresas verificarem os clientes que possuem pendências entre elas.</p>
+<hr>
+<div class="row">
+	<div class="col-md-4">
+		<button role="button" class="btn btn-danger" data-toggle="collapse" data-target="#botao" aria-expanded="true">
+			Menu lateral
+		</button>
+		<div id="botao" class="width collapse" aria-expanded="true">
+			<div class="list-group" style="width: 400px;">
+				<p>'Parceiros'.</p>
+				<p>Módulo para pesquisar, cadastrar, editar e excluir parceiros.</p>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<button role="button" class="btn btn-danger" data-toggle="collapse" data-target="#botao3" aria-expanded="true">
+			Como testar sem aplicação
+		</button>
+		<div id="botao3" class="height collapse" aria-expanded="true">
+			<div>
+				<p>Download do aplicativo POSTMAN na chromestore para google chrome.</p>
+				<p>https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop</p>
+				<p>Realizar requisição get/post/put/delete para o seguinte endereço: serasa.herokuapp.com/api/parceiro</p>
+				<p>Exemplo:</p>
+				<p>Primeiro definir as HEADERS como application/json
+					<img src="https://image.prntscr.com/image/SDoiAi8MSYeQgGltSfN0XA.png">
+				</p>
+				<p>Depois só enviar os dados nesse formato:
+					<img src="https://image.prntscr.com/image/oxJADARwQBuF3Nfn6XhEiA.png">
+				</p>
+				<p></p>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<button role="button" class="btn btn-danger" data-toggle="collapse" data-target="#botao2" aria-expanded="true">
+			API de integração
+		</button>
+		<div id="botao2" class="height collapse" aria-expanded="true">
+			<div>
+				<p>Pagina de endereço para testes de integração com parceiros: /api/parceiro.</p>
+				<p>GET - api/parceiro - retorna todos os dados em json.</p>
+				<p>GET - api/parceiro/:id - retorna o parceiro dado o id específico.</p>
+				<p>POST - api/parceiro - cadastra um parceiro (id_usuario/cnpj/nome_fantasia/razao_social).</p>
+				<p>PUT - api/parceiro/:id - atualiza um parceiro - (id_usuario/cnpj/nome_fantasia/razao_social).</p>
+				<p>DELETE - api/parceiro/:id - exclui um parceiro (id_parceiro).</p>
+			</div>
+		</div>
+	</div>
+</div>
+

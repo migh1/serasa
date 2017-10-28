@@ -1,121 +1,47 @@
-<!DOCTYPE html>
-<html>
+<div class="container">
+	<h1><%= title %></h1>
+	<p>Bem vindo ao <%= title %></p>
 
-	<head>
-		<title><%= title %></title>
-		
-		<link rel='stylesheet' href='/stylesheets/style.css' />
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-		<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.4/select2.css" rel="stylesheet" />
-		
-		<script src="https://code.jquery.com/jquery-3.1.1.min.js" crossorigin="anonymous"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.4/select2.js"></script>
-	</head>
+	<div class="card" style="width: 40%;">
+		<div class="card-header">
+			<h5>Cadastro de Parceiro</h5>
+			<div class="alert alert-success" role="alert" style="margin-top: 25px;" hidden>
+				<strong>Sucesso!</strong> Cadastrado com perfeição.
+			</div>
+			<div class="alert alert-danger" role="alert" style="margin-top: 25px;" hidden>
+				<strong>Erro!</strong> Falha ao cadastrar, contate o administrador.
+			</div>
+		</div>
+		<div class="card-body">
+			<form action="POST" method="/parceiro/create">
+				<div class="col-md-12" style="margin-top: 20px;">
+					<label for="id_usuario">ID Usuário</label>
+					<input type="text" class="form-control" name="id_usuario" id="id_usuario" value="1">
+				</div>
 
-	<body class="body">
-		<div class="container">
+				<div class="col-md-12">
+					<label for="cnpj">CNPJ</label>
+					<input type="text" class="form-control" name="cnpj" id="cnpj" value="98.333.790/0001-21">
+				</div>
 
-			<h1><%= title %></h1>
-			<p>Bem vindo ao <%= title %></p>
+				<div class="col-md-12">
+					<label for="nome_fantasia">Nome Fantasia</label>
+					<input type="text" class="form-control" name="nome_fantasia" id="nome_fantasia" value="Nome Fantasia">
+				</div>				
 
-			<div class="card" style="width: 40%;">
-					<div class="card-header">
-						<h5>Cadastro de Parceiro</h5>
-						<div class="alert alert-success" role="alert" style="margin-top: 25px;" hidden>
-							<strong>Sucesso!</strong> Cadastrado com perfeição.
-						</div>
-						<div class="alert alert-danger" role="alert" style="margin-top: 25px;" hidden>
-							<strong>Erro!</strong> Falha ao cadastrar, contate o administrador.
-						</div>
-					</div>
-					<div class="card-body">
-						<form action="POST" method="/parceiro/create">
-							<div class="col-md-12" style="margin-top: 20px;">
-								<label for="id_usuario">ID Usuário</label>
-								<input type="text" class="form-control" name="id_usuario" id="id_usuario" value="1">
-							</div>
+				<div class="col-md-12">
+					<label for="razao_social">Razão Social</label>
+					<input type="text" class="form-control" name="razao_social" id="razao_social" value="Razão Social">
+				</div>
 
-							<div class="col-md-12">
-								<label for="cnpj">CNPJ</label>
-								<input type="text" class="form-control" name="cnpj" id="cnpj" value="98.333.790/0001-21">
-							</div>
-							
-							<div class="col-md-12">
-								<label for="nome_fantasia">Nome Fantasia</label>
-								<input type="text" class="form-control" name="nome_fantasia" id="nome_fantasia" value="Nome Fantasia">
-							</div>				
+			</form>
+		</div>
 
-							<div class="col-md-12">
-								<label for="razao_social">Razão Social</label>
-								<input type="text" class="form-control" name="razao_social" id="razao_social" value="Razão Social">
-							</div>
-						
-						</form>
-					</div>
-
-					<div class="card-footer" style="margin-top: 25px;">
-						<div class="col-md-4">
-							<button class="btn btn-success btn-cadastrar-parceiro" name="submit">Cadastrar</button>
-						</div>
-					</div>
-
+		<div class="card-footer" style="margin-top: 25px;">
+			<div class="col-md-4">
+				<button class="btn btn-success btn-cadastrar-parceiro" name="submit">Cadastrar</button>
 			</div>
 		</div>
 
-	</body>
-</html>
-
-<script type="text/javascript">
-
-	/*$('#id_usuario').select2({
-		placeholder: 'Pesquisar...',
-		ajax: {
-			url: "/api/parceiro",
-			dataType: 'json',
-			quietMillis: 250,
-			data: function (term, page) {
-				return {
-					q: term, 
-				};
-			},
-			results: function (data, page) {
-				return { results: data };
-			}
-		},
-		formatResult: function(data) {
-			return data.nome_fantasia;
-		}, 
-		formatSelection: function(data) {
-			return data.nome_fantasia;
-		},  
-	});*/
-
-	$(document).on('click', '.btn-cadastrar-parceiro', function(e){
-		e.preventDefault();
-
-		if ($('#id_usuario').val() == '') {		alert('Há campos vazios, por favor preencha');$('#id_usuario').focus();return false;}
-		if ($('#cnpj').val() == '') {			alert('Há campos vazios, por favor preencha');$('#cnpj').focus();return false;}
-		if ($('#nome_fantasia').val() == '') {	alert('Há campos vazios, por favor preencha');$('#nome_fantasia').focus();return false;}
-		if ($('#razao_social').val() == '') {	alert('Há campos vazios, por favor preencha');$('#razao_social').focus();return false;}
-
-		$.ajax({
-			url: '/api/parceiro',
-			type: 'POST',
-			dataType: 'JSON',
-			data: {
-				id_usuario: 	$('#id_usuario').val(),
-				cnpj: 			$('#cnpj').val(),
-				nome_fantasia: 	$('#nome_fantasia').val(),
-				razao_social: 	$('#razao_social').val()
-			},
-			success: function(retorno){if (retorno.success) {$('.alert-danger').prop('hidden', true);$('.alert-success').prop('hidden', false);}},
-			error: function(error){if (!retorno.success) {$('.alert-success').prop('hidden', true);$('.alert-danger').prop('hidden', false);}},
-			complete: function(retorno){}
-		});
-
-	});
-
-</script>
- 
+	</div>
+</div>
