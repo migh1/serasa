@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 const pg = require('pg');
 const path = require('path');
-const connectionString = 'postgres://postgres:root@localhost:5432/serasinha';
+// const connectionString = 'postgres://postgres:root@localhost:5432/serasinha';
+const connectionString = 'postgres://ucixjqptisygvk:54186cd2c800073345993e7786180d6a14982d83ed577348861c3f57ac5316e5@ec2-184-73-159-137.compute-1.amazonaws.com:5432/dd1beij8g7kih0';
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
