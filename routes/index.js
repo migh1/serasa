@@ -108,7 +108,7 @@ router.post('/api/parceiro', (req, res, next) => {
 			[data.id_usuario, data.cnpj, data.nome_fantasia, data.razao_social],
 			function(err, result){
 				done();
-				if(!result.rows[0].id_parceiro) {
+				if(err) {
 					return res.status(500).json({success: false, data: 'Houve alguma falha na gravação, por favor contate o administrador do sistema.'});
 				} else {
 					return res.json({success: true, data: result.rows[0].id_parceiro});
