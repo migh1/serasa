@@ -274,10 +274,12 @@
 			success: function(retorno){
 				if (retorno.success) {
 					$('.alert-danger').prop('hidden', true);
-					$('#id_usuario').val(retorno.data[0].id_usuario);
 					$('#cnpj').val(retorno.data[0].cnpj);
 					$('#nome_fantasia').val(retorno.data[0].nome_fantasia);
 					$('#razao_social').val(retorno.data[0].razao_social);
+					$('#nome_usuario').val(retorno.data[0].nome_usuario);
+					$('#email').val(retorno.data[0].email);
+					$('#senha').val(retorno.data[0].senha);
 				}
 			},
 			error: function(error){
@@ -298,10 +300,12 @@
 			type: 'PUT',
 			dataType: 'JSON',
 			data: {
-				id_usuario: 	$('#id_usuario').val(),
 				cnpj: 			$('#cnpj').val(),
 				nome_fantasia: 	$('#nome_fantasia').val(),
-				razao_social: 	$('#razao_social').val()
+				razao_social: 	$('#razao_social').val(),
+				nome_usuario: 	$('#nome_usuario').val(),
+				email: 	$('#email').val(),
+				senha: 	$('#senha').val(),
 			},
 			success: function(retorno){
 				if (retorno.success) {

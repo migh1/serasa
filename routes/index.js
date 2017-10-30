@@ -124,10 +124,12 @@ router.post('/api/parceiro', (req, res, next) => {
 router.put('/api/parceiro/:id_parceiro', (req, res, next) => {
 	const id_parceiro = req.params.id_parceiro
 	const data = {
-		id_usuario: req.body.id_usuario,
 		cnpj: req.body.cnpj,
 		nome_fantasia: req.body.nome_fantasia,
-		razao_social: req.body.razao_social
+		razao_social: req.body.razao_social,
+		nome_usuario: req.body.nome_usuario,
+		email: req.body.email,
+		senha: req.body.senha
 	};
 
 	pg.connect(connectionString, (err, client, done) => {
@@ -136,8 +138,8 @@ router.put('/api/parceiro/:id_parceiro', (req, res, next) => {
 			console.log(err);
 			return res.status(500).json({success: false, data: err});
 		}
-		client.query('UPDATE cad_parceiro SET id_usuario=($1), cnpj=($2), nome_fantasia=($3), razao_social=($4) WHERE id_parceiro=($5)',
-			[data.id_usuario, data.cnpj, data.nome_fantasia, data.razao_social, id_parceiro],
+		client.query('UPDATE cad_parceiro SET cnpj=($1), nome_fantasia=($2), razao_social=($3), nome_usuario=($4), email=($5), senha=($6) WHERE id_parceiro=($7)',
+			[data.cnpj, data.nome_fantasia, data.razao_social, data.nome_usuario, data.email, data.senha, id_parceiro],
 			function(err, result){
 				done();
 				if(err) {
