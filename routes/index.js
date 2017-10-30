@@ -2,9 +2,9 @@ const express = require('express');
 const router = express.Router();
 const pg = require('pg');
 const path = require('path');
-// const connectionString = 'postgres://postgres:root@localhost:5432/serasinha';
+const connectionString = 'postgres://postgres:root@localhost:5432/serasinha';
 // const connectionString = 'postgres://ucixjqptisygvk:54186cd2c800073345993e7786180d6a14982d83ed577348861c3f57ac5316e5@ec2-184-73-159-137.compute-1.amazonaws.com:5432/dd1beij8g7kih0';
-const connectionString = 'postgres://qbwibpqzpiyxfl:f31a707c4d8be72ef62d314accb54b8f0018c1c12f7aa217b5bd29764a1949fc@ec2-54-163-238-169.compute-1.amazonaws.com:5432/def6kqeml1q39h';
+// const connectionString = 'postgres://qbwibpqzpiyxfl:f31a707c4d8be72ef62d314accb54b8f0018c1c12f7aa217b5bd29764a1949fc@ec2-54-163-238-169.compute-1.amazonaws.com:5432/def6kqeml1q39h';
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -32,7 +32,7 @@ router.get('/edit', function(req, res, next) {
 });
 
 //GET pega os dados dos parceiros
-router.get('/api/parceiro', (req, res, next) => {
+router.get('/parceiro', (req, res, next) => {
 	const results = [];
 	pg.connect(connectionString, (err, client, done) => {
 		if(err) {
@@ -58,7 +58,7 @@ router.get('/api/parceiro', (req, res, next) => {
 });
 
 /* GET parceiro edit page (dados jasao). */
-router.get('/api/parceiro/:id_parceiro', function(req, res, next) {
+router.get('/parceiro/:id_parceiro', function(req, res, next) {
 	const results = [];
 	const id_parceiro = req.params.id_parceiro
 	pg.connect(connectionString, (err, client, done) => {
@@ -87,7 +87,7 @@ router.get('/api/parceiro/:id_parceiro', function(req, res, next) {
 });
 
 //faz um post e entao um insert na tabela cad_parceiro do banco serasa
-router.post('/api/parceiro', (req, res, next) => {
+router.post('/parceiro', (req, res, next) => {
 	const results = [];
 	const data = {
 		cnpj: req.body.cnpj,
@@ -119,7 +119,7 @@ router.post('/api/parceiro', (req, res, next) => {
 });
 
 //faz um update no parceiro
-router.put('/api/parceiro/:id_parceiro', (req, res, next) => {
+router.put('/parceiro/:id_parceiro', (req, res, next) => {
 	const id_parceiro = req.params.id_parceiro
 	const data = {
 		cnpj: req.body.cnpj,
@@ -150,7 +150,7 @@ router.put('/api/parceiro/:id_parceiro', (req, res, next) => {
 	});
 });
 
-router.delete('/api/parceiro/:id_parceiro', (req, res, next) => {
+router.delete('/parceiro/:id_parceiro', (req, res, next) => {
 	const results = [];
 	const id_parceiro = req.params.id_parceiro;
 	pg.connect(connectionString, (err, client, done) => {
