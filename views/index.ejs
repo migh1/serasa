@@ -201,16 +201,15 @@
 			$("#conteudo-principal").load("read");
 			$.ajax({
 				url: '/api/parceiro',
+				// url: 'https://serazinha.herokuapp.com/parceiro',
 				// url: 'https://serasa.herokuapp.com/api/parceiro',
 				type: 'GET',
-				// headers: {'X-Requested-With': 'XMLHttpRequest'},
-				// crossDomain: false,
 				dataType: 'json',
 				success: function(retorno){
 					$.each(retorno, function(key,value){
 						$('.selector-tbody-parceiros').append('\
 							<tr>\
-								<td>'+value.id+'</td>\
+								<td>'+value.id_parceiro+'</td>\
 								<td>'+value.cnpj+'</td>\
 								<td>'+value.nome_fantasia+'</td>\
 								<td>'+value.razao_social+'</td>\
@@ -243,12 +242,12 @@
 	$(document).on('click', '.btn-cadastrar-parceiro', function(e){
 		e.preventDefault();
 
-		if ($('#cnpj').val() == '') {			alert('Há campos vazios, por favor preencha');$('#cnpj').focus();return false;}
-		if ($('#nome_fantasia').val() == '') {	alert('Há campos vazios, por favor preencha');$('#nome_fantasia').focus();return false;}
-		if ($('#razao_social').val() == '') {	alert('Há campos vazios, por favor preencha');$('#razao_social').focus();return false;}
-		if ($('#nome_usuario').val() == '') {	alert('Há campos vazios, por favor preencha');$('#nome_usuario').focus();return false;}
-		if ($('#email').val() == '') {	alert('Há campos vazios, por favor preencha');$('#email').focus();return false;}
-		if ($('#senha').val() == '') {	alert('Há campos vazios, por favor preencha');$('#senha').focus();return false;}
+		if ($('#cnpj').val() == '') { alert('Há campos vazios, por favor preencha');$('#cnpj').focus();return false;}
+		if ($('#nome_fantasia').val() == '') { alert('Há campos vazios, por favor preencha');$('#nome_fantasia').focus();return false;}
+		if ($('#razao_social').val() == '') { alert('Há campos vazios, por favor preencha');$('#razao_social').focus();return false;}
+		if ($('#nome_usuario').val() == '') { alert('Há campos vazios, por favor preencha');$('#nome_usuario').focus();return false;}
+		if ($('#email').val() == '') { alert('Há campos vazios, por favor preencha');$('#email').focus();return false;}
+		if ($('#senha').val() == '') { alert('Há campos vazios, por favor preencha');$('#senha').focus();return false;}
 
 		$.ajax({
 			url: '/api/parceiro',
@@ -278,8 +277,6 @@
 			url: '/api/parceiro/'+$('#id_parceiro').val(),
 			// url: 'https://serazinha.herokuapp.com/parceiro/'+$('#id_parceiro').val(),
 			type: 'GET',
-			// headers: {'X-Requested-With': 'XMLHttpRequest', 'Access-Control-Allow-Origin': '*'},
-			// crossDomain: false,
 			dataType: 'JSON',
 			success: function(retorno){
 				if (retorno.success) {
