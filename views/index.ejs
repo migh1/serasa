@@ -199,9 +199,9 @@
 		if ($(this).data('id') == 'visualizar') {
 			$("#conteudo-principal").load("read");
 			$.ajax({
-				url: '/api/parceiro',
+				url: '/parceiro',
 				// url: 'https://serazinha.herokuapp.com/parceiro',
-				// url: 'https://serasa.herokuapp.com/api/parceiro',
+				// url: 'https://serasa.herokuapp.com/parceiro',
 				type: 'GET',
 				dataType: 'json',
 				success: function(retorno){
@@ -249,7 +249,7 @@
 		if ($('#senha').val() == '') { alert('Há campos vazios, por favor preencha');$('#senha').focus();return false;}
 
 		$.ajax({
-			url: '/api/parceiro',
+			url: '/parceiro',
 			// url: 'https://serazinha.herokuapp.com/parceiro',
 			type: 'POST',
 			dataType: 'JSON',
@@ -273,7 +273,7 @@
 		$('.alert-success').prop('hidden', true);
 		$('.alert-danger').prop('hidden', true);
 		$.ajax({
-			url: '/api/parceiro/'+$('#id_parceiro').val(),
+			url: '/parceiro/'+$('#id_parceiro').val(),
 			// url: 'https://serazinha.herokuapp.com/parceiro/'+$('#id_parceiro').val(),
 			type: 'GET',
 			dataType: 'JSON',
@@ -302,7 +302,7 @@
 		e.preventDefault();
 
 		$.ajax({
-			url: '/api/parceiro/'+$('#id_parceiro').val(),
+			url: '/parceiro/'+$('#id_parceiro').val(),
 			type: 'PUT',
 			dataType: 'JSON',
 			data: {
@@ -333,7 +333,7 @@
 		e.preventDefault();
 
 		$.ajax({
-			url: '/api/parceiro/'+$('#id_parceiro').val(),
+			url: '/parceiro/'+$('#id_parceiro').val(),
 			type: 'DELETE',
 			dataType: 'JSON',
 			success: function(retorno){
