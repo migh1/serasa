@@ -84,8 +84,6 @@ router.get('/api/parceiro/:id_parceiro', function(req, res, next) {
 			}
 		});
 	});
-
-	
 });
 
 //faz um post e entao um insert na tabela cad_parceiro do banco serasa
