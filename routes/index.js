@@ -2,9 +2,9 @@ const express = require('express');
 const router = express.Router();
 const pg = require('pg');
 const path = require('path');
-// const connectionString = 'postgres://postgres:root@localhost:5432/serasinha';
+const connectionString = 'postgres://postgres:root@localhost:5432/serasinha';
 // const connectionString = 'postgres://ucixjqptisygvk:54186cd2c800073345993e7786180d6a14982d83ed577348861c3f57ac5316e5@ec2-184-73-159-137.compute-1.amazonaws.com:5432/dd1beij8g7kih0';
-const connectionString = 'postgres://qbwibpqzpiyxfl:f31a707c4d8be72ef62d314accb54b8f0018c1c12f7aa217b5bd29764a1949fc@ec2-54-163-238-169.compute-1.amazonaws.com:5432/def6kqeml1q39h';
+// const connectionString = 'postgres://qbwibpqzpiyxfl:f31a707c4d8be72ef62d314accb54b8f0018c1c12f7aa217b5bd29764a1949fc@ec2-54-163-238-169.compute-1.amazonaws.com:5432/def6kqeml1q39h';
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -92,10 +92,12 @@ router.get('/api/parceiro/:id_parceiro', function(req, res, next) {
 router.post('/api/parceiro', (req, res, next) => {
 	const results = [];
 	const data = {
-		id_usuario: req.body.id_usuario, 
 		cnpj: req.body.cnpj,
 		nome_fantasia: req.body.nome_fantasia,
-		razao_social: req.body.razao_social
+		razao_social: req.body.razao_social,
+		nome_usuario: req.body.nome_usuario, 
+		email: req.body.email, 
+		senha: req.body.senha 
 	};
 	pg.connect(connectionString, (err, client, done) => {
 		if(err) {
@@ -104,8 +106,8 @@ router.post('/api/parceiro', (req, res, next) => {
 			return res.status(500).json({success: false,data: err});
 		}
 		
-		client.query('INSERT INTO cad_parceiro(id_usuario, cnpj, nome_fantasia, razao_social) values($1, $2, $3, $4) RETURNING id_parceiro', 
-			[data.id_usuario, data.cnpj, data.nome_fantasia, data.razao_social],
+		client.query('INSERT INTO cad_parceiro(cnpj, nome_fantasia, razao_social, nome_usuario, email, senha) values($1, $2, $3, $4, $5, $6) RETURNING id_parceiro', 
+			[data.cnpj, data.nome_fantasia, data.razao_social, data.nome_usuario, data.email, data.senha],
 			function(err, result){
 				done();
 				if(err) {
