@@ -32,6 +32,19 @@ app.use(function(req, res, next) {
   next(err);
 });
 
+app.use(function(request, response) {
+	if (request.method == 'OPTIONS') {
+		response.setHeader('Access-Control-Allow-Origin', '*');
+		response.setHeader('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE');
+		response.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type');
+		response.end();
+	}
+	else {
+		response.setHeader('Access-Control-Allow-Origin', '*');
+		response.end('foobar');
+	}
+});
+
 // error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
