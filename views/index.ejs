@@ -248,8 +248,8 @@
 		if ($('#senha').val() == '') { alert('Há campos vazios, por favor preencha');$('#senha').focus();return false;}
 
 		$.ajax({
-			// url: '/parceiro',
-			url: 'https://serasa.herokuapp.com/parceiro',
+			url: '/parceiro',
+			// url: 'https://serasa.herokuapp.com/parceiro',
 			type: 'POST',
 			dataType: 'JSON',
 			data: {
@@ -261,7 +261,7 @@
 				senha: 			$('#senha').val()
 			},
 			success: function(retorno){if (retorno.success) {$('.alert-danger').prop('hidden', true);$('.alert-success').prop('hidden', false);}},
-			error: function(error){if (!retorno.success) {$('.alert-success').prop('hidden', true);$('.alert-danger').prop('hidden', false);}},
+			error: function(error){/*if (!retorno.success) {$('.alert-success').prop('hidden', true);$('.alert-danger').prop('hidden', false);}*/},
 			complete: function(retorno){}
 		});
 

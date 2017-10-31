@@ -2,9 +2,10 @@ const express = require('express');
 const router = express.Router();
 const pg = require('pg');
 const path = require('path');
-// const connectionString = 'postgres://postgres:root@localhost:5432/serasinha';
+var validate = require('jsonschema').validate;
+const connectionString = 'postgres://postgres:root@localhost:5432/serasinha';
 // const connectionString = 'postgres://ucixjqptisygvk:54186cd2c800073345993e7786180d6a14982d83ed577348861c3f57ac5316e5@ec2-184-73-159-137.compute-1.amazonaws.com:5432/dd1beij8g7kih0';
-const connectionString = 'postgres://qbwibpqzpiyxfl:f31a707c4d8be72ef62d314accb54b8f0018c1c12f7aa217b5bd29764a1949fc@ec2-54-163-238-169.compute-1.amazonaws.com:5432/def6kqeml1q39h';
+// const connectionString = 'postgres://qbwibpqzpiyxfl:f31a707c4d8be72ef62d314accb54b8f0018c1c12f7aa217b5bd29764a1949fc@ec2-54-163-238-169.compute-1.amazonaws.com:5432/def6kqeml1q39h';
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -97,12 +98,35 @@ router.post('/parceiro', (req, res, next) => {
 		email: req.body.email, 
 		senha: req.body.senha 
 	};
+
+	var parceiroSchema = {
+		"cnpj": {"type": "string"},
+		"nome_fantasia": {"type": "string"},
+		"nome_usuario": {"type": "string"},
+		"nome_fantasia": {"type": "string"},
+		"senha": {"type": "string"},
+		"razao_social": {"type": "string"}
+  	};
+
+	if(!validate(req.body, parceiroSchema)){
+		console.log('sduiahgdipuashbnduas0');
+		return res.status(400).json({success: false});
+	}
+	
+
 	pg.connect(connectionString, (err, client, done) => {
 		if(err) {
 			done();
 			console.log(err);
-			return res.status(400).json({success: false,data: err});
+			return res.status(400).json({success: false, data: err});
 		}
+
+		const query = client.query("SELECT * FROM cad_parceiro WHERE cnpj=($1) OR email=($2)", [data.cnpj, data.email], function(err, result){
+			done();
+			if (result.rowCount > 0) {
+				return res.status(409).json({success: false, data: result});
+			}
+		});
 		
 		client.query('INSERT INTO cad_parceiro(cnpj, nome_fantasia, razao_social, nome_usuario, email, senha) values($1, $2, $3, $4, $5, $6) RETURNING id_parceiro', 
 			[data.cnpj, data.nome_fantasia, data.razao_social, data.nome_usuario, data.email, data.senha],
