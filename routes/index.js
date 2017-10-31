@@ -125,20 +125,19 @@ router.post('/parceiro', (req, res, next) => {
 			done();
 			if (result.rowCount > 0) {
 				return res.status(409).json({success: false});
-			}
-		})
-		.done(function(){
-			client.query('INSERT INTO cad_parceiro(cnpj, nome_fantasia, razao_social, nome_usuario, email, senha) values($1, $2, $3, $4, $5, $6) RETURNING id_parceiro', 
-				[data.cnpj, data.nome_fantasia, data.razao_social, data.nome_usuario, data.email, data.senha],
-				function(err, result){
-					done();
-					if(err) {
-						return res.status(422).json({success: false, data: 'Houve alguma falha na gravação, por favor contate o administrador do sistema.'});
-					} else {
-						return res.json({success: true, data: result.rows[0].id_parceiro});
+			} else {
+				client.query('INSERT INTO cad_parceiro(cnpj, nome_fantasia, razao_social, nome_usuario, email, senha) values($1, $2, $3, $4, $5, $6) RETURNING id_parceiro', 
+					[data.cnpj, data.nome_fantasia, data.razao_social, data.nome_usuario, data.email, data.senha],
+					function(err, result){
+						done();
+						if(err) {
+							return res.status(422).json({success: false, data: 'Houve alguma falha na gravação, por favor contate o administrador do sistema.'});
+						} else {
+							return res.json({success: true, data: result.rows[0].id_parceiro});
+						}
 					}
-				}
-			);
+				);
+			}
 		});
 		
 	});
