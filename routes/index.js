@@ -109,11 +109,9 @@ router.post('/parceiro', (req, res, next) => {
   	};
 
 	if(!validate(req.body, parceiroSchema)){
-		console.log('sduiahgdipuashbnduas0');
 		return res.status(400).json({success: false});
 	}
 	
-
 	pg.connect(connectionString, (err, client, done) => {
 		if(err) {
 			done();
