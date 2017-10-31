@@ -199,9 +199,8 @@
 		if ($(this).data('id') == 'visualizar') {
 			$("#conteudo-principal").load("read");
 			$.ajax({
-				url: '/parceiro',
-				// url: 'https://serazinha.herokuapp.com/parceiro',
-				// url: 'https://serasa.herokuapp.com/parceiro',
+				// url: '/parceiro',
+				url: 'https://serasa.herokuapp.com/parceiro',
 				type: 'GET',
 				dataType: 'json',
 				success: function(retorno){
@@ -249,8 +248,8 @@
 		if ($('#senha').val() == '') { alert('Há campos vazios, por favor preencha');$('#senha').focus();return false;}
 
 		$.ajax({
-			url: '/parceiro',
-			// url: 'https://serazinha.herokuapp.com/parceiro',
+			// url: '/parceiro',
+			url: 'https://serasa.herokuapp.com/parceiro',
 			type: 'POST',
 			dataType: 'JSON',
 			data: {
@@ -273,8 +272,8 @@
 		$('.alert-success').prop('hidden', true);
 		$('.alert-danger').prop('hidden', true);
 		$.ajax({
-			url: '/parceiro/'+$('#id_parceiro').val(),
-			// url: 'https://serazinha.herokuapp.com/parceiro/'+$('#id_parceiro').val(),
+			// url: '/parceiro/'+$('#id_parceiro').val(),
+			url: 'https://serasa.herokuapp.com/parceiro/'+$('#id_parceiro').val(),
 			type: 'GET',
 			dataType: 'JSON',
 			success: function(retorno){
@@ -302,7 +301,8 @@
 		e.preventDefault();
 
 		$.ajax({
-			url: '/parceiro/'+$('#id_parceiro').val(),
+			// url: '/parceiro/'+$('#id_parceiro').val(),
+			url: 'https://serasa.herokuapp.com/parceiro/'+$('#id_parceiro').val(),
 			type: 'PUT',
 			dataType: 'JSON',
 			data: {
@@ -333,7 +333,8 @@
 		e.preventDefault();
 
 		$.ajax({
-			url: '/parceiro/'+$('#id_parceiro').val(),
+			// url: '/parceiro/'+$('#id_parceiro').val(),
+			url: 'https://serasa.herokuapp.com/parceiro/'+$('#id_parceiro').val(),
 			type: 'DELETE',
 			dataType: 'JSON',
 			success: function(retorno){

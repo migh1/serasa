@@ -101,7 +101,7 @@ router.post('/parceiro', (req, res, next) => {
 		if(err) {
 			done();
 			console.log(err);
-			return res.status(500).json({success: false,data: err});
+			return res.status(400).json({success: false,data: err});
 		}
 		
 		client.query('INSERT INTO cad_parceiro(cnpj, nome_fantasia, razao_social, nome_usuario, email, senha) values($1, $2, $3, $4, $5, $6) RETURNING id_parceiro', 
@@ -109,7 +109,7 @@ router.post('/parceiro', (req, res, next) => {
 			function(err, result){
 				done();
 				if(err) {
-					return res.status(500).json({success: false, data: 'Houve alguma falha na gravação, por favor contate o administrador do sistema.'});
+					return res.status(422).json({success: false, data: 'Houve alguma falha na gravação, por favor contate o administrador do sistema.'});
 				} else {
 					return res.json({success: true, data: result.rows[0].id_parceiro});
 				}
@@ -134,14 +134,14 @@ router.put('/parceiro/:id_parceiro', (req, res, next) => {
 		if(err) {
 			done();
 			console.log(err);
-			return res.status(500).json({success: false, data: err});
+			return res.status(400).json({success: false, data: err});
 		}
 		client.query('UPDATE cad_parceiro SET cnpj=($1), nome_fantasia=($2), razao_social=($3), nome_usuario=($4), email=($5), senha=($6) WHERE id_parceiro=($7)',
 			[data.cnpj, data.nome_fantasia, data.razao_social, data.nome_usuario, data.email, data.senha, id_parceiro],
 			function(err, result){
 				done();
 				if(err) {
-					return res.status(500).json({success: false, data: 'Houve alguma falha na atualização do parceiro, por favor contate o administrador do sistema.'});
+					return res.status(422).json({success: false, data: 'Houve alguma falha na atualização do parceiro, por favor contate o administrador do sistema.'});
 				} else {
 					return res.json({success: true, data: 'Sucesso ao atualizar!'});
 				}
@@ -157,7 +157,7 @@ router.delete('/parceiro/:id_parceiro', (req, res, next) => {
 		if(err) {
 			done();
 			console.log(err);
-			return res.status(500).json({success: false, data: err});
+			return res.status(400).json({success: false, data: err});
 		}
 
 		client.query('DELETE FROM cad_parceiro WHERE id_parceiro=($1)', [id_parceiro]);
@@ -170,7 +170,7 @@ router.delete('/parceiro/:id_parceiro', (req, res, next) => {
 		query.on('end', function() {
 			done();
 			if(results.length) {
-				return res.status(500).json({success: false, data: 'Houve alguma falha na exclusão do parceiro, por favor contate o administrador do sistema.'});
+				return res.status(422).json({success: false, data: 'Houve alguma falha na exclusão do parceiro, por favor contate o administrador do sistema.'});
 			} else {
 				return res.json({success: true, data: 'Sucesso ao excluir!'});
 			}
