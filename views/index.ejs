@@ -261,8 +261,9 @@
 				senha: 			$('#senha').val()
 			},
 			success: function(retorno){if (retorno.success) {$('.alert-danger').prop('hidden', true);$('.alert-success').prop('hidden', false);}},
-			error: function(error){/*if (!retorno.success) {$('.alert-success').prop('hidden', true);$('.alert-danger').prop('hidden', false);}*/},
-			complete: function(retorno){}
+			error: function(error){$('.alert-success').prop('hidden', true);$('.alert-danger').prop('hidden', false);},
+			complete: function(retorno){},
+
 		});
 
 	});
