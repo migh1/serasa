@@ -122,7 +122,7 @@ router.post('/parceiro', (req, res, next) => {
 		const query = client.query("SELECT * FROM cad_parceiro WHERE cnpj=($1) OR email=($2)", [data.cnpj, data.email], function(err, result){
 			done();
 			if (result.rowCount > 0) {
-				return res.status(409).json({success: false, data: result});
+				return res.status(409).json({success: false});
 			}
 		});
 		
