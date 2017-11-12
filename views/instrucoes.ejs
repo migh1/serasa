@@ -24,13 +24,16 @@
 			<div>
 				<p>Download do aplicativo POSTMAN na chromestore para google chrome.</p>
 				<p>https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop</p>
-				<p>Realizar requisição get/post/put/delete para o seguinte endereço: serasa.herokuapp.com/api/parceiro</p>
+				<p>Realizar requisição get/post/put/delete para o seguinte endereço: serasa.herokuapp.com/parceiro</p>
 				<p>Exemplo:</p>
 				<p>Primeiro definir as HEADERS como application/json
-					<img src="https://image.prntscr.com/image/SDoiAi8MSYeQgGltSfN0XA.png">
+					<img src="https://image.prntscr.com/image/Xh6fdO3YQJyvzkD-m6AalQ.png">
 				</p>
 				<p>Depois só enviar os dados nesse formato:
-					<img src="https://image.prntscr.com/image/oxJADARwQBuF3Nfn6XhEiA.png">
+					<img src="https://image.prntscr.com/image/P7LU_8oqSjqfQczu3KL-3Q.png">
+				</p>
+				<p>Resposta 200:
+					<img src="https://image.prntscr.com/image/H-YmoRn7T4uMIkorYh9Lsw.png">
 				</p>
 				<p></p>
 			</div>
@@ -42,12 +45,13 @@
 		</button>
 		<div id="botao2" class="height collapse" aria-expanded="true">
 			<div>
-				<p>Pagina de endereço para testes de integração com parceiros: /api/parceiro.</p>
-				<p>GET - api/parceiro - retorna todos os dados em json.</p>
-				<p>GET - api/parceiro/:id - retorna o parceiro dado o id específico.</p>
-				<p>POST - api/parceiro - cadastra um parceiro (id_usuario/cnpj/nome_fantasia/razao_social).</p>
-				<p>PUT - api/parceiro/:id - atualiza um parceiro - (id_usuario/cnpj/nome_fantasia/razao_social).</p>
-				<p>DELETE - api/parceiro/:id - exclui um parceiro (id_parceiro).</p>
+				<p>Primeiro fazer login em: POST - /login - formato json: {nome_usuario: mig, senha: 'testezera total'}</p>
+				<p>Pagina de endereço para testes de integração com parceiros: /parceiro.</p>
+				<p>GET - /parceiro - retorna todos os dados em json.</p>
+				<p>GET - /parceiro/:id - retorna o parceiro dado o id específico.</p>
+				<p>POST - /parceiro - cadastra um parceiro formato json {cnpj: 'string', nome_fantasia: 'string', razao_social: 'string', nome_usuario: 'string', senha: 'string'}.</p>
+				<p>PUT - /parceiro/:id - atualiza um parceiro formato json - {id_parceiro: int, cnpj: 'string', nome_fantasia: 'string', razao_social: 'string', nome_usuario: 'string', senha: 'string'}.</p>
+				<p>DELETE - /parceiro/:id - exclui um parceiro formato json {id_parceiro}.</p>
 			</div>
 		</div>
 	</div>
