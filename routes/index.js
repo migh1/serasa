@@ -177,7 +177,7 @@ router.put('/login', (req, res, next) => {
 					return res.status(404).json({success: false, http: 404, mensagem: 'Usuário não encontrado.'});
 				} else {
 					var token = MD5(req.body.nome_usuario+'##'+req.body.senha);
-					client.query('UPDATE cad_parceiro SET token=($1), data_adicionado=($2) WHERE nome_usuario=($3)', [token, 'now()', req.body.nome_usuario], function(err, result){
+					client.query('UPDATE cad_parceiro SET token=($1), data_adicionado=($2) WHERE nome_usuario=($3) and senha=($4)', [token, 'now()', req.body.nome_usuario, req.body.senha], function(err, result){
 							done();
 							if(err) {
 								return res.status(422).json({success: false, http: 422, mensagem: 'Erro na geração do token.'});
