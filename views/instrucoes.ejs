@@ -45,13 +45,13 @@
 		</button>
 		<div id="botao2" class="height collapse" aria-expanded="true">
 			<div>
-				<p>Primeiro fazer login em: PUT - /login - formato json: {nome_usuario: mig, senha: 'testezera total'}</p>
-				<p>Pagina de endereço para testes de integração com parceiros: /parceiro.</p>
-				<p>GET - /parceiro - retorna todos os dados em json.</p>
-				<p>GET - /parceiro/:id - retorna o parceiro dado o id específico.</p>
+				<p>Primeiro cadastrar Parceiro com usuario </p>
 				<p>POST - /parceiro - cadastra um parceiro formato json {cnpj: 'string', nome_fantasia: 'string', razao_social: 'string', nome_usuario: 'string', senha: 'string'}.</p>
-				<p>PUT - /parceiro/:id - atualiza um parceiro formato json - {id_parceiro: int, cnpj: 'string', nome_fantasia: 'string', razao_social: 'string', nome_usuario: 'string', senha: 'string'}.</p>
-				<p>DELETE - /parceiro/:id - exclui um parceiro formato json {id_parceiro}.</p>
+				<p>PUT - /login - formato json: {nome_usuario: mig, senha: 'testezera total'}</p>
+				<p>GET - /parceiro - retorna todos os dados em json. headers: token</p>
+				<p>GET - /parceiro/:id - retorna o parceiro dado o id específico. headers: token</p>
+				<p>PUT - /parceiro/:id - atualiza um parceiro formato json - {id_parceiro: int, cnpj: 'string', nome_fantasia: 'string', razao_social: 'string', nome_usuario: 'string', senha: 'string'}. headers: token</p>
+				<p>DELETE - /parceiro/:id - exclui um parceiro formato json {id_parceiro}. headers: token</p>
 			</div>
 		</div>
 	</div>
