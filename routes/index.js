@@ -41,7 +41,7 @@ router.get('/edit', function(req, res, next) {
 router.get('/parceiro', (req, res, next) => {
 	isLogado(req.headers.token, function(err, valid){
 		if(!valid){
-			return res.status(402).json({success: false, http: 402, mensagem: 'Por favor, faça login novamente e repita o processo.'});
+			return res.status(401).json({success: false, http: 401, mensagem: 'Por favor, faça login novamente e repita o processo.'});
 		} else {
 			const results = [];
 			pg.connect(connectionString, (err, client, done) => {
@@ -74,7 +74,7 @@ router.get('/parceiro', (req, res, next) => {
 router.get('/parceiro/:id_parceiro', function(req, res, next) {
 	isLogado(req.headers.token, function(err, valid){
 		if(!valid){
-			return res.status(402).json({success: false, http: 402, mensagem: 'Por favor, faça login novamente e repita o processo.'});
+			return res.status(401).json({success: false, http: 401, mensagem: 'Por favor, faça login novamente e repita o processo.'});
 		} else {
 			const results = [];
 			const id_parceiro = req.params.id_parceiro
@@ -107,60 +107,54 @@ router.get('/parceiro/:id_parceiro', function(req, res, next) {
 
 //faz um post e entao um insert na tabela cad_parceiro do banco serasa
 router.post('/parceiro', (req, res, next) => {
-	isLogado(req.headers.token, function(err, valid){
-		if(!valid){
-			return res.status(402).json({success: false, http: 402, mensagem: 'Por favor, faça login novamente e repita o processo.'});
-		} else {
-			const results = [];
-			const data = {
-				cnpj: req.body.cnpj,
-				nome_fantasia: req.body.nome_fantasia,
-				razao_social: req.body.razao_social,
-				nome_usuario: req.body.nome_usuario, 
-				email: req.body.email, 
-				senha: req.body.senha 
-			};
+	const results = [];
+	const data = {
+		cnpj: req.body.cnpj,
+		nome_fantasia: req.body.nome_fantasia,
+		razao_social: req.body.razao_social,
+		nome_usuario: req.body.nome_usuario, 
+		email: req.body.email, 
+		senha: req.body.senha 
+	};
 
-			var parceiroSchema = {
-				"cnpj": {"type": "string"},
-				"nome_fantasia": {"type": "string"},
-				"nome_usuario": {"type": "string"},
-				"nome_fantasia": {"type": "string"},
-				"senha": {"type": "string"},
-				"razao_social": {"type": "string"}
-		  	};
+	var parceiroSchema = {
+		"cnpj": {"type": "string"},
+		"nome_fantasia": {"type": "string"},
+		"nome_usuario": {"type": "string"},
+		"nome_fantasia": {"type": "string"},
+		"senha": {"type": "string"},
+		"razao_social": {"type": "string"}
+  	};
 
-			if(!validate(req.body, parceiroSchema)){
-				return res.status(400).json({success: false});
-			}
-			
-			pg.connect(connectionString, (err, client, done) => {
-				if(err) {
-					done();
-					console.log(err);
-					return res.status(400).json({success: false, data: err});
-				}
-
-				const query = client.query("SELECT * FROM cad_parceiro WHERE cnpj=($1) OR email=($2)",[data.cnpj, data.email], function(err, result){
-					done();
-					if (result.rowCount > 0) {
-						return res.status(409).json({success: false});
-					} else {
-						client.query('INSERT INTO cad_parceiro(cnpj, nome_fantasia, razao_social, nome_usuario, email, senha) values($1, $2, $3, $4, $5, $6) RETURNING id_parceiro', 
-							[data.cnpj, data.nome_fantasia, data.razao_social, data.nome_usuario, data.email, data.senha],
-							function(err, result){
-								done();
-								if(err) {
-									return res.status(422).json({success: false, data: 'Houve alguma falha na gravação, por favor contate o administrador do sistema.'});
-								} else {
-									return res.json({success: true, data: result.rows[0].id_parceiro});
-								}
-							}
-						);
-					}
-				});
-			});
+	if(!validate(req.body, parceiroSchema)){
+		return res.status(400).json({success: false});
+	}
+	
+	pg.connect(connectionString, (err, client, done) => {
+		if(err) {
+			done();
+			console.log(err);
+			return res.status(400).json({success: false, data: err});
 		}
+
+		const query = client.query("SELECT * FROM cad_parceiro WHERE cnpj=($1) OR email=($2)",[data.cnpj, data.email], function(err, result){
+			done();
+			if (result.rowCount > 0) {
+				return res.status(409).json({success: false});
+			} else {
+				client.query('INSERT INTO cad_parceiro(cnpj, nome_fantasia, razao_social, nome_usuario, email, senha) values($1, $2, $3, $4, $5, $6) RETURNING id_parceiro', 
+					[data.cnpj, data.nome_fantasia, data.razao_social, data.nome_usuario, data.email, data.senha],
+					function(err, result){
+						done();
+						if(err) {
+							return res.status(422).json({success: false, data: 'Houve alguma falha na gravação, por favor contate o administrador do sistema.'});
+						} else {
+							return res.json({success: true, data: result.rows[0].id_parceiro});
+						}
+					}
+				);
+			}
+		});
 	});
 });
 
@@ -232,7 +226,7 @@ router.put('/logout', (req, res, next) => {
 router.put('/parceiro/:id_parceiro', (req, res, next) => {
 	isLogado(req.headers.token, function(err, valid){
 		if(!valid){
-			return res.status(402).json({success: false, http: 402, mensagem: 'Por favor, faça login novamente e repita o processo.'});
+			return res.status(401).json({success: false, http: 401, mensagem: 'Por favor, faça login novamente e repita o processo.'});
 		} else {
 			const id_parceiro = req.params.id_parceiro
 			const data = {
@@ -269,7 +263,7 @@ router.put('/parceiro/:id_parceiro', (req, res, next) => {
 router.delete('/parceiro/:id_parceiro', (req, res, next) => {
 	isLogado(req.headers.token, function(err, valid){
 		if(!valid){
-			return res.status(402).json({success: false, http: 402, mensagem: 'Por favor, faça login novamente e repita o processo.'});
+			return res.status(401).json({success: false, http: 401, mensagem: 'Por favor, faça login novamente e repita o processo.'});
 		} else {
 			const results = [];
 			const id_parceiro = req.params.id_parceiro;
