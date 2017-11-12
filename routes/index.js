@@ -126,7 +126,7 @@ router.post('/parceiro', (req, res, next) => {
 		"razao_social": {"type": "string"}
   	};
 
-	if(!validate(req.body, parceiroSchema)){
+	if(!validate(data, parceiroSchema)){
 		return res.status(400).json({success: false, http: 400, mensagem: 'JSON schema inválido, verifique.'});
 	}
 	
