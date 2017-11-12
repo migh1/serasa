@@ -132,34 +132,35 @@ router.post('/parceiro', (req, res, next) => {
 
 	if(!valid){
 		return res.status(400).json({success: false, http: 400, mensagem: 'JSON schema inválido, verifique.'});
+	} else {
+		pg.connect(connectionString, (err, client, done) => {
+			if(err) {
+				done();
+				console.log(err);
+				return res.status(400).json({success: false, http: 400, mensagem: 'Erro ao se conectar com o banco.'});
+			}
+
+			const query = client.query("SELECT * FROM cad_parceiro WHERE cnpj=($1) OR email=($2)",[data.cnpj, data.email], function(err, result){
+				done();
+				if (result.rowCount > 0) {
+					return res.status(409).json({success: false, http: 409, mensagem: 'CNPJ ou Email já cadastrado, verifique.'});
+				} else {
+					client.query('INSERT INTO cad_parceiro(cnpj, nome_fantasia, razao_social, nome_usuario, email, senha) values($1, $2, $3, $4, $5, $6) RETURNING id_parceiro', 
+						[data.cnpj, data.nome_fantasia, data.razao_social, data.nome_usuario, data.email, data.senha],
+						function(err, result){
+							done();
+							if(err) {
+								return res.status(422).json({success: false, http: 422, mensagem: 'Falha na validação dos dados, por favor verifique o JSON enviado.'});
+							} else {
+								return res.json({success: true, data: result.rows[0].id_parceiro});
+							}
+						}
+					);
+				}
+			});
+		});
 	}
 	
-	pg.connect(connectionString, (err, client, done) => {
-		if(err) {
-			done();
-			console.log(err);
-			return res.status(400).json({success: false, http: 400, mensagem: 'Erro ao se conectar com o banco.'});
-		}
-
-		const query = client.query("SELECT * FROM cad_parceiro WHERE cnpj=($1) OR email=($2)",[data.cnpj, data.email], function(err, result){
-			done();
-			if (result.rowCount > 0) {
-				return res.status(409).json({success: false, http: 409, mensagem: 'CNPJ ou Email já cadastrado, verifique.'});
-			} else {
-				client.query('INSERT INTO cad_parceiro(cnpj, nome_fantasia, razao_social, nome_usuario, email, senha) values($1, $2, $3, $4, $5, $6) RETURNING id_parceiro', 
-					[data.cnpj, data.nome_fantasia, data.razao_social, data.nome_usuario, data.email, data.senha],
-					function(err, result){
-						done();
-						if(err) {
-							return res.status(422).json({success: false, http: 422, mensagem: 'Falha na validação dos dados, por favor verifique o JSON enviado.'});
-						} else {
-							return res.json({success: true, data: result.rows[0].id_parceiro});
-						}
-					}
-				);
-			}
-		});
-	});
 });
 
 //faz login no parceiro
