@@ -1,59 +1,62 @@
-<a href="#" data-target="#sidebar" data-toggle="collapse"><i class="fa fa-navicon fa-2x py-2 p-1"></i></a>
-<div class="container">
-	<h1><%= title %></h1>
-	<p>Bem vindo ao <%= title %></p>
+<div class="serasa-content" style="display: none;">
+	<a href="#" data-target="#sidebar" data-toggle="collapse"><i class="fa fa-navicon fa-2x py-2 p-1"></i></a>
+	<button class="btn btn-danger pull-right btn-logout" name="submit">Sair</button>
+	<div class="container">
+		<h1><%= title %></h1>
+		<p>Bem vindo ao <%= title %></p>
 
-	<div class="card" style="width: 40%;">
-		<div class="card-header">
-			<h5>Cadastro de Parceiro</h5>
-			<div class="alert alert-success" role="alert" style="margin-top: 25px;" hidden>
-				<strong>Sucesso!</strong> Cadastrado com perfeição.
+		<div class="card" style="width: 40%;">
+			<div class="card-header">
+				<h5>Cadastro de Parceiro</h5>
+				<div class="alert alert-success" role="alert" style="margin-top: 25px;" hidden>
+					<strong>Sucesso!</strong> Cadastrado com perfeição.
+				</div>
+				<div class="alert alert-danger" role="alert" style="margin-top: 25px;" hidden>
+					<strong>Erro!</strong> Falha ao cadastrar, contate o administrador.
+				</div>
 			</div>
-			<div class="alert alert-danger" role="alert" style="margin-top: 25px;" hidden>
-				<strong>Erro!</strong> Falha ao cadastrar, contate o administrador.
+			<div class="card-body">
+				<form action="POST" method="/parceiro/create">
+
+					<div class="col-md-12">
+						<label for="cnpj"><strong>CNPJ</strong></label>
+						<input type="text" class="form-control" name="cnpj" id="cnpj" value="98.333.790/0001-21">
+					</div>
+
+					<div class="col-md-12">
+						<label for="nome_fantasia"><strong>Nome Fantasia</strong></label>
+						<input type="text" class="form-control" name="nome_fantasia" id="nome_fantasia" value="Nome Fantasia">
+					</div>				
+
+					<div class="col-md-12">
+						<label for="razao_social"><strong>Razão Social</strong></label>
+						<input type="text" class="form-control" name="razao_social" id="razao_social" value="Razão Social">
+					</div>
+
+					<div class="col-md-12" style="margin-top: 20px;">
+						<label for="nome_usuario"><strong>Nome usuário</strong></label>
+						<input type="text" class="form-control" name="nome_usuario" id="nome_usuario" value="Nome do usuario">
+					</div>
+
+					<div class="col-md-12" style="margin-top: 20px;">
+						<label for="email"><strong>Email</strong></label>
+						<input type="text" class="form-control" name="email" id="email" value="email@email.com">
+					</div>
+
+					<div class="col-md-12" style="margin-top: 20px;">
+						<label for="senha"><strong>Senha</strong></label>
+						<input type="text" class="form-control" name="senha" id="senha" value="123456">
+					</div>
+
+				</form>
 			</div>
-		</div>
-		<div class="card-body">
-			<form action="POST" method="/parceiro/create">
 
-				<div class="col-md-12">
-					<label for="cnpj">CNPJ</label>
-					<input type="text" class="form-control" name="cnpj" id="cnpj" value="98.333.790/0001-21">
+			<div class="card-footer" style="margin-top: 25px;">
+				<div class="col-md-4 pull-right">
+					<button class="btn btn-success btn-cadastrar-parceiro" name="submit">Cadastrar</button>
 				</div>
-
-				<div class="col-md-12">
-					<label for="nome_fantasia">Nome Fantasia</label>
-					<input type="text" class="form-control" name="nome_fantasia" id="nome_fantasia" value="Nome Fantasia">
-				</div>				
-
-				<div class="col-md-12">
-					<label for="razao_social">Razão Social</label>
-					<input type="text" class="form-control" name="razao_social" id="razao_social" value="Razão Social">
-				</div>
-
-				<div class="col-md-12" style="margin-top: 20px;">
-					<label for="nome_usuario">Nome usuário</label>
-					<input type="text" class="form-control" name="nome_usuario" id="nome_usuario" value="Nome do usuario">
-				</div>
-
-				<div class="col-md-12" style="margin-top: 20px;">
-					<label for="email">Email</label>
-					<input type="text" class="form-control" name="email" id="email" value="email@email.com">
-				</div>
-
-				<div class="col-md-12" style="margin-top: 20px;">
-					<label for="senha">Senha</label>
-					<input type="text" class="form-control" name="senha" id="senha" value="123456">
-				</div>
-
-			</form>
-		</div>
-
-		<div class="card-footer" style="margin-top: 25px;">
-			<div class="col-md-4">
-				<button class="btn btn-success btn-cadastrar-parceiro" name="submit">Cadastrar</button>
 			</div>
-		</div>
 
+		</div>
 	</div>
 </div>

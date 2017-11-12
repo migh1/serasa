@@ -1,0 +1,37 @@
+<div class="serasa-content" style="display: none;">
+	<a href="#" data-target="#sidebar" data-toggle="collapse"><i class="fa fa-navicon fa-2x py-2 p-1"></i></a>
+	<div class="container">
+		<h1><%= title %></h1>
+		<p>Bem vindo ao <%= title %></p>
+
+		<div class="card" style="width: 40%;">
+			<div class="card-header">
+				<h5>Login</h5>
+				<div class="alert alert-success" role="alert" style="margin-top: 25px;" hidden></div>
+				<div class="alert alert-danger" role="alert" style="margin-top: 25px;" hidden></div>
+			</div>
+			<div class="card-body">
+				<form action="POST" method="/parceiro/login">
+
+					<div class="col-md-12" style="margin-top: 20px;">
+						<label for="nome_usuario"><strong>Nome de usuário</strong></label>
+						<input type="text" class="form-control" name="nome_usuario" id="nome_usuario" value="lucas">
+					</div>
+
+					<div class="col-md-12" style="margin-top: 20px;">
+						<label for="senha"><strong>Senha</strong></label>
+						<input type="password" class="form-control" name="senha" id="senha" value="123">
+					</div>
+
+				</form>
+			</div>
+
+			<div class="card-footer" style="margin-top: 25px;">
+				<div class="col-md-4 pull-right">
+					<button class="btn btn-success btn-login-parceiro" name="submit">Login</button>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>

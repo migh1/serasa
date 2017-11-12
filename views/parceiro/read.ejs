@@ -1,25 +1,26 @@
-<a href="#" data-target="#sidebar" data-toggle="collapse"><i class="fa fa-navicon fa-2x py-2 p-1"></i></a>
-<div class="container">
-	<h1><%= title %></h1>
-	<p>Bem vindo ao <%= title %></p>
+<div class="serasa-content" style="display: none;">	
+	<a href="#" data-target="#sidebar" data-toggle="collapse"><i class="fa fa-navicon fa-2x py-2 p-1"></i></a>
+	<button class="btn btn-danger pull-right btn-logout" name="submit">Sair</button>
+	<div class="container">
+		<h1><%= title %></h1>
+		<p>Bem vindo ao <%= title %></p>
 
-	<div class="card" style="width: 80%;">
-		<div class="card-header"><h5>Lista de Parceiros</h5></div>
-		<div class="card-body">
-			<table class="table table-striped selector-table-parceiros" id="parceiro-visualizar">
-				<thead>
-					<tr>
-						<th>id_parceiro</th>
-						<th>cnpj</th>
-						<th>nome_fantasia</th>
-						<th>razao_social</th>
-						<th>nome_usuario</th>
-						<th>email</th>
-						<th>senha</th>
-					</tr>
-				</thead>
-				<tbody class="selector-tbody-parceiros"></tbody>
-			</table>
+		<div class="card" style="width: 80%;">
+			<div class="card-header"><h5>Lista de Parceiros</h5></div>
+			<div class="card-body">
+				<table class="table table-striped selector-table-parceiros" id="parceiro-visualizar">
+					<thead>
+						<tr>
+							<th>cnpj</th>
+							<th>nome_fantasia</th>
+							<th>razao_social</th>
+							<th>nome_usuario</th>
+							<th>email</th>
+						</tr>
+					</thead>
+					<tbody class="selector-tbody-parceiros"></tbody>
+				</table>
+			</div>
 		</div>
 	</div>
 </div>

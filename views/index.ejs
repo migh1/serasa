@@ -164,9 +164,8 @@
 				<div class="list-group border-0 card text-center text-md-left">
 					<a href="#parceiro" class="list-group-item d-inline-block collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="fa fa-handshake-o"></i> <span class="d-none d-md-inline">Parceiros</span> </a>
 					<div class="collapse" id="parceiro">
-						<a href="#" class="list-group-item parceiro-menu" data-parent="#parceiro" data-id="visualizar">Visualizar</a>
-						<a href="#" class="list-group-item parceiro-menu" data-parent="#parceiro" data-id="cadastrar">Cadastrar</a>
-						<a href="#" class="list-group-item parceiro-menu" data-parent="#parceiro" data-id="editar">Editar</a>
+						<a href="#" class="list-group-item parceiro-menu" data-parent="#parceiro" data-id="login">Login</a>
+						
 					</div>
 					<a href="#" class="list-group-item d-inline-block collapsed" data-parent="#sidebar"><i class="fa fa-film"></i> <span class="d-none d-md-inline">Item 2</span></a>
 					<!-- <a href="#menu3" class="list-group-item d-inline-block collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="fa fa-book"></i> <span class="d-none d-md-inline">Item 3 </span></a>
@@ -190,9 +189,26 @@
 
 <script type="text/javascript">
 	$(document).ready(function(){
-		$(document).ready(function(){
-			$("#conteudo-principal").load("instrucoes"); 
-		});
+		$("#conteudo-principal").load("instrucoes");
+		$.ajax({
+			// url: '/verify/login/user/path',
+			url: 'https://serasa.herokuapp.com/verify/login/user/path',
+			type: 'POST',
+			dataType: 'JSON',
+			headers: {"token": sessionStorage.getItem("Sessao")},
+			success: function(retorno){
+				$('#parceiro').html('\
+					<a href="#" class="list-group-item parceiro-menu" data-parent="#parceiro" data-id="visualizar">Visualizar</a>\
+					<a href="#" class="list-group-item parceiro-menu" data-parent="#parceiro" data-id="cadastrar">Cadastrar</a>\
+					<a href="#" class="list-group-item parceiro-menu" data-parent="#parceiro" data-id="editar">Editar</a>\
+				');
+			},
+			error: function(error){
+				$('#parceiro').html('\
+					<a href="#" class="list-group-item parceiro-menu" data-parent="#parceiro" data-id="login">Login</a>\
+				');
+			}
+		});		
 	});
 
 	$(document).on('click', '.parceiro-menu', function(){
@@ -202,24 +218,24 @@
 				// url: '/parceiro',
 				url: 'https://serasa.herokuapp.com/parceiro',
 				type: 'GET',
-				dataType: 'json',
+				headers: {"token": sessionStorage.getItem("Sessao")},
+				dataType: 'JSON',
 				success: function(retorno){
+					$('.serasa-content').css('display', 'block');
 					$.each(retorno, function(key,value){
 						$('.selector-tbody-parceiros').append('\
 							<tr>\
-								<td>'+value.id_parceiro+'</td>\
 								<td>'+value.cnpj+'</td>\
 								<td>'+value.nome_fantasia+'</td>\
 								<td>'+value.razao_social+'</td>\
 								<td>'+value.nome_usuario+'</td>\
 								<td>'+value.email+'</td>\
-								<td>'+value.senha+'</td>\
 							</tr>\
-							');
+						');
 					});
-					window.history.replaceState(null, null, '/read');
+					// window.history.replaceState(null, null, '/read');
 				},
-				error: function(error){},
+				error: function(error){if(error.responseJSON.http == 402){alert(error.responseJSON.mensagem);$("#conteudo-principal").load("login");}},
 				complete: function(retorno){}
 			})
 			.then(function(data){
@@ -228,12 +244,25 @@
 			
 		}
 		if ($(this).data('id') == 'cadastrar') {
-			$("#conteudo-principal").load("create");
-			window.history.replaceState(null, null, '/create');
+			$("#conteudo-principal").load("create", function(){
+				$('.serasa-content').css('display', 'block');
+			});
+			
+			// window.history.replaceState(null, null, '/create');
 		}
 		if ($(this).data('id') == 'editar') {
-			$("#conteudo-principal").load("edit");
-			window.history.replaceState(null, null, '/edit');
+			$("#conteudo-principal").load("edit", function(){
+				$('.serasa-content').css('display', 'block');
+			});
+			
+			// window.history.replaceState(null, null, '/edit');
+		}
+		if ($(this).data('id') == 'login') {
+			$("#conteudo-principal").load("login", function(){
+				$('.serasa-content').css('display', 'block');
+			});
+			
+			// window.history.replaceState(null, null, '/login');
 		}
 	});
 
@@ -252,6 +281,7 @@
 			url: 'https://serasa.herokuapp.com/parceiro',
 			type: 'POST',
 			dataType: 'JSON',
+			headers: {"token": sessionStorage.getItem("Sessao")},
 			data: {
 				cnpj: 			$('#cnpj').val(),
 				nome_fantasia: 	$('#nome_fantasia').val(),
@@ -261,11 +291,12 @@
 				senha: 			$('#senha').val()
 			},
 			success: function(retorno){if (retorno.success) {$('.alert-danger').prop('hidden', true);$('.alert-success').prop('hidden', false);}},
-			error: function(error){$('.alert-success').prop('hidden', true);$('.alert-danger').prop('hidden', false);},
-			complete: function(retorno){},
+			error: function(error){
+				if(error.responseJSON.http == 402){alert(error.responseJSON.mensagem);$("#conteudo-principal").load("login");}
+				else{$('.alert-success').prop('hidden', true);$('.alert-danger').prop('hidden', false);}
+			}
 
 		});
-
 	});
 
 	$(document).on('click', '.btn-buscar-parceiro', function(e){
@@ -277,6 +308,7 @@
 			url: 'https://serasa.herokuapp.com/parceiro/'+$('#id_parceiro').val(),
 			type: 'GET',
 			dataType: 'JSON',
+			headers: {"token": sessionStorage.getItem("Sessao")},
 			success: function(retorno){
 				if (retorno.success) {
 					$('.alert-danger').prop('hidden', true);
@@ -289,23 +321,20 @@
 				}
 			},
 			error: function(error, data){
-				if (!error.success) {
-					$('.alert-success').prop('hidden', true);
-					$('.alert-danger').prop('hidden', false).html('<strong>Erro!</strong> Falha ao pesquisar, contate o administrador.');
-				}
-			},
-			complete: function(retorno){}
+				if(error.responseJSON.http == 402){alert(error.responseJSON.mensagem);$("#conteudo-principal").load("login");}
+				else{$('.alert-success').prop('hidden', true);$('.alert-danger').prop('hidden', false).html('<strong>Erro!</strong> Falha ao pesquisar, contate o administrador.');}
+			}
 		});	
 	});
 
 	$(document).on('click', '.btn-atualizar-parceiro', function(e){
 		e.preventDefault();
-
 		$.ajax({
 			// url: '/parceiro/'+$('#id_parceiro').val(),
 			url: 'https://serasa.herokuapp.com/parceiro/'+$('#id_parceiro').val(),
 			type: 'PUT',
 			dataType: 'JSON',
+			headers: {"token": sessionStorage.getItem("Sessao")},
 			data: {
 				cnpj: 			$('#cnpj').val(),
 				nome_fantasia: 	$('#nome_fantasia').val(),
@@ -320,23 +349,20 @@
 					$('.alert-success').prop('hidden', false);
 				}
 			},
-			error: function(error){
-				if (!retorno.success) {
-					$('.alert-success').prop('hidden', true);
-					$('.alert-danger').prop('hidden', false);
-				}
-			},
-			complete: function(retorno){}
+			error: function(retorno){
+				if(error.responseJSON.http == 402){alert(error.responseJSON.mensagem);$("#conteudo-principal").load("login");}
+				else{$('.alert-success').prop('hidden', true);$('.alert-danger').prop('hidden', false);}
+			}
 		});
 	});
 
 	$(document).on('click', '.btn-excluir-parceiro', function(e){
 		e.preventDefault();
-
 		$.ajax({
 			// url: '/parceiro/'+$('#id_parceiro').val(),
 			url: 'https://serasa.herokuapp.com/parceiro/'+$('#id_parceiro').val(),
 			type: 'DELETE',
+			headers: {"token": sessionStorage.getItem("Sessao")},
 			dataType: 'JSON',
 			success: function(retorno){
 				if (retorno.success) {
@@ -346,14 +372,61 @@
 				}
 			},
 			error: function(error){
-				if (!error.success) {
-					$('.alert-success').prop('hidden', true);
-					$('.alert-danger').prop('hidden', false).html('<strong>Erro!</strong> Falha ao exlcuir, contate o administrador.');
+				if(error.responseJSON.http == 402){alert(error.responseJSON.mensagem);$("#conteudo-principal").load("login");}
+				else{$('.alert-success').prop('hidden', true);$('.alert-danger').prop('hidden', false).html('<strong>Erro!</strong> Falha ao exlcuir, contate o administrador.');}
+			}
+		});
+	});
+
+	$(document).on('click', '.btn-login-parceiro', function(){
+		$.ajax({
+			// url: '/login',
+			url: 'https://serasa.herokuapp.com/login',
+			type: 'PUT',
+			dataType: 'JSON',
+			data: {nome_usuario: $('#nome_usuario').val(), senha: $('#senha').val()},
+			success: function(retorno){
+				if (retorno.success) {
+					$('.alert-danger').prop('hidden', true);
+					$('.alert-success').prop('hidden', false).html("<strong>Http Status:</strong> " + retorno.http + ", <br/><strong>Mensagem:</strong> " + retorno.mensagem);;
+					sessionStorage.setItem("Sessao", retorno.token);
+					$('#parceiro').html('\
+						<a href="#" class="list-group-item parceiro-menu" data-parent="#parceiro" data-id="visualizar">Visualizar</a>\
+						<a href="#" class="list-group-item parceiro-menu" data-parent="#parceiro" data-id="cadastrar">Cadastrar</a>\
+						<a href="#" class="list-group-item parceiro-menu" data-parent="#parceiro" data-id="editar">Editar</a>\
+					');
 				}
 			},
-			complete: function(retorno){}
-		});
+			error: function(error){
+				if (!error.success) {
+					$('.alert-success').prop('hidden', true);
+					$('.alert-danger').prop('hidden', false).html("<strong>Http Status:</strong> " + error.responseJSON.http + ", <br/><strong>Mensagem:</strong> " + error.responseJSON.mensagem);
+				}
+			}
+		});		
+	});
 
+	$(document).on('click', '.btn-logout', function(e){
+		e.preventDefault();
+		$.ajax({
+			// url: '/logout',
+			url: 'https://serasa.herokuapp.com/logout',
+			type: 'PUT',
+			dataType: 'JSON',
+			headers: {"token": sessionStorage.getItem("Sessao")},
+			success: function(retorno){
+				$('#parceiro').html('\
+					<a href="#" class="list-group-item parceiro-menu" data-parent="#parceiro" data-id="login">Login</a>\
+				');
+				alert(retorno.mensagem);
+				$("#conteudo-principal").load("login", function(){
+					$('.serasa-content').css('display', 'block');
+				});
+				sessionStorage.setItem("Sessao", null);
+			},
+			error: function(error){alert(error.responseJSON.mensagem);}
+		});
+				
 	});
 
 </script>
