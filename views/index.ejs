@@ -436,7 +436,8 @@
 	$(document).on('click', '.btn-login-parceiro', function(){
 		$.ajax({
 			// url: '/login',
-			url: 'https://serasa.herokuapp.com/login',
+			// url: 'https://serasa.herokuapp.com/login',
+			url: $('#form_url').val(),
 			type: 'PUT',
 			dataType: 'JSON',
 			data: {nome_usuario: $('#nome_usuario').val(), senha: $('#senha').val()},
