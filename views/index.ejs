@@ -415,9 +415,11 @@
 		e.preventDefault();
 		$.ajax({
 			// url: '/parceiro/'+$('#id_parceiro').val(),
-			url: 'https://serasa.herokuapp.com/parceiro/'+$('#id_parceiro').val(),
+			// url: 'https://serasa.herokuapp.com/parceiro/'+$('#id_parceiro').val(),
+			url: $('#form_url').val(),
 			type: 'DELETE',
-			headers: {"token": sessionStorage.getItem("Sessao")},
+			// headers: {"token": sessionStorage.getItem("Sessao")},
+			headers: {"token": $('#form_token').val()},
 			dataType: 'JSON',
 			success: function(retorno){
 				if (retorno.success) {
