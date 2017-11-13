@@ -262,13 +262,12 @@ router.put('/parceiro', (req, res, next) => {
 	});
 });
 
-router.delete('/parceiro/:id_parceiro', (req, res, next) => {
+router.delete('/parceiro', (req, res, next) => {
 	isLogado(req.headers.token, function(err, valid){
 		if(!valid){
 			return res.status(401).json({success: false, http: 401, mensagem: 'Por favor, faça login novamente e repita o processo.'});
 		} else {
 			const results = [];
-			const id_parceiro = req.params.id_parceiro;
 			pg.connect(connectionString, (err, client, done) => {
 				if(err) {
 					done();
@@ -276,8 +275,8 @@ router.delete('/parceiro/:id_parceiro', (req, res, next) => {
 					return res.status(400).json({success: false, data: err});
 				}
 
-				client.query('DELETE FROM cad_parceiro WHERE id_parceiro=($1)', [id_parceiro]);
-				var query = client.query('SELECT * FROM cad_parceiro WHERE id_parceiro=($1) ORDER BY id_parceiro ASC', [id_parceiro]);
+				client.query('DELETE FROM cad_parceiro WHERE token=($1)', [req.headers.token]);
+				var query = client.query('SELECT * FROM cad_parceiro WHERE token=($1) ORDER BY id_parceiro ASC', [req.headers.token]);
 				
 				query.on('row', (row) => {
 					results.push(row);
