@@ -6,7 +6,7 @@
 		<h1><%= title %></h1>
 		<p>Bem vindo ao <%= title %></p>
 
-		<div class="card" style="width: 40%;">
+		<div class="card pull-left" style="width: 40%;">
 			<div class="card-header">
 				<h5>Atualização de Parceiro</h5>
 				<div class="alert alert-success" role="alert" style="margin-top: 25px;" hidden>
@@ -65,7 +65,29 @@
 					<button class="btn btn-danger btn-excluir-parceiro" name="submit">Excluir</button>
 				</div>
 			</div>
+		</div>
 
+		<div class="card pull-left" style="width: 40%;margin-left: 25px;">
+			<div class="card-header">
+				<h5>Servidor de requisição</h5>
+			</div>
+			<div class="card-body">
+				<div class="col-md-12">
+					<label for="url"><strong>URL</strong></label>
+					<input type="text" class="form-control" name="url" id="url" value="https://serasa.herokuapp.com/parceiro">
+				</div>
+
+				<div class="col-md-12">
+					<label for="form_token"><strong>Token</strong></label>
+					<input type="text" class="form-control" name="form_token" id="form_token" value="4611388a3bd0dd567e420513c5140566">
+				</div>
+
+				<div class="col-md-12">
+					<label for="form_json"><strong>JSON Enviado</strong></label>
+					<pre class="form-control form_json" name="form_json" id="form_json" style="min-height:200px" disabled></pre>
+				</div>
+
+			</div>
 		</div>
 	</div>
 </div>

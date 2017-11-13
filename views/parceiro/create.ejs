@@ -5,14 +5,13 @@
 		<h1><%= title %></h1>
 		<p>Bem vindo ao <%= title %></p>
 
-		<div class="card" style="width: 40%;">
+		<div class="card pull-left" style="width: 40%;">
 			<div class="card-header">
 				<h5>Cadastro de Parceiro</h5>
 				<div class="alert alert-success" role="alert" style="margin-top: 25px;" hidden>
 					<strong>Sucesso!</strong> Cadastrado com perfeição.
 				</div>
 				<div class="alert alert-danger" role="alert" style="margin-top: 25px;" hidden>
-					<strong>Erro!</strong> Falha ao cadastrar, contate o administrador.
 				</div>
 			</div>
 			<div class="card-body">
@@ -45,7 +44,7 @@
 
 					<div class="col-md-12" style="margin-top: 20px;">
 						<label for="senha"><strong>Senha</strong></label>
-						<input type="text" class="form-control" name="senha" id="senha" value="123456">
+						<input type="text" class="form-control" name="senha" id="senha" value="">
 					</div>
 
 				</form>
@@ -56,7 +55,24 @@
 					<button class="btn btn-success btn-cadastrar-parceiro" name="submit">Cadastrar</button>
 				</div>
 			</div>
+		</div>
 
+		<div class="card pull-left" style="width: 40%;margin-left: 25px;">
+			<div class="card-header">
+				<h5>Servidor de requisição</h5>
+			</div>
+			<div class="card-body">
+				<div class="col-md-12">
+					<label for="form_url"><strong>URL</strong></label>
+					<input type="text" class="form-control" name="form_url" id="form_url" value="https://serasa.herokuapp.com/parceiro">
+				</div>
+
+				<div class="col-md-12">
+					<label for="form_json"><strong>JSON Enviado</strong></label>
+					<pre class="form-control form_json" name="form_json" id="form_json" style="min-height:200px" disabled></pre>
+				</div>
+
+			</div>
 		</div>
 	</div>
 </div>
