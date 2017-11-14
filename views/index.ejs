@@ -251,9 +251,9 @@
 	});
 
 	$(document).on('click', '.parceiro-menu', function(){
-		if ($(this).data('id') == 'visualizar') {
+		/*if ($(this).data('id') == 'visualizar') {
 			$("#conteudo-principal").load("read");
-			/*$.ajax({
+			$.ajax({
 				// url: '/parceiro',
 				url: 'https://serasa.herokuapp.com/parceiro',
 				type: 'GET',
@@ -281,8 +281,15 @@
 			})
 			.then(function(data){
 				$('#parceiro-visualizar').DataTable();
-			});*/
+			});
 			
+		}*/
+		if ($(this).data('id') == 'visualizar') {
+			$("#conteudo-principal").load("read", function(){
+				$('.serasa-content').css('display', 'block');
+			});
+			
+			// window.history.replaceState(null, null, '/read');
 		}
 		if ($(this).data('id') == 'cadastrar') {
 			$("#conteudo-principal").load("create", function(){
