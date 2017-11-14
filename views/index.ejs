@@ -243,7 +243,6 @@
 			},
 			complete: function(retorno){
 				$('#retorno').html(JSON.stringify(retorno.responseJSON, null, 2));
-				$('#retorno_bkp').html(retorno);
 			}
 		})
 		.then(function(data){
@@ -278,7 +277,6 @@
 				error: function(error){if(error.responseJSON.http == 401){alert(error.responseJSON.mensagem);$("#conteudo-principal").load("login", function(){$('.serasa-content').css('display', 'block');});}},
 				complete: function(retorno){
 					$('#retorno').html(JSON.stringify(retorno.responseJSON, null, 2));
-					$('#retorno_bkp').html(retorno);
 				}
 			})
 			.then(function(data){
@@ -354,7 +352,6 @@
 			},
 			complete: function(retorno){
 				$('#retorno').html(JSON.stringify(retorno.responseJSON, null, 2));
-				$('#retorno_bkp').html(retorno);
 			}
 
 		});
@@ -400,7 +397,6 @@
 			},
 			complete: function(retorno){
 				$('#retorno').html(JSON.stringify(retorno.responseJSON, null, 2));
-				$('#retorno_bkp').html(retorno);
 			}
 		});	
 	});
@@ -433,7 +429,6 @@
 			},
 			complete: function(retorno){
 				$('#retorno').html(JSON.stringify(retorno.responseJSON, null, 2));
-				$('#retorno_bkp').html(retorno);
 			}
 		});
 	});
@@ -461,7 +456,6 @@
 			},
 			complete: function(retorno){
 				$('#retorno').html(JSON.stringify(retorno.responseJSON, null, 2));
-				$('#retorno_bkp').html(retorno);
 			}
 		});
 	});
@@ -494,7 +488,6 @@
 			},
 			complete: function(retorno){
 				$('#retorno').html(JSON.stringify(retorno.responseJSON, null, 2));
-				$('#retorno_bkp').html(retorno);
 			}
 		});		
 	});
@@ -522,7 +515,6 @@
 			error: function(error){alert(error.responseJSON.mensagem);},
 			complete: function(retorno){
 				$('#retorno').html(JSON.stringify(retorno.responseJSON, null, 2));
-				$('#retorno_bkp').html(retorno);
 			}
 		});
 				
