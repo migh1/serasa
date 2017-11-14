@@ -424,6 +424,7 @@
 				}
 			},
 			error: function(retorno){
+				console.log(retorno);
 				if(error.responseJSON.http == 401){alert(error.responseJSON.mensagem);/*$("#conteudo-principal").load("login", function(){$('.serasa-content').css('display', 'block');});*/}
 				else{$('.alert-success').prop('hidden', true);$('.alert-danger').prop('hidden', false);}
 			},
