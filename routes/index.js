@@ -87,7 +87,7 @@ router.get('/parceiro', (req, res, next) => {
 						success: false, data: err
 					});
 				} else {
-					const query = client.query('SELECT cnpj, nome_fantasia, razao_social, nome_usuario, email FROM cad_parceiro ORDER BY id_parceiro ASC;');
+					const query = client.query('SELECT cnpj, nome_fantasia, razao_social, nome_usuario, email FROM cad_parceiro WHERE token=($1) ORDER BY id_parceiro ASC;', [req.headers.token]);
 					query.on('row', (row) => {
 						results.push(row);
 					});
