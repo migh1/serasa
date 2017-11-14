@@ -347,7 +347,7 @@
 			},
 			success: function(retorno){if (retorno.success) {$('.alert-danger').prop('hidden', true);$('.alert-success').prop('hidden', false);}},
 			error: function(error){
-				if(error.responseJSON.http == 401){alert(error.responseJSON.mensagem);$("#conteudo-principal").load("login", function(){$('.serasa-content').css('display', 'block');});}
+				if(error.responseJSON.http == 401){alert(error.responseJSON.mensagem);/*$("#conteudo-principal").load("login", function(){$('.serasa-content').css('display', 'block');});*/}
 				else{$('.alert-success').prop('hidden', true);$('.alert-danger').prop('hidden', false).html("<strong>Http Status:</strong> " + error.responseJSON.http + ", <br/><strong>Mensagem:</strong> " + error.responseJSON.mensagem);}
 			},
 			complete: function(retorno){
@@ -392,7 +392,7 @@
 				}
 			},
 			error: function(error, data){
-				if(error.responseJSON.http == 401){alert(error.responseJSON.mensagem);$("#conteudo-principal").load("login", function(){$('.serasa-content').css('display', 'block');});}
+				if(error.responseJSON.http == 401){alert(error.responseJSON.mensagem);/*$("#conteudo-principal").load("login", function(){$('.serasa-content').css('display', 'block');});*/}
 				else{$('.alert-success').prop('hidden', true);$('.alert-danger').prop('hidden', false).html('<strong>Erro!</strong> Falha ao pesquisar, contate o administrador.');}
 			},
 			complete: function(retorno){
@@ -424,7 +424,7 @@
 				}
 			},
 			error: function(retorno){
-				if(error.responseJSON.http == 401){alert(error.responseJSON.mensagem);$("#conteudo-principal").load("login", function(){$('.serasa-content').css('display', 'block');});}
+				if(error.responseJSON.http == 401){alert(error.responseJSON.mensagem);/*$("#conteudo-principal").load("login", function(){$('.serasa-content').css('display', 'block');});*/}
 				else{$('.alert-success').prop('hidden', true);$('.alert-danger').prop('hidden', false);}
 			},
 			complete: function(retorno){
@@ -451,7 +451,7 @@
 				}
 			},
 			error: function(error){
-				if(error.responseJSON.http == 401){alert(error.responseJSON.mensagem);$("#conteudo-principal").load("login", function(){$('.serasa-content').css('display', 'block');});}
+				if(error.responseJSON.http == 401){alert(error.responseJSON.mensagem);/*$("#conteudo-principal").load("login", function(){$('.serasa-content').css('display', 'block');});*/}
 				else{$('.alert-success').prop('hidden', true);$('.alert-danger').prop('hidden', false).html('<strong>Erro!</strong> Falha ao exlcuir, contate o administrador.');}
 			},
 			complete: function(retorno){
