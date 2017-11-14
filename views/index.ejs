@@ -240,7 +240,10 @@
 			},
 			error: function(error){if(error.responseJSON.http == 401){alert(error.responseJSON.mensagem);$("#conteudo-principal").load("login");}
 			else{$('.alert-success').prop('hidden', true);$('.alert-danger').prop('hidden', false).html("<strong>Http Status:</strong> " + error.responseJSON.http + ", <br/><strong>Mensagem:</strong> " + error.responseJSON.mensagem);}
-		}
+			},
+			complete: function(retorno){
+				$('#retorno').html(JSON.stringify(retorno, null, 2));
+			}
 		})
 		.then(function(data){
 			$('#parceiro-visualizar').DataTable();
@@ -250,7 +253,7 @@
 	$(document).on('click', '.parceiro-menu', function(){
 		if ($(this).data('id') == 'visualizar') {
 			$("#conteudo-principal").load("read");
-			$.ajax({
+			/*$.ajax({
 				// url: '/parceiro',
 				url: 'https://serasa.herokuapp.com/parceiro',
 				type: 'GET',
@@ -271,11 +274,14 @@
 					});
 					// window.history.replaceState(null, null, '/read');
 				},
-				error: function(error){if(error.responseJSON.http == 401){alert(error.responseJSON.mensagem);$("#conteudo-principal").load("login", function(){$('.serasa-content').css('display', 'block');});}}
+				error: function(error){if(error.responseJSON.http == 401){alert(error.responseJSON.mensagem);$("#conteudo-principal").load("login", function(){$('.serasa-content').css('display', 'block');});}},
+				complete: function(retorno){
+					$('#retorno').html(JSON.stringify(retorno, null, 2));
+				}
 			})
 			.then(function(data){
 				$('#parceiro-visualizar').DataTable();
-			});
+			});*/
 			
 		}
 		if ($(this).data('id') == 'cadastrar') {
@@ -336,6 +342,9 @@
 			error: function(error){
 				if(error.responseJSON.http == 401){alert(error.responseJSON.mensagem);$("#conteudo-principal").load("login", function(){$('.serasa-content').css('display', 'block');});}
 				else{$('.alert-success').prop('hidden', true);$('.alert-danger').prop('hidden', false).html("<strong>Http Status:</strong> " + error.responseJSON.http + ", <br/><strong>Mensagem:</strong> " + error.responseJSON.mensagem);}
+			},
+			complete: function(retorno){
+				$('#retorno').html(JSON.stringify(retorno, null, 2));
 			}
 
 		});
@@ -378,6 +387,9 @@
 			error: function(error, data){
 				if(error.responseJSON.http == 401){alert(error.responseJSON.mensagem);$("#conteudo-principal").load("login", function(){$('.serasa-content').css('display', 'block');});}
 				else{$('.alert-success').prop('hidden', true);$('.alert-danger').prop('hidden', false).html('<strong>Erro!</strong> Falha ao pesquisar, contate o administrador.');}
+			},
+			complete: function(retorno){
+				$('#retorno').html(JSON.stringify(retorno, null, 2));
 			}
 		});	
 	});
@@ -407,6 +419,9 @@
 			error: function(retorno){
 				if(error.responseJSON.http == 401){alert(error.responseJSON.mensagem);$("#conteudo-principal").load("login", function(){$('.serasa-content').css('display', 'block');});}
 				else{$('.alert-success').prop('hidden', true);$('.alert-danger').prop('hidden', false);}
+			},
+			complete: function(retorno){
+				$('#retorno').html(JSON.stringify(retorno, null, 2));
 			}
 		});
 	});
@@ -431,6 +446,9 @@
 			error: function(error){
 				if(error.responseJSON.http == 401){alert(error.responseJSON.mensagem);$("#conteudo-principal").load("login", function(){$('.serasa-content').css('display', 'block');});}
 				else{$('.alert-success').prop('hidden', true);$('.alert-danger').prop('hidden', false).html('<strong>Erro!</strong> Falha ao exlcuir, contate o administrador.');}
+			},
+			complete: function(retorno){
+				$('#retorno').html(JSON.stringify(retorno, null, 2));
 			}
 		});
 	});
@@ -448,7 +466,6 @@
 					$('.alert-danger').prop('hidden', true);
 					$('.alert-success').prop('hidden', false).html("<strong>Http Status:</strong> " + retorno.http + ", <br/><strong>Mensagem:</strong> " + retorno.mensagem);
 					sessionStorage.setItem("Sessao", retorno.token);
-					$('#retorno').html(JSON.stringify(retorno, null, 2));
 /*					$('#parceiro').html('\
 						<a href="#" class="list-group-item parceiro-menu" data-parent="#parceiro" data-id="visualizar">Visualizar</a>\
 						<a href="#" class="list-group-item parceiro-menu" data-parent="#parceiro" data-id="cadastrar">Cadastrar</a>\
@@ -461,6 +478,9 @@
 					$('.alert-success').prop('hidden', true);
 					$('.alert-danger').prop('hidden', false).html("<strong>Http Status:</strong> " + error.responseJSON.http + ", <br/><strong>Mensagem:</strong> " + error.responseJSON.mensagem);
 				}
+			},
+			complete: function(retorno){
+				$('#retorno').html(JSON.stringify(retorno, null, 2));
 			}
 		});		
 	});
@@ -485,7 +505,10 @@
 				});*/
 				sessionStorage.setItem("Sessao", null);
 			},
-			error: function(error){alert(error.responseJSON.mensagem);}
+			error: function(error){alert(error.responseJSON.mensagem);},
+			complete: function(retorno){
+				$('#retorno').html(JSON.stringify(retorno, null, 2));
+			}
 		});
 				
 	});
