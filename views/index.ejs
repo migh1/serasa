@@ -226,6 +226,7 @@
 			success: function(retorno){
 				$('.serasa-content').css('display', 'block');
 				$.each(retorno, function(key,value){
+					console.log(value);
 					$('.selector-tbody-parceiros').append('\
 						<tr>\
 							<td>'+value.cnpj+'</td>\
