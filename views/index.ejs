@@ -483,8 +483,10 @@
 			type: 'PUT',
 			dataType: 'JSON',
 			data: {nome_usuario: $('#nome_usuario').val(), senha: $('#senha').val()},
-			success: function(retorno){
+			success: function(retorno, b, c){
 				console.log(retorno);
+				console.log(b);
+				console.log(c);
 				// if (retorno.success) {
 					$('.alert-danger').prop('hidden', true);
 					$('.alert-success').prop('hidden', false).html("<strong>Http Status:</strong> " + retorno.status + ", <br/><strong>Mensagem:</strong> " + retorno.mensagem);
