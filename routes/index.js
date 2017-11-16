@@ -99,7 +99,7 @@ router.get('/parceiro', (req, res, next) => {
 								if (result.rowCount <= 0) {
 									return res.status(422).json({success: false, http: 422, mensagem: 'Parceiro inativo, verifique.'});
 								} else {
-									return res.json(results);
+									return res.status(200).json(results);
 								}
 							});
 						}
