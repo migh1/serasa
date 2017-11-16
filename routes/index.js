@@ -229,8 +229,6 @@ router.put('/logout', (req, res, next) => {
 
 //faz um update no parceiro
 router.put('/parceiro', (req, res, next) => {
-	console.log(req.headers.authorization);
-	console.log(req.body);
 	isLogado(req.headers.authorization, function(err, valid){
 		if(!valid){
 			return res.status(401).json({success: false, http: 401, mensagem: 'Por favor, faça login novamente e repita o processo.'});
@@ -246,7 +244,8 @@ router.put('/parceiro', (req, res, next) => {
 					}
 					const query = client.query("SELECT * FROM cad_parceiro WHERE email=($2)",[req.body.email], function(err, result){
 						done();
-						if (result.rowCount > 0) {
+						console.log(result);
+						if (result.length > 0) {
 							return res.status(409).json({success: false, http: 409, mensagem: 'Email já cadastrado, verifique.'});
 						} else {
 							client.query('UPDATE cad_parceiro SET nome_fantasia=($1), razao_social=($2), email=($3), senha=($4) WHERE token=($5)',
