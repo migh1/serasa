@@ -3,6 +3,7 @@ const router = express.Router();
 const pg = require('pg');
 const path = require('path');
 var base64 = require('base-64');
+var isBase64 = require('is-base64');
 var Ajv = require('ajv');
 var schema = {
 	"properties": {
