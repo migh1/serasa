@@ -285,7 +285,7 @@
 		if ($(this).data('id') == 'visualizar') {
 			$("#conteudo-principal").load("read", function(){
 				$('.serasa-content').css('display', 'block');
-				if (sessionStorage.getItem("Sessao") != null) {
+				if (sessionStorage.getItem("Sessao") != "null") {
 					$('#form_token').val(sessionStorage.getItem("Sessao"));
 				}
 			});
@@ -302,7 +302,7 @@
 		if ($(this).data('id') == 'editar') {
 			$("#conteudo-principal").load("edit", function(){
 				$('.serasa-content').css('display', 'block');
-				if (sessionStorage.getItem("Sessao") != null) {
+				if (sessionStorage.getItem("Sessao") != "null") {
 					$('#form_token').val(sessionStorage.getItem("Sessao"));
 				}
 				$.ajax({
@@ -334,7 +334,7 @@
 		if ($(this).data('id') == 'logout') {
 			$("#conteudo-principal").load("logout", function(){
 				$('.serasa-content').css('display', 'block');
-				if (sessionStorage.getItem("Sessao") != null) {
+				if (sessionStorage.getItem("Sessao") != "null") {
 					$('#form_token').val(sessionStorage.getItem("Sessao"));
 				}
 			});
