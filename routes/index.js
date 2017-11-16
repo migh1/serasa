@@ -78,7 +78,7 @@ router.get('/parceiro', (req, res, next) => {
 		if(!valid){
 			return res.status(401).json({success: false, http: 401, mensagem: 'Por favor, faça login novamente e repita o processo.'});
 		} else {
-			const results;
+			var results;
 			pg.connect(connectionString, (err, client, done) => {
 				if(err) {
 					done();
