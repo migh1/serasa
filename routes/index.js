@@ -242,10 +242,9 @@ router.put('/parceiro', (req, res, next) => {
 						console.log(err);
 						return res.status(400).json({success: false, data: err});
 					}
-					const query = client.query("SELECT * FROM cad_parceiro WHERE email=($2)",[req.body.email], function(err, result){
+					const query = client.query("SELECT * FROM cad_parceiro WHERE email=($1)",[req.body.email], function(err, result){
 						done();
-						console.log(result);
-						if (result.length > 0) {
+						if (result.rowCount > 0) {
 							return res.status(409).json({success: false, http: 409, mensagem: 'Email já cadastrado, verifique.'});
 						} else {
 							client.query('UPDATE cad_parceiro SET nome_fantasia=($1), razao_social=($2), email=($3), senha=($4) WHERE token=($5)',
