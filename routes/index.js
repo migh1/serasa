@@ -96,7 +96,7 @@ router.get('/parceiro', (req, res, next) => {
 						} else {
 							client.query("SELECT cnpj, nome_fantasia, razao_social, nome_usuario, email FROM cad_parceiro WHERE token=($1) AND ativo=($2) ORDER BY id_parceiro ASC",[req.headers.authorization, 'true'], function(err, result){
 								done();
-								if (result.rowCount > 0) {
+								if (result.rowCount <= 0) {
 									return res.status(422).json({success: false, http: 422, mensagem: 'Parceiro inativo, verifique.'});
 								} else {
 									return res.json(results);
