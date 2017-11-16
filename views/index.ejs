@@ -305,6 +305,9 @@
 				if (sessionStorage.getItem("Sessao") != "null") {
 					$('#form_token').val(sessionStorage.getItem("Sessao"));
 				}
+				if (sessionStorage.getItem("url") != "null") {
+					$('#form_url').val(sessionStorage.getItem("url").replace("login", "parceiro"));
+				}
 				$.ajax({
 					url: $('#form_url').val(),
 					type: 'GET',
