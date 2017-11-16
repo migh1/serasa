@@ -135,7 +135,6 @@
 				display:none;
 			}
 		}
-
 		.collapse.show {
 			visibility: visible;
 		}
@@ -170,7 +169,7 @@
 						<a href="#" class="list-group-item parceiro-menu" data-parent="#parceiro" data-id="editar">Editar</a>
 						<a href="#" class="list-group-item parceiro-menu" data-parent="#parceiro" data-id="logout">Logout</a>
 					</div>
-					<a href="#" class="list-group-item d-inline-block collapsed" data-parent="#sidebar"><i class="fa fa-film"></i> <span class="d-none d-md-inline">Item 2</span></a>
+					<!-- <a href="#" class="list-group-item d-inline-block collapsed" data-parent="#sidebar"><i class="fa fa-film"></i> <span class="d-none d-md-inline">Item 2</span></a> -->
 					<!-- <a href="#menu3" class="list-group-item d-inline-block collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="fa fa-book"></i> <span class="d-none d-md-inline">Item 3 </span></a>
 					<div class="collapse" id="menu3">
 						<a href="#" class="list-group-item" data-parent="#menu3">3.1</a>
@@ -237,8 +236,8 @@
 				');
 				// window.history.replaceState(null, null, '/read');
 			},
-			error: function(error){if(error.responseJSON.http == 401){alert(error.responseJSON.mensagem);/*$("#conteudo-principal").load("login");*/}
-			else{$('.alert-success').prop('hidden', true);$('.alert-danger').prop('hidden', false).html("<strong>Http Status:</strong> " + error.responseJSON.http + ", <br/><strong>Mensagem:</strong> " + error.responseJSON.mensagem);}
+			error: function(error){if(error.status == 401){alert(error.responseJSON.mensagem);/*$("#conteudo-principal").load("login");*/}
+			else{$('.alert-success').prop('hidden', true);$('.alert-danger').prop('hidden', false).html("<strong>Http Status:</strong> " + error.status + ", <br/><strong>Mensagem:</strong> " + error.responseJSON.mensagem);}
 			},
 			complete: function(retorno){
 				$('#retorno').html(JSON.stringify(retorno.responseJSON, null, 2));
@@ -273,7 +272,7 @@
 					});
 					// window.history.replaceState(null, null, '/read');
 				},
-				error: function(error){if(error.responseJSON.http == 401){alert(error.responseJSON.mensagem);$("#conteudo-principal").load("login", function(){$('.serasa-content').css('display', 'block');});}},
+				error: function(error){if(error.status == 401){alert(error.responseJSON.mensagem);$("#conteudo-principal").load("login", function(){$('.serasa-content').css('display', 'block');});}},
 				complete: function(retorno){
 					$('#retorno').html(JSON.stringify(retorno.responseJSON, null, 2));
 				}
@@ -286,6 +285,7 @@
 		if ($(this).data('id') == 'visualizar') {
 			$("#conteudo-principal").load("read", function(){
 				$('.serasa-content').css('display', 'block');
+				$('#form_token').val(sessionStorage.getItem("Sessao"));
 			});
 			
 			// window.history.replaceState(null, null, '/read');
@@ -300,6 +300,7 @@
 		if ($(this).data('id') == 'editar') {
 			$("#conteudo-principal").load("edit", function(){
 				$('.serasa-content').css('display', 'block');
+				$('#form_token').val(sessionStorage.getItem("Sessao"));
 			});
 			
 			// window.history.replaceState(null, null, '/edit');
@@ -314,6 +315,7 @@
 		if ($(this).data('id') == 'logout') {
 			$("#conteudo-principal").load("logout", function(){
 				$('.serasa-content').css('display', 'block');
+				$('#form_token').val(sessionStorage.getItem("Sessao"));
 			});
 			
 			// window.history.replaceState(null, null, '/logout');
@@ -346,8 +348,8 @@
 			},
 			success: function(retorno){if (retorno.success) {$('.alert-danger').prop('hidden', true);$('.alert-success').prop('hidden', false);}},
 			error: function(error){
-				if(error.responseJSON.http == 401){alert(error.responseJSON.mensagem);/*$("#conteudo-principal").load("login", function(){$('.serasa-content').css('display', 'block');});*/}
-				else{$('.alert-success').prop('hidden', true);$('.alert-danger').prop('hidden', false).html("<strong>Http Status:</strong> " + error.responseJSON.http + ", <br/><strong>Mensagem:</strong> " + error.responseJSON.mensagem);}
+				if(error.status == 401){alert(error.responseJSON.mensagem);/*$("#conteudo-principal").load("login", function(){$('.serasa-content').css('display', 'block');});*/}
+				else{$('.alert-success').prop('hidden', true);$('.alert-danger').prop('hidden', false).html("<strong>Http Status:</strong> " + error.status + ", <br/><strong>Mensagem:</strong> " + error.responseJSON.mensagem);}
 			},
 			complete: function(retorno){
 				$('#retorno').html(JSON.stringify(retorno.responseJSON, null, 2));
@@ -391,7 +393,7 @@
 				}
 			},
 			error: function(error){
-				if(error.responseJSON.http == 401){alert(error.responseJSON.mensagem);/*$("#conteudo-principal").load("login", function(){$('.serasa-content').css('display', 'block');});*/}
+				if(error.status == 401){alert(error.responseJSON.mensagem);/*$("#conteudo-principal").load("login", function(){$('.serasa-content').css('display', 'block');});*/}
 				else{$('.alert-success').prop('hidden', true);$('.alert-danger').prop('hidden', false).html('<strong>Erro!</strong> Falha ao pesquisar, contate o administrador.');}
 			},
 			complete: function(retorno){
@@ -423,7 +425,7 @@
 				}
 			},
 			error: function(error){
-				if(error.responseJSON.http == 401){alert(error.responseJSON.mensagem);/*$("#conteudo-principal").load("login", function(){$('.serasa-content').css('display', 'block');});*/}
+				if(error.status == 401){alert(error.responseJSON.mensagem);/*$("#conteudo-principal").load("login", function(){$('.serasa-content').css('display', 'block');});*/}
 				else{$('.alert-success').prop('hidden', true);$('.alert-danger').prop('hidden', false);}
 			},
 			complete: function(retorno){
@@ -450,7 +452,7 @@
 				}
 			},
 			error: function(error){
-				if(error.responseJSON.http == 401){alert(error.responseJSON.mensagem);/*$("#conteudo-principal").load("login", function(){$('.serasa-content').css('display', 'block');});*/}
+				if(error.status == 401){alert(error.responseJSON.mensagem);/*$("#conteudo-principal").load("login", function(){$('.serasa-content').css('display', 'block');});*/}
 				else{$('.alert-success').prop('hidden', true);$('.alert-danger').prop('hidden', false).html('<strong>Erro!</strong> Falha ao exlcuir, contate o administrador.');}
 			},
 			complete: function(retorno){
@@ -470,7 +472,7 @@
 			success: function(retorno){
 				if (retorno.success) {
 					$('.alert-danger').prop('hidden', true);
-					$('.alert-success').prop('hidden', false).html("<strong>Http Status:</strong> " + retorno.http + ", <br/><strong>Mensagem:</strong> " + retorno.mensagem);
+					$('.alert-success').prop('hidden', false).html("<strong>Http Status:</strong> " + retorno.status + ", <br/><strong>Mensagem:</strong> " + retorno.mensagem);
 					sessionStorage.setItem("Sessao", retorno.token);
 /*					$('#parceiro').html('\
 						<a href="#" class="list-group-item parceiro-menu" data-parent="#parceiro" data-id="visualizar">Visualizar</a>\
@@ -482,7 +484,7 @@
 			error: function(error){
 				if (!error.success) {
 					$('.alert-success').prop('hidden', true);
-					$('.alert-danger').prop('hidden', false).html("<strong>Http Status:</strong> " + error.responseJSON.http + ", <br/><strong>Mensagem:</strong> " + error.responseJSON.mensagem);
+					$('.alert-danger').prop('hidden', false).html("<strong>Http Status:</strong> " + error.status + ", <br/><strong>Mensagem:</strong> " + error.responseJSON.mensagem);
 				}
 			},
 			complete: function(retorno){
