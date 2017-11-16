@@ -74,7 +74,7 @@ router.get('/edit', function(req, res, next) {
 
 //GET pega os dados dos parceiros
 router.get('/parceiro', (req, res, next) => {
-	isLogado(req.headers.token, function(err, valid){
+	isLogado(req.headers.authorization, function(err, valid){
 		if(!valid){
 			return res.status(401).json({success: false, http: 401, mensagem: 'Por favor, faça login novamente e repita o processo.'});
 		} else {
@@ -87,7 +87,7 @@ router.get('/parceiro', (req, res, next) => {
 						success: false, data: err
 					});
 				} else {
-					const query = client.query('SELECT cnpj, nome_fantasia, razao_social, nome_usuario, email FROM cad_parceiro WHERE token=($1) ORDER BY id_parceiro ASC;', [req.headers.token]);
+					const query = client.query('SELECT cnpj, nome_fantasia, razao_social, nome_usuario, email FROM cad_parceiro WHERE token=($1) ORDER BY id_parceiro ASC;', [req.headers.authorization]);
 					query.on('row', (row) => {
 						results = row;
 					});
@@ -107,7 +107,7 @@ router.get('/parceiro', (req, res, next) => {
 
 /* GET parceiro edit page (dados jasao). */
 router.get('/parceiro/:id_parceiro', function(req, res, next) {
-	isLogado(req.headers.token, function(err, valid){
+	isLogado(req.headers.authorization, function(err, valid){
 		if(!valid){
 			return res.status(401).json({success: false, http: 401, mensagem: 'Por favor, faça login novamente e repita o processo.'});
 		} else {
@@ -208,7 +208,7 @@ router.put('/login', (req, res, next) => {
 
 //faz login no parceiro
 router.put('/logout', (req, res, next) => {
-	isLogado(req.headers.token, function(err, valid){
+	isLogado(req.headers.authorization, function(err, valid){
 		if(!valid){
 			return res.status(401).json({success: false, http: 401, mensagem: 'Usuário não autorizado a deslogar, pois não está logado.'});
 		} else {
@@ -217,7 +217,7 @@ router.put('/logout', (req, res, next) => {
 					done();
 					return res.status(400).json({success: false, http: 400, mensagem: 'Erro na conexão do banco de dados.'});
 				}
-				client.query('UPDATE cad_parceiro SET token=($1), data_adicionado=($2) WHERE token=($3)', [null, null, req.headers.token], function(err, result){
+				client.query('UPDATE cad_parceiro SET token=($1), data_adicionado=($2) WHERE token=($3)', [null, null, req.headers.authorization], function(err, result){
 					done();
 					if(err) {
 						return res.status(422).json({success: false, http: 422, mensagem: 'Erro no logout, por favor tente novamente.'});
@@ -232,7 +232,7 @@ router.put('/logout', (req, res, next) => {
 
 //faz um update no parceiro
 router.put('/parceiro', (req, res, next) => {
-	isLogado(req.headers.token, function(err, valid){
+	isLogado(req.headers.authorization, function(err, valid){
 		if(!valid){
 			return res.status(401).json({success: false, http: 401, mensagem: 'Por favor, faça login novamente e repita o processo.'});
 		} else {
@@ -246,7 +246,7 @@ router.put('/parceiro', (req, res, next) => {
 						return res.status(400).json({success: false, data: err});
 					}
 					client.query('UPDATE cad_parceiro SET nome_fantasia=($1), razao_social=($2), email=($3), senha=($4) WHERE token=($5)',
-						[req.body.nome_fantasia, req.body.razao_social, req.body.email, req.body.senha, req.headers.token],
+						[req.body.nome_fantasia, req.body.razao_social, req.body.email, req.body.senha, req.headers.authorization],
 						function(err, result){
 							done();
 							if(err) {
@@ -263,7 +263,7 @@ router.put('/parceiro', (req, res, next) => {
 });
 
 router.delete('/parceiro', (req, res, next) => {
-	isLogado(req.headers.token, function(err, valid){
+	isLogado(req.headers.authorization, function(err, valid){
 		if(!valid){
 			return res.status(401).json({success: false, http: 401, mensagem: 'Por favor, faça login novamente e repita o processo.'});
 		} else {
@@ -275,8 +275,8 @@ router.delete('/parceiro', (req, res, next) => {
 					return res.status(400).json({success: false, data: err});
 				}
 
-				client.query('DELETE FROM cad_parceiro WHERE token=($1)', [req.headers.token]);
-				var query = client.query('SELECT * FROM cad_parceiro WHERE token=($1) ORDER BY id_parceiro ASC', [req.headers.token]);
+				client.query('DELETE FROM cad_parceiro WHERE token=($1)', [req.headers.authorization]);
+				var query = client.query('SELECT * FROM cad_parceiro WHERE token=($1) ORDER BY id_parceiro ASC', [req.headers.authorization]);
 				
 				query.on('row', (row) => {
 					results.push(row);
@@ -296,7 +296,7 @@ router.delete('/parceiro', (req, res, next) => {
 });
 
 router.post('/verify/login/user/path', (req, res, next)=>{
-	const data = {token: req.headers.token};
+	const data = {token: req.headers.authorization};
 	var loginSchema = {"token": {"type": "string"}};
 
 	if(!v.validate(data, loginSchema)){
