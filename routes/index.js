@@ -97,7 +97,7 @@ router.get('/parceiro', (req, res, next) => {
 							client.query("SELECT cnpj, nome_fantasia, razao_social, nome_usuario, email FROM cad_parceiro WHERE token=($1) AND ativo=($2) ORDER BY id_parceiro ASC",[req.headers.authorization, 'true'], function(err, result){
 								done();
 								if (result.rowCount <= 0) {
-									return res.status(422).json({success: false, http: 422, mensagem: 'Parceiro inativo, verifique.'});
+									return res.status(409).json({success: false, http: 409, mensagem: 'Parceiro inativo, verifique.'});
 								} else {
 									return res.status(200).json(results);
 								}
@@ -197,7 +197,7 @@ router.put('/login', (req, res, next) => {
 					client.query("SELECT * FROM cad_parceiro WHERE nome_usuario=($1) AND senha=($2) AND ativo=($3)", [req.body.nome_usuario, req.body.senha, 'true'], function(err, result){
 						done();
 						if (result.rowCount == 0) {
-							return res.status(404).json({success: false, http: 404, mensagem: 'Usuário não encontrado.'});
+							return res.status(404).json({success: false, http: 404, mensagem: 'Usuário não encontrado ou parceiro inativo, verifique.'});
 						} else {
 
 							var token = MD5(req.body.nome_usuario+'##'+req.body.senha);
