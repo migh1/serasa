@@ -304,6 +304,7 @@
 				$.ajax({
 					url: $('#form_url').val(),
 					type: 'GET',
+					headers: {"Authorization": sessionStorage.getItem("Sessao")},
 					dataType: 'JSON',
 					success: function(retorno){
 						$('#nome_fantasia').val(retorno.nome_fantasia);
@@ -311,8 +312,8 @@
 						$('#email').val(retorno.email);
 						$('#senha').val(retorno.senha);
 					},
-					error: function(error){console.log(error);},
-					complete: function(retorno){console.log(retorno);}
+					error: function(error){},
+					complete: function(retorno){}
 				});
 						
 			});
@@ -484,12 +485,9 @@
 			dataType: 'JSON',
 			data: {nome_usuario: $('#nome_usuario').val(), senha: $('#senha').val()},
 			success: function(retorno, b, c){
-				console.log(retorno);
-				console.log(b);
-				console.log(c);
 				// if (retorno.success) {
 					$('.alert-danger').prop('hidden', true);
-					$('.alert-success').prop('hidden', false).html("<strong>Http Status:</strong> " + retorno.status + ", <br/><strong>Mensagem:</strong> " + retorno.mensagem);
+					$('.alert-success').prop('hidden', false).html("<strong>Http Status:</strong> " + c.status + ", <br/><strong>Mensagem:</strong> " + retorno.mensagem);
 					sessionStorage.setItem("Sessao", retorno.token);
 /*					$('#parceiro').html('\
 						<a href="#" class="list-group-item parceiro-menu" data-parent="#parceiro" data-id="visualizar">Visualizar</a>\
