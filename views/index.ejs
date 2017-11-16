@@ -317,7 +317,9 @@
 						$('#senha').val(retorno.senha);
 					},
 					error: function(error){},
-					complete: function(retorno){}
+					complete: function(retorno){
+						$('#retorno').html(JSON.stringify(retorno.responseJSON, null, 2));
+					}
 				});
 						
 			});
