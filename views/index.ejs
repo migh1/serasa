@@ -301,6 +301,20 @@
 			$("#conteudo-principal").load("edit", function(){
 				$('.serasa-content').css('display', 'block');
 				$('#form_token').val(sessionStorage.getItem("Sessao"));
+				$.ajax({
+					url: $('#form_url').val(),
+					type: 'GET',
+					dataType: 'JSON',
+					success: function(retorno){
+						$('#nome_fantasia').val(retorno.nome_fantasia);
+						$('#razao_social').val(retorno.razao_social);
+						$('#email').val(retorno.email);
+						$('#senha').val(retorno.senha);
+					},
+					error: function(error){console.log(error);},
+					complete: function(retorno){console.log(retorno);}
+				});
+						
 			});
 			
 			// window.history.replaceState(null, null, '/edit');
@@ -346,7 +360,7 @@
 				email: 			$('#email').val(),
 				senha: 			$('#senha').val()
 			},
-			success: function(retorno){if (retorno.success) {$('.alert-danger').prop('hidden', true);$('.alert-success').prop('hidden', false);}},
+			success: function(retorno){/*if (retorno.success) {*/$('.alert-danger').prop('hidden', true);$('.alert-success').prop('hidden', false);/*}*/},
 			error: function(error){
 				if(error.status == 401){alert(error.responseJSON.mensagem);/*$("#conteudo-principal").load("login", function(){$('.serasa-content').css('display', 'block');});*/}
 				else{$('.alert-success').prop('hidden', true);$('.alert-danger').prop('hidden', false).html("<strong>Http Status:</strong> " + error.status + ", <br/><strong>Mensagem:</strong> " + error.responseJSON.mensagem);}
@@ -382,7 +396,7 @@
 			dataType: 'JSON',
 			headers: {"Authorization": sessionStorage.getItem("Sessao")},
 			success: function(retorno){
-				if (retorno.success) {
+				// if (retorno.success) {
 					$('.alert-danger').prop('hidden', true);
 					$('#cnpj').val(retorno.data[0].cnpj);
 					$('#nome_fantasia').val(retorno.data[0].nome_fantasia);
@@ -390,7 +404,7 @@
 					$('#nome_usuario').val(retorno.data[0].nome_usuario);
 					$('#email').val(retorno.data[0].email);
 					$('#senha').val(retorno.data[0].senha);
-				}
+				// }
 			},
 			error: function(error){
 				if(error.status == 401){alert(error.responseJSON.mensagem);/*$("#conteudo-principal").load("login", function(){$('.serasa-content').css('display', 'block');});*/}
@@ -419,10 +433,10 @@
 				senha: 	$('#senha').val(),
 			},
 			success: function(retorno){
-				if (retorno.success) {
+				// if (retorno.success) {
 					$('.alert-danger').prop('hidden', true);
 					$('.alert-success').prop('hidden', false);
-				}
+				// }
 			},
 			error: function(error){
 				if(error.status == 401){alert(error.responseJSON.mensagem);/*$("#conteudo-principal").load("login", function(){$('.serasa-content').css('display', 'block');});*/}
@@ -445,11 +459,11 @@
 			headers: {"Authorization": $('#form_token').val()},
 			dataType: 'JSON',
 			success: function(retorno){
-				if (retorno.success) {
+				// if (retorno.success) {
 					$('input').val('');
 					$('.alert-danger').prop('hidden', true);
 					$('.alert-success').prop('hidden', false).html('<strong>Sucesso!</strong> Excluído com perfeição.');
-				}
+				// }
 			},
 			error: function(error){
 				if(error.status == 401){alert(error.responseJSON.mensagem);/*$("#conteudo-principal").load("login", function(){$('.serasa-content').css('display', 'block');});*/}
@@ -470,7 +484,8 @@
 			dataType: 'JSON',
 			data: {nome_usuario: $('#nome_usuario').val(), senha: $('#senha').val()},
 			success: function(retorno){
-				if (retorno.success) {
+				console.log(retorno);
+				// if (retorno.success) {
 					$('.alert-danger').prop('hidden', true);
 					$('.alert-success').prop('hidden', false).html("<strong>Http Status:</strong> " + retorno.status + ", <br/><strong>Mensagem:</strong> " + retorno.mensagem);
 					sessionStorage.setItem("Sessao", retorno.token);
@@ -479,9 +494,10 @@
 						<a href="#" class="list-group-item parceiro-menu" data-parent="#parceiro" data-id="cadastrar">Cadastrar</a>\
 						<a href="#" class="list-group-item parceiro-menu" data-parent="#parceiro" data-id="editar">Editar</a>\
 					');*/
-				}
+				// }
 			},
 			error: function(error){
+				console.log(error);
 				if (!error.success) {
 					$('.alert-success').prop('hidden', true);
 					$('.alert-danger').prop('hidden', false).html("<strong>Http Status:</strong> " + error.status + ", <br/><strong>Mensagem:</strong> " + error.responseJSON.mensagem);
