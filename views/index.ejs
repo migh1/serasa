@@ -329,6 +329,9 @@
 		if ($(this).data('id') == 'login') {
 			$("#conteudo-principal").load("login", function(){
 				$('.serasa-content').css('display', 'block');
+				if (sessionStorage.getItem("url") != "null") {
+					$('#form_url').val(sessionStorage.getItem("url"));
+				}
 			});
 			
 			// window.history.replaceState(null, null, '/login');
@@ -338,6 +341,9 @@
 				$('.serasa-content').css('display', 'block');
 				if (sessionStorage.getItem("Sessao") != "null") {
 					$('#form_token').val(sessionStorage.getItem("Sessao"));
+				}
+				if (sessionStorage.getItem("url") != "null") {
+					$('#form_url').val(sessionStorage.getItem("url"));
 				}
 			});
 			
@@ -371,6 +377,7 @@
 			},
 			success: function(retorno){/*if (retorno.success) {*/$('.alert-danger').prop('hidden', true);$('.alert-success').prop('hidden', false);/*}*/},
 			error: function(error){
+				sessionStorage.setItem("url", $('#form_url').val());
 				if(error.status == 401){alert(error.responseJSON.mensagem);/*$("#conteudo-principal").load("login", function(){$('.serasa-content').css('display', 'block');});*/}
 				else{$('.alert-success').prop('hidden', true);$('.alert-danger').prop('hidden', false).html("<strong>Http Status:</strong> " + error.status + ", <br/><strong>Mensagem:</strong> " + error.responseJSON.mensagem);}
 			},
@@ -497,6 +504,7 @@
 					$('.alert-danger').prop('hidden', true);
 					$('.alert-success').prop('hidden', false).html("<strong>Http Status:</strong> " + c.status + ", <br/><strong>Mensagem:</strong> " + retorno.mensagem);
 					sessionStorage.setItem("Sessao", retorno.token);
+					sessionStorage.setItem("url", $('#form_url').val());
 /*					$('#parceiro').html('\
 						<a href="#" class="list-group-item parceiro-menu" data-parent="#parceiro" data-id="visualizar">Visualizar</a>\
 						<a href="#" class="list-group-item parceiro-menu" data-parent="#parceiro" data-id="cadastrar">Cadastrar</a>\
