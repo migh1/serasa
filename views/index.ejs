@@ -285,7 +285,9 @@
 		if ($(this).data('id') == 'visualizar') {
 			$("#conteudo-principal").load("read", function(){
 				$('.serasa-content').css('display', 'block');
-				$('#form_token').val(sessionStorage.getItem("Sessao"));
+				if (sessionStorage.getItem("Sessao") != undefined) {
+					$('#form_token').val(sessionStorage.getItem("Sessao"));
+				}
 			});
 			
 			// window.history.replaceState(null, null, '/read');
@@ -300,7 +302,9 @@
 		if ($(this).data('id') == 'editar') {
 			$("#conteudo-principal").load("edit", function(){
 				$('.serasa-content').css('display', 'block');
-				$('#form_token').val(sessionStorage.getItem("Sessao"));
+				if (sessionStorage.getItem("Sessao") != undefined) {
+					$('#form_token').val(sessionStorage.getItem("Sessao"));
+				}
 				$.ajax({
 					url: $('#form_url').val(),
 					type: 'GET',
@@ -330,7 +334,9 @@
 		if ($(this).data('id') == 'logout') {
 			$("#conteudo-principal").load("logout", function(){
 				$('.serasa-content').css('display', 'block');
-				$('#form_token').val(sessionStorage.getItem("Sessao"));
+				if (sessionStorage.getItem("Sessao") != undefined) {
+					$('#form_token').val(sessionStorage.getItem("Sessao"));
+				}
 			});
 			
 			// window.history.replaceState(null, null, '/logout');
