@@ -229,6 +229,8 @@ router.put('/logout', (req, res, next) => {
 
 //faz um update no parceiro
 router.put('/parceiro', (req, res, next) => {
+	console.log(req.headers.authorization);
+	console.log(req.body);
 	isLogado(req.headers.authorization, function(err, valid){
 		if(!valid){
 			return res.status(401).json({success: false, http: 401, mensagem: 'Por favor, faça login novamente e repita o processo.'});
