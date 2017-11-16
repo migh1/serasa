@@ -78,7 +78,7 @@ router.get('/parceiro', (req, res, next) => {
 	if(req.headers.authorization.indexOf('Basic ') != -1){
 		req.headers.authorization = req.headers.authorization.split('Basic ')[1];
 	}
-	try{return atob(req.headers.authorization)}catch(e){return false}
+	atob(req.headers.authorization);
 	isLogado(req.headers.authorization, function(err, valid){
 		if(!valid){
 			return res.status(401).json({success: false, http: 401, mensagem: 'Por favor, faça login novamente e repita o processo.'});
@@ -115,7 +115,7 @@ router.get('/parceiro/:id_parceiro', function(req, res, next) {
 	if(req.headers.authorization.indexOf('Basic ') != -1){
 		req.headers.authorization = req.headers.authorization.split('Basic ')[1];
 	}
-	try{return atob(req.headers.authorization)}catch(e){return false}
+	atob(req.headers.authorization);
 	isLogado(req.headers.authorization, function(err, valid){
 		if(!valid){
 			return res.status(401).json({success: false, http: 401, mensagem: 'Por favor, faça login novamente e repita o processo.'});
@@ -219,7 +219,7 @@ router.put('/logout', (req, res, next) => {
 	if(req.headers.authorization.indexOf('Basic ') != -1){
 		req.headers.authorization = req.headers.authorization.split('Basic ')[1];
 	}
-	try{return atob(req.headers.authorization)}catch(e){return false}
+	atob(req.headers.authorization);
 	isLogado(req.headers.authorization, function(err, valid){
 		if(!valid){
 			return res.status(401).json({success: false, http: 401, mensagem: 'Usuário não autorizado a deslogar, pois não está logado.'});
@@ -247,7 +247,7 @@ router.put('/parceiro', (req, res, next) => {
 	if(req.headers.authorization.indexOf('Basic ') != -1){
 		req.headers.authorization = req.headers.authorization.split('Basic ')[1];
 	}
-	try{return atob(req.headers.authorization)}catch(e){return false}
+	atob(req.headers.authorization);
 	isLogado(req.headers.authorization, function(err, valid){
 		if(!valid){
 			return res.status(401).json({success: false, http: 401, mensagem: 'Por favor, faça login novamente e repita o processo.'});
@@ -282,7 +282,7 @@ router.delete('/parceiro', (req, res, next) => {
 	if(req.headers.authorization.indexOf('Basic ') != -1){
 		req.headers.authorization = req.headers.authorization.split('Basic ')[1];
 	}
-	try{return atob(req.headers.authorization)}catch(e){return false}
+	atob(req.headers.authorization);
 	isLogado(req.headers.authorization, function(err, valid){
 		if(!valid){
 			return res.status(401).json({success: false, http: 401, mensagem: 'Por favor, faça login novamente e repita o processo.'});
