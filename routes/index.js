@@ -2,8 +2,6 @@ const express = require('express');
 const router = express.Router();
 const pg = require('pg');
 const path = require('path');
-var base64 = require('base-64');
-var isBase64 = require('is-base64');
 var Ajv = require('ajv');
 var schema = {
 	"properties": {
@@ -74,49 +72,39 @@ router.get('/edit', function(req, res, next) {
 
 //GET pega os dados dos parceiros
 router.get('/parceiro', (req, res, next) => {
-	console.log(req.headers);
-	ehBase64(req.headers.authorization, function(token){
-		req.header.authorization = token;
-		isLogado(req.headers.authorization, function(err, valid){
-			if(!valid){
-				return res.status(401).json({success: false, http: 401, mensagem: 'Por favor, faça login novamente e repita o processo.'});
-			} else {
-				var results;
-				pg.connect(connectionString, (err, client, done) => {
-					if(err) {
+	isLogado(req.headers.authorization, function(err, valid){
+		if(!valid){
+			return res.status(401).json({success: false, http: 401, mensagem: 'Por favor, faça login novamente e repita o processo.'});
+		} else {
+			var results;
+			pg.connect(connectionString, (err, client, done) => {
+				if(err) {
+					done();
+					console.log(err);
+					return res.status(500).json({
+						success: false, data: err
+					});
+				} else {
+					const query = client.query('SELECT cnpj, nome_fantasia, razao_social, nome_usuario, email FROM cad_parceiro WHERE token=($1) ORDER BY id_parceiro ASC;', [req.headers.authorization]);
+					query.on('row', (row) => {
+						results = row;
+					});
+					query.on('end', () => {
 						done();
-						console.log(err);
-						return res.status(500).json({
-							success: false, data: err
-						});
-					} else {
-						const query = client.query('SELECT cnpj, nome_fantasia, razao_social, nome_usuario, email FROM cad_parceiro WHERE token=($1) ORDER BY id_parceiro ASC;', [req.headers.authorization]);
-						query.on('row', (row) => {
-							results = row;
-						});
-						query.on('end', () => {
-							done();
-							if(results.length > 0) {
-								return res.status(500).json({success: false, data: 'Não há parceiros cadastrados ainda!'});
-							} else {
-								return res.json(results);
-							}
-						});
-					}
-				});
-			}
-		});
+						if(results.length > 0) {
+							return res.status(500).json({success: false, data: 'Não há parceiros cadastrados ainda!'});
+						} else {
+							return res.json(results);
+						}
+					});
+				}
+			});
+		}
 	});
 });
 
 /* GET parceiro edit page (dados jasao). */
 router.get('/parceiro/:id_parceiro', function(req, res, next) {
-	if(req.headers.authorization.indexOf('Basic ') != -1){
-		req.headers.authorization = req.headers.authorization.split('Basic ')[1];
-	}
-	if(isBase64(req.headers.authorization)){
-		req.headers.authorization = base64.decode(req.headers.authorization);
-	}
 	isLogado(req.headers.authorization, function(err, valid){
 		if(!valid){
 			return res.status(401).json({success: false, http: 401, mensagem: 'Por favor, faça login novamente e repita o processo.'});
@@ -217,12 +205,6 @@ router.put('/login', (req, res, next) => {
 
 //faz login no parceiro
 router.put('/logout', (req, res, next) => {
-	if(req.headers.authorization.indexOf('Basic ') != -1){
-		req.headers.authorization = req.headers.authorization.split('Basic ')[1];
-	}
-	if(isBase64(req.headers.authorization)){
-		req.headers.authorization = base64.decode(req.headers.authorization);
-	}
 	isLogado(req.headers.authorization, function(err, valid){
 		if(!valid){
 			return res.status(401).json({success: false, http: 401, mensagem: 'Usuário não autorizado a deslogar, pois não está logado.'});
@@ -247,12 +229,6 @@ router.put('/logout', (req, res, next) => {
 
 //faz um update no parceiro
 router.put('/parceiro', (req, res, next) => {
-	if(req.headers.authorization.indexOf('Basic ') != -1){
-		req.headers.authorization = req.headers.authorization.split('Basic ')[1];
-	}
-	if(isBase64(req.headers.authorization)){
-		req.headers.authorization = base64.decode(req.headers.authorization);
-	}
 	isLogado(req.headers.authorization, function(err, valid){
 		if(!valid){
 			return res.status(401).json({success: false, http: 401, mensagem: 'Por favor, faça login novamente e repita o processo.'});
@@ -284,12 +260,6 @@ router.put('/parceiro', (req, res, next) => {
 });
 
 router.delete('/parceiro', (req, res, next) => {
-	if(req.headers.authorization.indexOf('Basic ') != -1){
-		req.headers.authorization = req.headers.authorization.split('Basic ')[1];
-	}
-	if(isBase64(req.headers.authorization)){
-		req.headers.authorization = base64.decode(req.headers.authorization);
-	}
 	isLogado(req.headers.authorization, function(err, valid){
 		if(!valid){
 			return res.status(401).json({success: false, http: 401, mensagem: 'Por favor, faça login novamente e repita o processo.'});
@@ -358,21 +328,6 @@ function isLogado (token, callback){
 			} else {callback(null, false);}
 		});
 	} else {callback(null, false);}
-}
-
-function ehBase64(token, callback){
-	if(token.indexOf('Basic ') != -1){
-		token = token.split('Basic ')[1];
-		if(isBase64(token)){
-			token = base64.decode(token);
-			return token;
-		}
-	} else {
-		if(isBase64(token)){
-			token = base64.decode(token);
-			return token;
-		}
-	}
 }
 
 module.exports = router;
