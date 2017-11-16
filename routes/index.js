@@ -142,7 +142,6 @@ router.get('/parceiro/:id_parceiro', function(req, res, next) {
 
 //faz um post e entao um insert na tabela cad_parceiro do banco serasa
 router.post('/parceiro', (req, res, next) => {
-	const results = [];
 	if(!ajv.validate(schema, req.body)){
 		return res.status(400).json({success: false, http: 400, mensagem: 'JSON schema inválido, verifique.'});
 	} else {

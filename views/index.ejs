@@ -198,7 +198,7 @@
 			url: 'https://serasa.herokuapp.com/verify/login/user/path',
 			type: 'POST',
 			dataType: 'JSON',
-			headers: {"Authorization": "Basic " + sessionStorage.getItem("Sessao")},
+			headers: {"Authorization": sessionStorage.getItem("Sessao")},
 			success: function(retorno){
 				$('#parceiro').html('\
 					<a href="#" class="list-group-item parceiro-menu" data-parent="#parceiro" data-id="visualizar">Visualizar</a>\
@@ -221,7 +221,7 @@
 			// url: 'https://serasa.herokuapp.com/parceiro',
 			url: $('#form_url').val(),
 			type: 'GET',
-			headers: {"Authorization": "Basic " + $('#form_token').val()},
+			headers: {"Authorization": $('#form_token').val()},
 			dataType: 'JSON',
 			success: function(retorno){
 				$('.serasa-content').css('display', 'block');
@@ -257,7 +257,7 @@
 				// url: '/parceiro',
 				url: 'https://serasa.herokuapp.com/parceiro',
 				type: 'GET',
-				headers: {"Authorization": "Basic " + sessionStorage.getItem("Sessao")},
+				headers: {"Authorization": sessionStorage.getItem("Sessao")},
 				dataType: 'JSON',
 				success: function(retorno){
 					$('.serasa-content').css('display', 'block');
@@ -379,7 +379,7 @@
 			url: 'https://serasa.herokuapp.com/parceiro/'+$('#id_parceiro').val(),
 			type: 'GET',
 			dataType: 'JSON',
-			headers: {"Authorization": "Basic " + sessionStorage.getItem("Sessao")},
+			headers: {"Authorization": sessionStorage.getItem("Sessao")},
 			success: function(retorno){
 				if (retorno.success) {
 					$('.alert-danger').prop('hidden', true);
@@ -404,13 +404,13 @@
 	$(document).on('click', '.btn-atualizar-parceiro', function(e){
 		e.preventDefault();
 		$.ajax({
-			// url: '/parceiro/'+$('#id_parceiro').val(),
+			// url: '/parceiro/',
 			// url: 'https://serasa.herokuapp.com/parceiro/'+$('#id_parceiro').val(),
 			url: $('#form_url').val(),
 			type: 'PUT',
 			dataType: 'JSON',
 			// headers: {"token": sessionStorage.getItem("Sessao")},
-			headers: {"Authorization": "Basic " + $('#form_token').val()},
+			headers: {"Authorization": $('#form_token').val()},
 			data: {
 				nome_fantasia: 	$('#nome_fantasia').val(),
 				razao_social: 	$('#razao_social').val(),
@@ -436,12 +436,12 @@
 	$(document).on('click', '.btn-excluir-parceiro', function(e){
 		e.preventDefault();
 		$.ajax({
-			// url: '/parceiro/'+$('#id_parceiro').val(),
+			// url: '/parceiro',
 			// url: 'https://serasa.herokuapp.com/parceiro/'+$('#id_parceiro').val(),
 			url: $('#form_url').val(),
 			type: 'DELETE',
 			// headers: {"token": sessionStorage.getItem("Sessao")},
-			headers: {"Authorization": "Basic " + $('#form_token').val()},
+			headers: {"Authorization": $('#form_token').val()},
 			dataType: 'JSON',
 			success: function(retorno){
 				if (retorno.success) {
@@ -501,7 +501,7 @@
 			type: 'PUT',
 			dataType: 'JSON',
 			// headers: {"token": sessionStorage.getItem("Sessao")},
-			headers: {"Authorization": "Basic " + $('#form_token').val()},
+			headers: {"Authorization": $('#form_token').val()},
 			success: function(retorno){
 				/*$('#parceiro').html('\
 					<a href="#" class="list-group-item parceiro-menu" data-parent="#parceiro" data-id="login">Login</a>\
