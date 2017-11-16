@@ -242,17 +242,24 @@ router.put('/parceiro', (req, res, next) => {
 						console.log(err);
 						return res.status(400).json({success: false, data: err});
 					}
-					client.query('UPDATE cad_parceiro SET nome_fantasia=($1), razao_social=($2), email=($3), senha=($4) WHERE token=($5)',
-						[req.body.nome_fantasia, req.body.razao_social, req.body.email, req.body.senha, req.headers.authorization],
-						function(err, result){
-							done();
-							if(err) {
-								return res.status(422).json({success: false, data: 'Houve alguma falha na atualização do parceiro, por favor contate o administrador do sistema.'});
-							} else {
-								return res.json({success: true, data: 'Sucesso ao atualizar!'});
-							}
+					const query = client.query("SELECT * FROM cad_parceiro WHERE email=($2)",[req.body.email], function(err, result){
+						done();
+						if (result.rowCount > 0) {
+							return res.status(409).json({success: false, http: 409, mensagem: 'Email já cadastrado, verifique.'});
+						} else {
+							client.query('UPDATE cad_parceiro SET nome_fantasia=($1), razao_social=($2), email=($3), senha=($4) WHERE token=($5)',
+								[req.body.nome_fantasia, req.body.razao_social, req.body.email, req.body.senha, req.headers.authorization],
+								function(err, result){
+									done();
+									if(err) {
+										return res.status(422).json({success: false, data: 'Houve alguma falha na atualização do parceiro, por favor contate o administrador do sistema.'});
+									} else {
+										return res.json({success: true, data: 'Sucesso ao atualizar!'});
+									}
+								}
+							);
 						}
-					);
+					});
 				});
 			}
 		}
