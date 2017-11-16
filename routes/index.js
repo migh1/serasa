@@ -94,7 +94,14 @@ router.get('/parceiro', (req, res, next) => {
 						if(results.length > 0) {
 							return res.status(500).json({success: false, data: 'Não há parceiros cadastrados ainda!'});
 						} else {
-							return res.json(results);
+							client.query("SELECT cnpj, nome_fantasia, razao_social, nome_usuario, email FROM cad_parceiro WHERE token=($1) AND ativo=($2) ORDER BY id_parceiro ASC",[req.headers.authorization, 'true'], function(err, result){
+								done();
+								if (result.rowCount > 0) {
+									return res.status(422).json({success: false, http: 422, mensagem: 'Parceiro inativo, verifique.'});
+								} else {
+									return res.json(results);
+								}
+							});
 						}
 					});
 				}
@@ -187,16 +194,22 @@ router.put('/login', (req, res, next) => {
 				if (result.rowCount == 0) {
 					return res.status(404).json({success: false, http: 404, mensagem: 'Usuário não encontrado.'});
 				} else {
-					var token = MD5(req.body.nome_usuario+'##'+req.body.senha);
-					client.query('UPDATE cad_parceiro SET token=($1), data_adicionado=($2) WHERE nome_usuario=($3) and senha=($4)', [token, 'now()', req.body.nome_usuario, req.body.senha], function(err, result){
-							done();
-							if(err) {
-								return res.status(422).json({success: false, http: 422, mensagem: 'Erro na geração do token.'});
-							} else {
-								return res.json({token: token});
-							}
-						}
-					);
+					client.query("SELECT * FROM cad_parceiro WHERE nome_usuario=($1) AND senha=($2) AND ativo=($3)", [req.body.nome_usuario, req.body.senha, 'true'], function(err, result){
+						done();
+						if (result.rowCount == 0) {
+							return res.status(404).json({success: false, http: 404, mensagem: 'Usuário não encontrado.'});
+						} else {
+
+							var token = MD5(req.body.nome_usuario+'##'+req.body.senha);
+							client.query('UPDATE cad_parceiro SET token=($1), data_adicionado=($2) WHERE nome_usuario=($3) and senha=($4)', [token, 'now()', req.body.nome_usuario, req.body.senha], function(err, result){
+									done();
+									if(err) {
+										return res.status(422).json({success: false, http: 422, mensagem: 'Erro na geração do token.'});
+									} else {
+										return res.json({token: token});
+									}
+								}
+							);
 				}
 			});
 		});
@@ -247,17 +260,23 @@ router.put('/parceiro', (req, res, next) => {
 						if (result.rowCount > 0) {
 							return res.status(409).json({success: false, http: 409, mensagem: 'Email já cadastrado, verifique.'});
 						} else {
-							client.query('UPDATE cad_parceiro SET nome_fantasia=($1), razao_social=($2), email=($3), senha=($4) WHERE token=($5)',
-								[req.body.nome_fantasia, req.body.razao_social, req.body.email, req.body.senha, req.headers.authorization],
-								function(err, result){
-									done();
-									if(err) {
-										return res.status(422).json({success: false, data: 'Houve alguma falha na atualização do parceiro, por favor contate o administrador do sistema.'});
-									} else {
-										return res.json({success: true, data: 'Sucesso ao atualizar!'});
-									}
+							client.query("SELECT * FROM cad_parceiro WHERE email=($1) AND ativo=($2)",[req.body.email, 'true'], function(err, result){
+								if (result.rowCount > 0) {
+									return res.status(409).json({success: false, http: 409, mensagem: 'Parceiro inativo, verifique.'});
+								} else {
+									client.query('UPDATE cad_parceiro SET nome_fantasia=($1), razao_social=($2), email=($3), senha=($4) WHERE token=($5)',
+										[req.body.nome_fantasia, req.body.razao_social, req.body.email, req.body.senha, req.headers.authorization],
+										function(err, result){
+											done();
+											if(err) {
+												return res.status(422).json({success: false, data: 'Houve alguma falha na atualização do parceiro, por favor contate o administrador do sistema.'});
+											} else {
+												return res.json({success: true, data: 'Sucesso ao atualizar!'});
+											}
+										}
+									);
 								}
-							);
+							});
 						}
 					});
 				});
@@ -279,7 +298,7 @@ router.delete('/parceiro', (req, res, next) => {
 					return res.status(400).json({success: false, data: err});
 				}
 
-				client.query('DELETE FROM cad_parceiro WHERE token=($1)', [req.headers.authorization]);
+				client.query('UPDATE cad_parceiro SET ativo=($1) WHERE token=($2)', ['false', req.headers.authorization]);
 				var query = client.query('SELECT * FROM cad_parceiro WHERE token=($1) ORDER BY id_parceiro ASC', [req.headers.authorization]);
 				
 				query.on('row', (row) => {
