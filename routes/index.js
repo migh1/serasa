@@ -74,7 +74,7 @@ router.get('/edit', function(req, res, next) {
 
 //GET pega os dados dos parceiros
 router.get('/parceiro', (req, res, next) => {
-	console.log(req.headers.authorization);
+	console.log(req.headers);
 	isLogado(req.headers.authorization, function(err, valid){
 		if(!valid){
 			return res.status(401).json({success: false, http: 401, mensagem: 'Por favor, faça login novamente e repita o processo.'});
