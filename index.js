@@ -78,7 +78,7 @@ router.get('/parceiro', (req, res, next) => {
 		if(!valid){
 			return res.status(401).json({success: false, http: 401, mensagem: 'Por favor, faça login novamente e repita o processo.'});
 		} else {
-			const results;
+			const results = [];
 			pg.connect(connectionString, (err, client, done) => {
 				if(err) {
 					done();
@@ -89,7 +89,7 @@ router.get('/parceiro', (req, res, next) => {
 				} else {
 					const query = client.query('SELECT cnpj, nome_fantasia, razao_social, nome_usuario, email FROM cad_parceiro WHERE token=($1) ORDER BY id_parceiro ASC;', [req.headers.token]);
 					query.on('row', (row) => {
-						results = row;
+						results.push(row);
 					});
 					query.on('end', () => {
 						done();
