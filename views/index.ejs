@@ -288,6 +288,9 @@
 				if (sessionStorage.getItem("Sessao") != "null") {
 					$('#form_token').val(sessionStorage.getItem("Sessao"));
 				}
+				if (sessionStorage.getItem("url") != "null") {
+					$('#form_url').val(sessionStorage.getItem("url").replace("login", "parceiro"));
+				}
 			});
 			
 			// window.history.replaceState(null, null, '/read');
@@ -346,7 +349,7 @@
 					$('#form_token').val(sessionStorage.getItem("Sessao"));
 				}
 				if (sessionStorage.getItem("url") != "null") {
-					$('#form_url').val(sessionStorage.getItem("url"));
+					$('#form_url').val(sessionStorage.getItem("url").replace("login", "logout"));
 				}
 			});
 			
@@ -380,7 +383,6 @@
 			},
 			success: function(retorno){/*if (retorno.success) {*/$('.alert-danger').prop('hidden', true);$('.alert-success').prop('hidden', false);/*}*/},
 			error: function(error){
-				sessionStorage.setItem("url", $('#form_url').val());
 				if(error.status == 401){alert(error.responseJSON.mensagem);/*$("#conteudo-principal").load("login", function(){$('.serasa-content').css('display', 'block');});*/}
 				else{$('.alert-success').prop('hidden', true);$('.alert-danger').prop('hidden', false).html("<strong>Http Status:</strong> " + error.status + ", <br/><strong>Mensagem:</strong> " + error.responseJSON.mensagem);}
 			},
