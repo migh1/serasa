@@ -93,7 +93,7 @@ router.get('/parceiro', (req, res, next) => {
 					});
 					query.on('end', () => {
 						done();
-						if(!results.length) {
+						if(results.length > 0) {
 							return res.status(500).json({success: false, data: 'Não há parceiros cadastrados ainda!'});
 						} else {
 							return res.json(results);
