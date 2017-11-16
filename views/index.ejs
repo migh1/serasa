@@ -225,18 +225,16 @@
 			dataType: 'JSON',
 			success: function(retorno){
 				$('.serasa-content').css('display', 'block');
-				$.each(retorno, function(key,value){
-					console.log(value);
-					$('.selector-tbody-parceiros').append('\
-						<tr>\
-							<td>'+value.cnpj+'</td>\
-							<td>'+value.nome_fantasia+'</td>\
-							<td>'+value.razao_social+'</td>\
-							<td>'+value.nome_usuario+'</td>\
-							<td>'+value.email+'</td>\
-						</tr>\
-					');
-				});
+				$('.selector-tbody-parceiros').empty();
+				$('.selector-tbody-parceiros').append('\
+					<tr>\
+						<td>'+retorno.cnpj+'</td>\
+						<td>'+retorno.nome_fantasia+'</td>\
+						<td>'+retorno.razao_social+'</td>\
+						<td>'+retorno.nome_usuario+'</td>\
+						<td>'+retorno.email+'</td>\
+					</tr>\
+				');
 				// window.history.replaceState(null, null, '/read');
 			},
 			error: function(error){if(error.responseJSON.http == 401){alert(error.responseJSON.mensagem);/*$("#conteudo-principal").load("login");*/}
