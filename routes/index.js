@@ -193,7 +193,7 @@ router.put('/login', (req, res, next) => {
 							if(err) {
 								return res.status(422).json({success: false, http: 422, mensagem: 'Erro na geração do token.'});
 							} else {
-								return res.json({success: true, http: 200, token: token, mensagem: 'Login realizado com sucesso.'});
+								return res.json({token: token});
 							}
 						}
 					);
