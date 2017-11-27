@@ -363,6 +363,16 @@
 		}
 	});
 
+	$(document).on('click', '.cliente-menu', function(){
+		if ($(this).data('id') == 'cadastrar') {
+			$("#conteudo-principal").load("cliente/create", function(){
+				$('.serasa-content').css('display', 'block');
+			});
+			
+			// window.history.replaceState(null, null, '/create');
+		}
+	});
+
 	$(document).on('click', '.btn-cadastrar-parceiro', function(e){
 		e.preventDefault();
 
