@@ -169,6 +169,14 @@
 						<a href="#" class="list-group-item parceiro-menu" data-parent="#parceiro" data-id="editar">Editar</a>
 						<a href="#" class="list-group-item parceiro-menu" data-parent="#parceiro" data-id="logout">Logout</a>
 					</div>
+					<a href="#cliente" class="list-group-item d-inline-block collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="fa fa-handshake-o"></i> <span class="d-none d-md-inline">Clientes</span> </a>
+					<div class="collapse" id="cliente">
+						<a href="#" class="list-group-item cliente-menu" data-parent="#cliente" data-id="login">Login</a>
+						<a href="#" class="list-group-item cliente-menu" data-parent="#cliente" data-id="visualizar">Visualizar</a>
+						<a href="#" class="list-group-item cliente-menu" data-parent="#cliente" data-id="cadastrar">Cadastrar</a>
+						<a href="#" class="list-group-item cliente-menu" data-parent="#cliente" data-id="editar">Editar</a>
+						<a href="#" class="list-group-item cliente-menu" data-parent="#cliente" data-id="logout">Logout</a>
+					</div>
 					<!-- <a href="#" class="list-group-item d-inline-block collapsed" data-parent="#sidebar"><i class="fa fa-film"></i> <span class="d-none d-md-inline">Item 2</span></a> -->
 					<!-- <a href="#menu3" class="list-group-item d-inline-block collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="fa fa-book"></i> <span class="d-none d-md-inline">Item 3 </span></a>
 					<div class="collapse" id="menu3">
@@ -556,6 +564,34 @@
 			}
 		});
 				
+	});
+
+	$(document).on('click', '.btn-cadastrar-cliente', function(e){
+		e.preventDefault();
+
+		if ($('#nome_cliente').val() == '') { alert('Há campos vazios, por favor preencha');$('#nome_cliente').focus();return false;}
+		if ($('#cpf_cliente').val() == '') { alert('Há campos vazios, por favor preencha');$('#cpf_cliente').focus();return false;}
+
+		$.ajax({
+			// url: '/cliente',
+			// url: 'https://serasa.herokuapp.com/cliente',
+			url: $('#form_url').val(),
+			type: 'POST',
+			dataType: 'JSON',
+			data: {
+				nome: 	$('#nome_cliente').val(),
+				cpf: 	$('#cpf_cliente').val()
+			},
+			success: function(retorno){/*if (retorno.success) {*/$('.alert-danger').prop('hidden', true);$('.alert-success').prop('hidden', false);/*}*/},
+			error: function(error){
+				if(error.status == 401){alert(error.responseJSON.mensagem);/*$("#conteudo-principal").load("login", function(){$('.serasa-content').css('display', 'block');});*/}
+				else{$('.alert-success').prop('hidden', true);$('.alert-danger').prop('hidden', false).html("<strong>Http Status:</strong> " + error.status + ", <br/><strong>Mensagem:</strong> " + error.responseJSON.mensagem);}
+			},
+			complete: function(retorno){
+				$('#retorno').html(JSON.stringify(retorno.responseJSON, null, 2));
+			}
+
+		});
 	});
 
 </script>

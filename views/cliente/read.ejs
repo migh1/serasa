@@ -1,0 +1,60 @@
+<div class="serasa-content" style="display: none;">	
+	<a href="#" data-target="#sidebar" data-toggle="collapse"><i class="fa fa-navicon fa-2x py-2 p-1"></i></a>
+	<button class="btn btn-danger pull-right btn-logout" name="submit">Sair</button>
+	<div class="container">
+		<h1><%= title %></h1>
+		<p>Bem vindo ao <%= title %></p>
+
+		<div class="card pull-left" style="width: 80%;">
+			<div class="card-header"><h5>Lista de Parceiros</h5></div>
+			<div class="card-body">
+				<table class="table table-striped selector-table-parceiros" id="parceiro-visualizar">
+					<thead>
+						<tr>
+							<th>cnpj</th>
+							<th>nome_fantasia</th>
+							<th>razao_social</th>
+							<th>nome_usuario</th>
+							<th>email</th>
+						</tr>
+					</thead>
+					<tbody class="selector-tbody-parceiros"></tbody>
+				</table>
+			</div>
+		</div>
+
+		<div class="card pull-left" style="width: 40%;margin-left: 25px;">
+			<div class="card-header">
+				<h5>Servidor de requisição</h5>
+			</div>
+			<div class="card-body">
+				<div class="col-md-12">
+					<label for="form_url"><strong>URL</strong></label>
+					<input type="text" class="form-control" name="form_url" id="form_url" value="https://serasa.herokuapp.com/parceiro">
+				</div>
+
+				<div class="col-md-12">
+					<label for="form_token"><strong>Token</strong></label>
+					<input type="text" class="form-control" name="form_token" id="form_token" value="">
+				</div>
+
+				<div class="col-md-12">
+					<label for="form_json"><strong>JSON Enviado</strong></label>
+					<pre class="form-control form_json" name="form_json" id="form_json" style="min-height:200px" disabled></pre>
+				</div>
+
+				<div class="col-md-12">
+					<label for="retorno"><strong>JSON Retornado</strong></label>
+					<pre class="form-control retorno" name="retorno" id="retorno" style="min-height:200px" disabled></pre>
+				</div>
+
+			</div>
+
+			<div class="card-footer" style="margin-top: 25px;">
+				<div class="col-md-4 pull-right">
+					<button class="btn btn-success selector-btn-reload" name="submit">Recarregar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

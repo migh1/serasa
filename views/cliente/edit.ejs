@@ -1,0 +1,99 @@
+<div class="serasa-content" style="display: none;">
+	<a href="#" data-target="#sidebar" data-toggle="collapse"><i class="fa fa-navicon fa-2x py-2 p-1"></i></a>
+	<button class="btn btn-danger pull-right btn-logout" name="submit">Sair</button>
+	<div class="container">
+
+		<h1><%= title %></h1>
+		<p>Bem vindo ao <%= title %></p>
+
+		<div class="card pull-left" style="width: 40%;">
+			<div class="card-header">
+				<h5>Atualização de Parceiro</h5>
+				<div class="alert alert-success" role="alert" style="margin-top: 25px;" hidden>
+					<strong>Sucesso!</strong> Atualizado com perfeição.
+				</div>
+				<div class="alert alert-danger" role="alert" style="margin-top: 25px;" hidden>
+					<strong>Erro!</strong> Falha ao atualizar, contate o administrador.
+				</div>
+			</div>
+			<div class="card-body">
+				<!-- <div class="col-md-8 pull-left" style="margin-top: 20px">
+					<label for="id_parceiro"><strong>ID Parceiro</strong></label>
+					<input type="text" class="form-control" name="id_parceiro" id="id_parceiro" value="" >
+				</div>
+				<div class="col-md-4 pull-left" style="margin-top: 50px">
+					<button class="btn btn-primary form-control btn-buscar-parceiro">Buscar</button>
+				</div>
+
+				<div class="col-md-12 pull-left">
+					<label for="cnpj"><strong>CNPJ</strong></label>
+					<input type="text" class="form-control" name="cnpj" id="cnpj" value="">
+				</div> -->
+
+				<div class="col-md-12 pull-left">
+					<label for="nome_fantasia"><strong>Nome Fantasia</strong></label>
+					<input type="text" class="form-control" name="nome_fantasia" id="nome_fantasia" value="">
+				</div>				
+
+				<div class="col-md-12 pull-left">
+					<label for="razao_social"><strong>Razão Social</strong></label>
+					<input type="text" class="form-control" name="razao_social" id="razao_social" value="">
+				</div>
+
+				<!-- <div class="col-md-12 pull-left" style="margin-top: 20px">
+					<label for="nome_usuario"><strong>Nome usuário</strong></label>
+					<input type="text" class="form-control" name="nome_usuario" id="nome_usuario" value="">
+				</div> -->
+
+				<div class="col-md-12 pull-left" style="margin-top: 20px">
+					<label for="email"><strong>Email</strong></label>
+					<input type="text" class="form-control" name="email" id="email" value="">
+				</div>
+
+				<div class="col-md-12 pull-left" style="margin-top: 20px">
+					<label for="senha"><strong>Senha</strong></label>
+					<input type="text" class="form-control" name="senha" id="senha" value="">
+				</div>
+
+			</div>
+
+			<div class="card-footer" style="margin-top: 25px;">
+				<div class="col-md-4 pull-right">
+					<button class="btn btn-success btn-atualizar-parceiro" name="submit">Atualizar</button>
+				</div>
+				<div class="col-md-4 pull-right">
+					<button class="btn btn-danger btn-excluir-parceiro" name="submit">Excluir</button>
+				</div>
+			</div>
+		</div>
+
+		<div class="card pull-left" style="width: 40%;margin-left: 25px;">
+			<div class="card-header">
+				<h5>Servidor de requisição</h5>
+			</div>
+			<div class="card-body">
+				<div class="col-md-12">
+					<label for="form_url"><strong>URL</strong></label>
+					<input type="text" class="form-control" name="form_url" id="form_url" value="https://serasa.herokuapp.com/parceiro">
+				</div>
+
+				<div class="col-md-12">
+					<label for="form_token"><strong>Token</strong></label>
+					<input type="text" class="form-control" name="form_token" id="form_token" value="">
+				</div>
+
+				<div class="col-md-12">
+					<label for="form_json"><strong>JSON Enviado</strong></label>
+					<pre class="form-control form_json" name="form_json" id="form_json" style="min-height:200px" disabled></pre>
+				</div>
+
+				<div class="col-md-12">
+					<label for="retorno"><strong>JSON Retornado</strong></label>
+					<pre class="form-control retorno" name="retorno" id="retorno" style="min-height:200px" disabled></pre>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>
+

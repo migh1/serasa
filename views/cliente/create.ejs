@@ -1,0 +1,63 @@
+<div class="serasa-content" style="display: none;">
+	<a href="#" data-target="#sidebar" data-toggle="collapse"><i class="fa fa-navicon fa-2x py-2 p-1"></i></a>
+	<button class="btn btn-danger pull-right btn-logout" name="submit">Sair</button>
+	<div class="container">
+		<h1><%= title %></h1>
+		<p>Bem vindo ao <%= title %></p>
+
+		<div class="card pull-left" style="width: 40%;">
+			<div class="card-header">
+				<h5>Cadastro de Cliente</h5>
+				<div class="alert alert-success" role="alert" style="margin-top: 25px;" hidden>
+					<strong>Sucesso!</strong> Cadastrado com perfeição.
+				</div>
+				<div class="alert alert-danger" role="alert" style="margin-top: 25px;" hidden>
+				</div>
+			</div>
+			<div class="card-body">
+				<form action="POST" method="/parceiro/create">
+
+					<div class="col-md-12">
+						<label for="nome_cliente"><strong>Nome</strong></label>
+						<input type="text" class="form-control" name="nome_cliente" id="nome_cliente" value="Lucas">
+					</div>
+
+					<div class="col-md-12">
+						<label for="cpf_cliente"><strong>CPF</strong></label>
+						<input type="text" class="form-control" name="cpf_cliente" id="cpf_cliente" value="51228554390">
+					</div>
+
+				</form>
+			</div>
+
+			<div class="card-footer" style="margin-top: 25px;">
+				<div class="col-md-4 pull-right">
+					<button class="btn btn-success btn-cadastrar-cliente" name="submit">Cadastrar</button>
+				</div>
+			</div>
+		</div>
+
+		<div class="card pull-left" style="width: 40%;margin-left: 25px;">
+			<div class="card-header">
+				<h5>Servidor de requisição</h5>
+			</div>
+			<div class="card-body">
+				<div class="col-md-12">
+					<label for="form_url"><strong>URL</strong></label>
+					<input type="text" class="form-control" name="form_url" id="form_url" value="https://serasa.herokuapp.com/cliente">
+				</div>
+
+				<div class="col-md-12">
+					<label for="form_json"><strong>JSON Enviado</strong></label>
+					<pre class="form-control form_json" name="form_json" id="form_json" style="min-height:200px" disabled></pre>
+				</div>
+
+				<div class="col-md-12">
+					<label for="retorno"><strong>JSON Retornado</strong></label>
+					<pre class="form-control retorno" name="retorno" id="retorno" style="min-height:200px" disabled></pre>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>
