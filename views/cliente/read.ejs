@@ -6,19 +6,18 @@
 		<p>Bem vindo ao <%= title %></p>
 
 		<div class="card pull-left" style="width: 80%;">
-			<div class="card-header"><h5>Lista de Parceiros</h5></div>
+			<div class="card-header"><h5>Lista de Clientes</h5></div>
 			<div class="card-body">
-				<table class="table table-striped selector-table-parceiros" id="parceiro-visualizar">
+				<table class="table table-striped selector-table-clientes" id="cliente-visualizar">
 					<thead>
 						<tr>
-							<th>cnpj</th>
-							<th>nome_fantasia</th>
-							<th>razao_social</th>
-							<th>nome_usuario</th>
-							<th>email</th>
+							<th>id</th>
+							<th>nome</th>
+							<th>cpf</th>
+							<th>botao</th>
 						</tr>
 					</thead>
-					<tbody class="selector-tbody-parceiros"></tbody>
+					<tbody class="selector-tbody-clientes"></tbody>
 				</table>
 			</div>
 		</div>
@@ -30,7 +29,7 @@
 			<div class="card-body">
 				<div class="col-md-12">
 					<label for="form_url"><strong>URL</strong></label>
-					<input type="text" class="form-control" name="form_url" id="form_url" value="https://serasa.herokuapp.com/parceiro">
+					<input type="text" class="form-control" name="form_url" id="form_url" value="https://serasa.herokuapp.com/cliente">
 				</div>
 
 				<div class="col-md-12">
@@ -52,7 +51,7 @@
 
 			<div class="card-footer" style="margin-top: 25px;">
 				<div class="col-md-4 pull-right">
-					<button class="btn btn-success selector-btn-reload" name="submit">Recarregar</button>
+					<button class="btn btn-success selector-btn-reload-clientes" name="submit">Recarregar</button>
 				</div>
 			</div>
 		</div>

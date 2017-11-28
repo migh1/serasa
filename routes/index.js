@@ -356,9 +356,14 @@ router.get('/cliente/create', function(req, res, next) {
 	res.render('cliente/create', { title: 'Cadastrar Cliente' });
 });
 
-/* GET cliente create page. */
+/* GET cliente edit page. */
 router.get('/cliente/edit', function(req, res, next) {
 	res.render('cliente/edit', { title: 'Editar Cliente' });
+});
+
+/* GET cliente read page. */
+router.get('/cliente/read', function(req, res, next) {
+	res.render('cliente/read', { title: 'Visualizar Clientes' });
 });
 
 //GET pega os dados dos clientes
@@ -376,7 +381,7 @@ router.get('/cliente', (req, res, next) => {
 						success: false, data: err
 					});
 				} else {
-					const query = client.query('SELECT cc.nome, cc.cpf FROM cad_cliente cc, cad_parceiro cp WHERE cp.token=($1) ORDER BY cc.id_cliente ASC limit 1;', [req.headers.authorization]);
+					const query = client.query('SELECT cc.nome, cc.cpf FROM cad_cliente cc, cad_parceiro cp WHERE cp.token=($1) ORDER BY cc.id_cliente ASC;', [req.headers.authorization]);
 					query.on('row', (row) => {
 						results.push(row)
 					});
@@ -385,7 +390,7 @@ router.get('/cliente', (req, res, next) => {
 						if(!results.length) {
 							return res.status(500).json({success: false, data: 'Não há clientes cadastrados ainda!'});
 						} else {
-							client.query('SELECT cc.nome, cc.cpf FROM cad_cliente cc, cad_parceiro cp WHERE cp.token=($1) ORDER BY cc.id_cliente ASC limit 1;', [req.headers.authorization],  function(err, result){
+							client.query('SELECT cc.nome, cc.cpf FROM cad_cliente cc, cad_parceiro cp WHERE cp.token=($1) ORDER BY cc.id_cliente ASC;', [req.headers.authorization],  function(err, result){
 								done();
 								if (result.rowCount <= 0) {
 									return res.status(409).json({success: false, http: 409, mensagem: 'Parceiro inativo, verifique.'});
