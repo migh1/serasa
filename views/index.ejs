@@ -682,14 +682,18 @@
 
 	$(document).on('click', '.btn-excluir-cliente', function(e){
 		e.preventDefault();
+		var linha = $(this).parents('tr');
 		var id_cliente = $(this).data('id');
+		if (!confirm('Tem certeza que deseja excluir este cliente? Este processo é irreversivel.')) {
+			return false;
+		}
 		$.ajax({
 			url: '/cliente',
 			type: 'DELETE',
 			dataType: 'JSON',
 			headers: {"Authorization": $('#form_token').val()},
 			data: {id_cliente: id_cliente}, 
-			success: function(retorno){console.log(retorno);},
+			success: function(retorno){alert('Cliente excluido com sucesso!');$('#cliente-visualizar').row(linha).remove().draw();},
 			error: function(error){console.log(error);},
 			complete: function(retorno){console.log(retorno);}
 		});
