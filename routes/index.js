@@ -19,7 +19,7 @@ var schema_cliente = {
 		"nome_cliente": { "type": "string" },
 		"cpf": { "type": "string" }
 	},
-	"required": ["nome", "cpf"]
+	"required": ["nome_cliente", "cpf"]
 };
 var edit_schema = {
 	"properties": {
