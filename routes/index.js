@@ -32,10 +32,10 @@ var edit_schema = {
 };
 var edit_schema_cliente = {
 	"properties": {
-		"id_cliente": { "type": "string" },
+		"cpf": { "type": "string" },
 		"nome_cliente": { "type": "string" }
 	},
-	"required": ["id_cliente", "nome"]
+	"required": ["cpf", "nome"]
 };
 var login_schema = {
 	"properties": {
