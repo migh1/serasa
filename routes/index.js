@@ -32,7 +32,7 @@ var edit_schema = {
 };
 var edit_schema_cliente = {
 	"properties": {
-		"id_cliente": { "type": "int" },
+		"id_cliente": { "type": "string" },
 		"nome": { "type": "string" }
 	},
 	"required": ["id_cliente", "nome"]
@@ -512,6 +512,7 @@ router.delete('/cliente', (req, res, next) => {
 
 //faz um update no parceiro
 router.put('/cliente', (req, res, next) => {
+	console.log(req.body);
 	isLogado(req.headers.authorization, function(err, valid){
 		if(!valid){
 			return res.status(401).json({success: false, http: 401, mensagem: 'Por favor, faça login novamente e repita o processo.'});
