@@ -267,14 +267,16 @@
 				console.log(retorno);
 				$('.serasa-content').css('display', 'block');
 				$('.selector-tbody-clientes').empty();
-				$('.selector-tbody-clientes').append('\
-					<tr>\
-						<td>'+retorno.id_cliente+'</td>\
-						<td>'+retorno.nome+'</td>\
-						<td>'+retorno.cpf+'</td>\
-						<td>'+retorno.id_cliente+'</td>\
-					</tr>\
-				');
+				$.each(retorno, function(key, value){
+					$('.selector-tbody-clientes').append('\
+						<tr>\
+							<td>'+value.id_cliente+'</td>\
+							<td>'+value.nome+'</td>\
+							<td>'+value.cpf+'</td>\
+							<td>'+value.id_cliente+'</td>\
+						</tr>\
+					');
+				});
 				// window.history.replaceState(null, null, '/read');
 			},
 			error: function(error){if(error.status == 401){alert(error.responseJSON.mensagem);/*$("#conteudo-principal").load("login");*/}
