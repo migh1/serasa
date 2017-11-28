@@ -665,7 +665,8 @@
 					nome_cliente: newName
 				},
 				success: function(retorno){
-					$('#cliente-visualizar').DataTable().draw();
+					alert('Atualizado com sucesso.');
+					$('.selector-btn-reload-clientes').trigger('click');
 				},
 				error: function(error){
 					if(error.status == 401){alert(error.responseJSON.mensagem);/*$("#conteudo-principal").load("login", function(){$('.serasa-content').css('display', 'block');});*/}
