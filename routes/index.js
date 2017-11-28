@@ -30,6 +30,13 @@ var edit_schema = {
 	},
 	"required": ["nome_fantasia", "razao_social", "email", "senha"]
 };
+var edit_schema_cliente = {
+	"properties": {
+		"nome": { "type": "string" },
+		"cpf": { "type": "string" }
+	},
+	"required": ["nome", "cpf"]
+};
 var login_schema = {
 	"properties": {
 		"nome_usuario": {"type": "string"},
@@ -381,6 +388,42 @@ router.post('/cliente', (req, res, next) => {
 			});
 		});
 	}
+});
+
+//faz um update no cliente
+router.put('/cliente', (req, res, next) => {
+	isLogado(req.headers.authorization, function(err, valid){
+		if(!valid){
+			return res.status(401).json({success: false, http: 401, mensagem: 'Por favor, faça login novamente e repita o processo.'});
+		} else {
+			if(!ajv.validate(edit_schema_cliente, req.body)){
+				return res.status(400).json({success: false, http: 400, mensagem: 'JSON schema inválido, verifique.'});
+			} else {
+				pg.connect(connectionString, (err, client, done) => {
+					if(err) {
+						done();
+						console.log(err);
+						return res.status(400).json({success: false, mensagem: err});
+					}
+					const query = client.query("SELECT * FROM cad_cliente WHERE cpf=($1)",[req.body.cpf], function(err, result){
+						done();
+						if (result.rowCount == 0) {
+							return res.status(409).json({success: false, http: 409, mensagem: 'Não há cliente cadastrado para este CPF ainda, verifique.'});
+						} else if(result.rowCount > 0){
+							client.query('UPDATE cad_cliente SET nome=($1) WHERE cpf=($2)', [req.body.nome, req.body.cpf], function(err, result){
+								done();
+								if(err) {
+									return res.status(422).json({success: false, mensagem: 'Houve alguma falha na atualização do cliente, por favor contate o administrador do sistema.'});
+								} else {
+									return res.json({success: true, mensagem: 'Sucesso ao atualizar!'});
+								}
+							});
+						}
+					});
+				});
+			}
+		}
+	});
 });
 
 function isLogado (token, callback){

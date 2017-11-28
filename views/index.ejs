@@ -298,14 +298,12 @@
 					$('#form_url').val(sessionStorage.getItem("url").replace("login", "parceiro"));
 				}
 			});
-			
 			// window.history.replaceState(null, null, '/read');
 		}
 		if ($(this).data('id') == 'cadastrar') {
 			$("#conteudo-principal").load("create", function(){
 				$('.serasa-content').css('display', 'block');
 			});
-			
 			// window.history.replaceState(null, null, '/create');
 		}
 		if ($(this).data('id') == 'editar') {
@@ -335,7 +333,6 @@
 				});
 						
 			});
-			
 			// window.history.replaceState(null, null, '/edit');
 		}
 		if ($(this).data('id') == 'login') {
@@ -345,7 +342,6 @@
 					$('#form_url').val(sessionStorage.getItem("url"));
 				}
 			});
-			
 			// window.history.replaceState(null, null, '/login');
 		}
 		if ($(this).data('id') == 'logout') {
@@ -358,7 +354,6 @@
 					$('#form_url').val(sessionStorage.getItem("url").replace("login", "logout"));
 				}
 			});
-			
 			// window.history.replaceState(null, null, '/logout');
 		}
 	});
@@ -368,8 +363,34 @@
 			$("#conteudo-principal").load("cliente/create", function(){
 				$('.serasa-content').css('display', 'block');
 			});
-			
 			// window.history.replaceState(null, null, '/create');
+		}
+		if ($(this).data('id') == 'editar') {
+			$("#conteudo-principal").load("cliente/edit", function(){
+				$('.serasa-content').css('display', 'block');
+				if (sessionStorage.getItem("Sessao") != "null") {
+					$('#form_token').val(sessionStorage.getItem("Sessao"));
+				}
+				if (sessionStorage.getItem("url") != "null") {
+					$('#form_url').val(sessionStorage.getItem("url").replace("login", "cliente"));
+				}
+				$.ajax({
+					url: $('#form_url').val(),
+					type: 'GET',
+					headers: {"Authorization": sessionStorage.getItem("Sessao")},
+					dataType: 'JSON',
+					success: function(retorno){
+						$('#nome_cliente').val(retorno.nome);
+						$('#cpf_cliente').val(retorno.cpf);
+					},
+					error: function(error){},
+					complete: function(retorno){
+						$('#retorno').html(JSON.stringify(retorno.responseJSON, null, 2));
+					}
+				});
+						
+			});
+			// window.history.replaceState(null, null, '/edit');
 		}
 	});
 
@@ -599,6 +620,36 @@
 				$('#retorno').html(JSON.stringify(retorno.responseJSON, null, 2));
 			}
 
+		});
+	});
+
+	$(document).on('click', '.btn-atualizar-cliente', function(e){
+		e.preventDefault();
+		$.ajax({
+			// url: '/cliente/',
+			// url: 'https://serasa.herokuapp.com/cliente/'+$('#id_parceiro').val(),
+			url: $('#form_url').val(),
+			type: 'PUT',
+			dataType: 'JSON',
+			// headers: {"token": sessionStorage.getItem("Sessao")},
+			headers: {"Authorization": $('#form_token').val()},
+			data: {
+				nome: $('#nome_cliente').val(),
+				cpf:  $('#cpf_cliente').val()
+			},
+			success: function(retorno){
+				// if (retorno.success) {
+					$('.alert-danger').prop('hidden', true);
+					$('.alert-success').prop('hidden', false);
+				// }
+			},
+			error: function(error){
+				if(error.status == 401){alert(error.responseJSON.mensagem);/*$("#conteudo-principal").load("login", function(){$('.serasa-content').css('display', 'block');});*/}
+				else{$('.alert-success').prop('hidden', true);$('.alert-danger').prop('hidden', false);}
+			},
+			complete: function(retorno){
+				$('#retorno').html(JSON.stringify(retorno.responseJSON, null, 2));
+			}
 		});
 	});
 
