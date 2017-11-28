@@ -35,7 +35,7 @@ var edit_schema_cliente = {
 		"cpf": { "type": "string" },
 		"nome_cliente": { "type": "string" }
 	},
-	"required": ["cpf", "nome"]
+	"required": ["cpf", "nome_cliente"]
 };
 var login_schema = {
 	"properties": {
