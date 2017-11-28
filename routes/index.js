@@ -385,7 +385,7 @@ router.get('/cliente', (req, res, next) => {
 						if(results.length > 0) {
 							return res.status(500).json({success: false, data: 'Não há clientes cadastrados ainda!'});
 						} else {
-							client.query("SELECT nome, cpf FROM cad_cliente, cad_parceiro WHERE token=($1) AND ativo=($2) ORDER BY id_cliente ASC",[req.headers.authorization, 'true'], function(err, result){
+							client.query("SELECT nome, cpf FROM cad_cliente WHERE token=($1) ORDER BY id_cliente ASC", [req.headers.authorization],  function(err, result){
 								done();
 								if (result.rowCount <= 0) {
 									return res.status(409).json({success: false, http: 409, mensagem: 'Parceiro inativo, verifique.'});
