@@ -653,28 +653,29 @@
 	$(document).on('click', '.btn-editar-cliente', function(e){
 		e.preventDefault();
 		var newName = prompt("Por favor entre com o novo nome:", $(this).data('nome'));
-		console.log(newName);
-		$.ajax({
-			// url: '/cliente',
-			url: $('#form_url').val(),
-			type: 'PUT',
-			dataType: 'JSON',
-			headers: {"Authorization": $('#form_token').val()},
-			data: {
-				cpf: $(this).data('id'),
-				nome_cliente: newName
-			},
-			success: function(retorno){
-				$('#cliente-visualizar').DataTable().draw();
-			},
-			error: function(error){
-				if(error.status == 401){alert(error.responseJSON.mensagem);/*$("#conteudo-principal").load("login", function(){$('.serasa-content').css('display', 'block');});*/}
-				else{$('.alert-success').prop('hidden', true);$('.alert-danger').prop('hidden', false);}
-			},
-			complete: function(retorno){
-				$('#retorno').html(JSON.stringify(retorno.responseJSON, null, 2));
-			}
-		});
+		if (newName != null) {
+			$.ajax({
+				// url: '/cliente',
+				url: $('#form_url').val(),
+				type: 'PUT',
+				dataType: 'JSON',
+				headers: {"Authorization": $('#form_token').val()},
+				data: {
+					cpf: $(this).data('id'),
+					nome_cliente: newName
+				},
+				success: function(retorno){
+					$('#cliente-visualizar').DataTable().draw();
+				},
+				error: function(error){
+					if(error.status == 401){alert(error.responseJSON.mensagem);/*$("#conteudo-principal").load("login", function(){$('.serasa-content').css('display', 'block');});*/}
+					else{$('.alert-success').prop('hidden', true);$('.alert-danger').prop('hidden', false);}
+				},
+				complete: function(retorno){
+					$('#retorno').html(JSON.stringify(retorno.responseJSON, null, 2));
+				}
+			});
+		}
 	});
 
 	$(document).on('click', '.btn-excluir-cliente', function(e){
