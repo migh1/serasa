@@ -264,6 +264,7 @@
 			headers: {"Authorization": $('#form_token').val()},
 			dataType: 'JSON',
 			success: function(retorno){
+				console.log(retorno);
 				$('.serasa-content').css('display', 'block');
 				$('.selector-tbody-clientes').empty();
 				$('.selector-tbody-clientes').append('\
