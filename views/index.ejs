@@ -652,7 +652,8 @@
 
 	$(document).on('click', '.btn-editar-cliente', function(e){
 		e.preventDefault();
-		var newName = prompt($(this).data('nome'));
+		var newName = prompt("Por favor entre com o novo nome:", $(this).data('nome'));
+		console.log(newName);
 		$.ajax({
 			// url: '/cliente',
 			url: $('#form_url').val(),
