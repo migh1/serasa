@@ -264,7 +264,6 @@
 			headers: {"Authorization": $('#form_token').val()},
 			dataType: 'JSON',
 			success: function(retorno){
-				console.log(retorno);
 				$('.serasa-content').css('display', 'block');
 				$('.selector-tbody-clientes').empty();
 				$.each(retorno, function(key, value){
@@ -666,7 +665,9 @@
 				},
 				success: function(retorno){
 					alert('Atualizado com sucesso.');
-					$('.selector-btn-reload-clientes').trigger('click');
+					setTimeout(function(){
+						$('.selector-btn-reload-clientes').trigger('click');
+					}, 500);
 				},
 				error: function(error){
 					if(error.status == 401){alert(error.responseJSON.mensagem);/*$("#conteudo-principal").load("login", function(){$('.serasa-content').css('display', 'block');});*/}
