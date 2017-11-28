@@ -500,7 +500,7 @@ router.put('/cliente', (req, res, next) => {
 							return res.status(422).json({success: false, http: 422, mensagem: 'CPF enviado não existe, verifique.'});
 						} else {
 							client.query("SELECT * FROM cad_parceiro WHERE token=($1) AND ativo=($2)",[req.headers.authorization, 'true'], function(err, result){
-								if (result.rowCount > 0) {
+								if (result.rowCount == 0) {
 									return res.status(422).json({success: false, http: 422, mensagem: 'Parceiro inativo, verifique.'});
 								} else {
 									client.query('UPDATE cad_cliente SET nome=($1) WHERE cpf=($2)',
