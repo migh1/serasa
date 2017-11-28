@@ -476,6 +476,40 @@ router.put('/cliente', (req, res, next) => {
 	});
 });
 
+
+router.delete('/cliente', (req, res, next) => {
+	isLogado(req.headers.authorization, function(err, valid){
+		if(!valid){
+			return res.status(401).json({success: false, http: 401, mensagem: 'Por favor, faça login novamente e repita o processo.'});
+		} else {
+			const results = [];
+			pg.connect(connectionString, (err, client, done) => {
+				if(err) {
+					done();
+					console.log(err);
+					return res.status(400).json({success: false, data: err});
+				}
+
+				client.query('DELETE FROM cad_cliente WHERE id_cliente=($1)', [req.body.id_cliente]);
+				var query = client.query('SELECT * FROM cad_cliente WHERE cpf=($1) ORDER BY id_cliente ASC', [req.body.id_cliente]);
+				
+				query.on('row', (row) => {
+					results.push(row);
+				});
+
+				query.on('end', function() {
+					done();
+					if(results.length) {
+						return res.status(422).json({success: false, data: 'Houve alguma falha na exclusão do cliente, por favor contate o administrador do sistema.'});
+					} else {
+						return res.json({success: true, data: 'Sucesso ao excluir!'});
+					}
+				});
+			});
+		}
+	});
+});
+
 function isLogado (token, callback){
 	const login = {token: token};
 	var loginSchema = {"token": {"type": "string"}};
