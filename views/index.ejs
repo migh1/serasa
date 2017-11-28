@@ -274,8 +274,8 @@
 							<td>'+value.nome+'</td>\
 							<td>'+value.cpf+'</td>\
 							<td>\
-								<a href="#" class="btn btn-success btn-editar-cliente" data-id="' + value.id_cliente + '" data-nome="' + value.nome + '"><i class="fa fa-pencil"></i></a>\
-								<a href="#" class="btn btn-danger btn-excluir-cliente" data-id="' + value.id_cliente + '"><i class="fa fa-trash"></i></a>\
+								<a href="#" class="btn btn-success btn-editar-cliente" data-id="' + value.cpf + '" data-nome="' + value.nome_cliente + '"><i class="fa fa-pencil"></i></a>\
+								<a href="#" class="btn btn-danger btn-excluir-cliente" data-id="' + value.cpf + '"><i class="fa fa-trash"></i></a>\
 							</td>\
 						</tr>\
 					');
@@ -635,8 +635,8 @@
 			type: 'POST',
 			dataType: 'JSON',
 			data: {
-				nome: 	$('#nome_cliente').val(),
-				cpf: 	$('#cpf_cliente').val()
+				nome_cliente: $('#nome_cliente').val(),
+				cpf: $('#cpf_cliente').val()
 			},
 			success: function(retorno){/*if (retorno.success) {*/$('.alert-danger').prop('hidden', true);$('.alert-success').prop('hidden', false);/*}*/},
 			error: function(error){
@@ -660,8 +660,8 @@
 			dataType: 'JSON',
 			headers: {"Authorization": $('#form_token').val()},
 			data: {
-				id_cliente: $(this).data('id'),
-				nome: newName
+				cpf: $(this).data('id'),
+				nome_cliente: newName
 			},
 			success: function(retorno){
 				$('#cliente-visualizar').DataTable().draw();
@@ -679,7 +679,7 @@
 	$(document).on('click', '.btn-excluir-cliente', function(e){
 		e.preventDefault();
 		var linha = $(this).parents('tr');
-		var id_cliente = $(this).data('id');
+		var cpf = $(this).data('id');
 		if (!confirm('Tem certeza que deseja excluir este cliente? Este processo é irreversivel.')) {
 			return false;
 		}
@@ -688,7 +688,7 @@
 			type: 'DELETE',
 			dataType: 'JSON',
 			headers: {"Authorization": $('#form_token').val()},
-			data: {id_cliente: id_cliente}, 
+			data: {cpf: cpf}, 
 			success: function(retorno){alert('Cliente excluido com sucesso!');$('#cliente-visualizar').DataTable().row(linha).remove().draw();},
 			error: function(error){console.log(error);},
 			complete: function(retorno){}
