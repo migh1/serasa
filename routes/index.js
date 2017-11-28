@@ -363,12 +363,17 @@ router.get('/cliente/edit', function(req, res, next) {
 
 //GET pega os dados dos clientes
 router.get('/cliente', (req, res, next) => {
+	console.log('1');
 	isLogado(req.headers.authorization, function(err, valid){
+		console.log('2');
 		if(!valid){
+		console.log('3');
 			return res.status(401).json({success: false, http: 401, mensagem: 'Por favor, faça login novamente e repita o processo.'});
 		} else {
-			var results;
+		console.log('4');
+			var results = [];
 			pg.connect(connectionString, (err, client, done) => {
+		console.log('5');
 				if(err) {
 					done();
 					console.log(err);
@@ -376,15 +381,19 @@ router.get('/cliente', (req, res, next) => {
 						success: false, data: err
 					});
 				} else {
-					const query = client.query('SELECT nome, cpf FROM cad_cliente WHERE token=($1) ORDER BY id_cliente ASC;', [req.headers.authorization]);
+		console.log('6');
+					const query = client.query('SELECT nome, cpf FROM cad_cliente WHERE token=($1) ORDER BY id_cliente ASC limit 1;', [req.headers.authorization]);
+		console.log('7');
 					query.on('row', (row) => {
-						results = row;
+						results.push(row)
 					});
 					query.on('end', () => {
 						done();
-						if(results.length > 0) {
+		console.log('8');
+						if(!results.length) {
 							return res.status(500).json({success: false, data: 'Não há clientes cadastrados ainda!'});
 						} else {
+		console.log('9');
 							client.query("SELECT nome, cpf FROM cad_cliente WHERE token=($1) ORDER BY id_cliente ASC", [req.headers.authorization],  function(err, result){
 								done();
 								if (result.rowCount <= 0) {
