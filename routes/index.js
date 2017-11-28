@@ -32,10 +32,10 @@ var edit_schema = {
 };
 var edit_schema_cliente = {
 	"properties": {
-		"nome": { "type": "string" },
-		"cpf": { "type": "string" }
+		"id_cliente": { "type": "int" },
+		"nome": { "type": "string" }
 	},
-	"required": ["nome", "cpf"]
+	"required": ["id_cliente", "nome"]
 };
 var login_schema = {
 	"properties": {
@@ -440,7 +440,7 @@ router.post('/cliente', (req, res, next) => {
 	}
 });
 
-//faz um update no cliente
+/*//faz um update no cliente
 router.put('/cliente', (req, res, next) => {
 	isLogado(req.headers.authorization, function(err, valid){
 		if(!valid){
@@ -474,9 +474,9 @@ router.put('/cliente', (req, res, next) => {
 			}
 		}
 	});
-});
+});*/
 
-
+//faz um delete do cliente
 router.delete('/cliente', (req, res, next) => {
 	isLogado(req.headers.authorization, function(err, valid){
 		if(!valid){
@@ -506,6 +506,51 @@ router.delete('/cliente', (req, res, next) => {
 					}
 				});
 			});
+		}
+	});
+});
+
+//faz um update no parceiro
+router.put('/cliente', (req, res, next) => {
+	isLogado(req.headers.authorization, function(err, valid){
+		if(!valid){
+			return res.status(401).json({success: false, http: 401, mensagem: 'Por favor, faça login novamente e repita o processo.'});
+		} else {
+			if(!ajv.validate(edit_schema_cliente, req.body)){
+				return res.status(400).json({success: false, http: 400, mensagem: 'JSON schema inválido, verifique.'});
+			} else {
+				pg.connect(connectionString, (err, client, done) => {
+					if(err) {
+						done();
+						console.log(err);
+						return res.status(400).json({success: false, data: err});
+					}
+					const query = client.query("SELECT * FROM cad_cliente WHERE id_cliente=($1)",[req.body.id_cliente], function(err, result){
+						done();
+						if (result.rowCount == 0) {
+							return res.status(422).json({success: false, http: 422, mensagem: 'id_cliente enviado não existe, verifique.'});
+						} else {
+							client.query("SELECT * FROM cad_parceiro WHERE token=($1) AND ativo=($2)",[req.headers.authorization, 'true'], function(err, result){
+								if (result.rowCount > 0) {
+									return res.status(422).json({success: false, http: 422, mensagem: 'Parceiro inativo, verifique.'});
+								} else {
+									client.query('UPDATE cad_cliente SET nome=($1) WHERE id_cliente=($2)',
+										[req.body.nome, req.body.id_cliente],
+										function(err, result){
+											done();
+											if(err) {
+												return res.status(422).json({success: false, data: 'Houve alguma falha na atualização do parceiro, por favor contate o administrador do sistema.'});
+											} else {
+												return res.json({success: true, data: 'Sucesso ao atualizar cliente!'});
+											}
+										}
+									);
+								}
+							});
+						}
+					});
+				});
+			}
 		}
 	});
 });
