@@ -682,7 +682,7 @@
 
 	$(document).on('click', '.btn-excluir-cliente', function(e){
 		e.preventDefault();
-		var linha = $(this).parent('tr');
+		var linha = $(this).parents('tr');
 		var id_cliente = $(this).data('id');
 		if (!confirm('Tem certeza que deseja excluir este cliente? Este processo é irreversivel.')) {
 			return false;
