@@ -482,6 +482,7 @@ router.delete('/cliente/:id_cliente', (req, res, next) => {
 //faz um update no parceiro
 router.put('/cliente/:id_cliente', (req, res, next) => {
 	console.log(req.body);
+	console.log(req.params);
 	isLogado(req.headers.authorization, function(err, valid){
 		if(!valid){
 			return res.status(401).json({success: false, http: 401, mensagem: 'Por favor, faça login novamente e repita o processo.'});
