@@ -444,8 +444,6 @@ router.post('/cliente', (req, res, next) => {
 
 //faz um delete do cliente
 router.delete('/cliente/:id_cliente', (req, res, next) => {
-	req.body.cpf.replace(/\D/g, '');
-	console.log(req.body.cpf);
 	isLogado(req.headers.authorization, function(err, valid){
 		if(!valid){
 			return res.status(401).json({success: false, http: 401, mensagem: 'Por favor, faça login novamente e repita o processo.'});
