@@ -451,7 +451,7 @@ router.delete('/cliente/:id_cliente', (req, res, next) => {
 			return res.status(401).json({success: false, http: 401, mensagem: 'Por favor, faça login novamente e repita o processo.'});
 		} else {
 			const results = [];
-			var id_cliente = req.params.id_cliente;
+			var id_cliente = req.params.id_cliente.length == 0 ? null : ''+req.params.id_cliente;
 			pg.connect(connectionString, (err, client, done) => {
 				if(err) {
 					done();
@@ -489,14 +489,14 @@ router.put('/cliente/:id_cliente', (req, res, next) => {
 			if(!ajv.validate(edit_schema_cliente, req.body)){
 				return res.status(400).json({success: false, http: 400, mensagem: 'JSON schema inválido, verifique.'});
 			} else {
-				var id_cliente = req.params.id_cliente;
+				var id_cliente = req.params.id_cliente.length == 0 ? null : ''+req.params.id_cliente;
 				pg.connect(connectionString, (err, client, done) => {
 					if(err) {
 						done();
 						console.log(err);
 						return res.status(400).json({success: false, mensagem: err});
 					}
-					const query = client.query("SELECT * FROM cad_cliente WHERE id_cliente=($1)",[req.body.id_cliente], function(err, result){
+					const query = client.query("SELECT * FROM cad_cliente WHERE id_cliente=($1)",[id_cliente], function(err, result){
 						done();
 						if (result.rowCount == 0) {
 							return res.status(422).json({success: false, http: 422, mensagem: 'ID do cliente enviado não existe, verifique.'});
