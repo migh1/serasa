@@ -481,8 +481,6 @@ router.delete('/cliente/:id_cliente', (req, res, next) => {
 
 //faz um update no parceiro
 router.put('/cliente/:id_cliente', (req, res, next) => {
-	console.log(req.body);
-	console.log(req.params);
 	isLogado(req.headers.authorization, function(err, valid){
 		if(!valid){
 			return res.status(401).json({success: false, http: 401, mensagem: 'Por favor, faça login novamente e repita o processo.'});
@@ -506,8 +504,8 @@ router.put('/cliente/:id_cliente', (req, res, next) => {
 								if (result.rowCount == 0) {
 									return res.status(422).json({success: false, http: 422, mensagem: 'Parceiro inativo, verifique.'});
 								} else {
-									client.query('UPDATE cad_cliente SET nome=($1) WHERE id_cliente=($2)',
-										[req.body.nome_cliente, req.body.id_cliente],
+									client.query('UPDATE cad_cliente SET nome_cliente=($1) WHERE id_cliente=($2)',
+										[req.body.nome_cliente, id_cliente],
 										function(err, result){
 											done();
 											if(err) {
