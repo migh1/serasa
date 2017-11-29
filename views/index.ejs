@@ -652,10 +652,11 @@
 	$(document).on('click', '.btn-editar-cliente', function(e){
 		e.preventDefault();
 		var newName = prompt("Por favor entre com o novo nome:", $(this).data('nome'));
+		var url = $('#form_url').val() + '/' + $(this).data('id');
 		if (newName != null) {
 			$.ajax({
 				// url: '/cliente',
-				url: $('#form_url').val() + '/' + $(this).data('id'),
+				url: url,
 				type: 'PUT',
 				dataType: 'JSON',
 				headers: {"Authorization": $('#form_token').val()},
@@ -683,11 +684,12 @@
 	$(document).on('click', '.btn-excluir-cliente', function(e){
 		e.preventDefault();
 		var linha = $(this).parents('tr');
+		var url = $('#form_url').val() + '/' + $(this).data('id');
 		if (!confirm('Tem certeza que deseja excluir este cliente? Este processo é irreversivel.')) {
 			return false;
 		}
 		$.ajax({
-			url: $('#form_url').val() + '/' + $(this).data('id'),
+			url: url,
 			type: 'DELETE',
 			dataType: 'JSON',
 			headers: {"Authorization": $('#form_token').val()},
