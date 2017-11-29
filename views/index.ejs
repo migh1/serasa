@@ -273,8 +273,8 @@
 							<td>'+value.nome_cliente+'</td>\
 							<td>'+value.cpf+'</td>\
 							<td>\
-								<a href="#" class="btn btn-success btn-editar-cliente" data-id="' + value.cpf + '" data-nome="' + value.nome_cliente + '"><i class="fa fa-pencil"></i></a>\
-								<a href="#" class="btn btn-danger btn-excluir-cliente" data-id="' + value.cpf + '"><i class="fa fa-trash"></i></a>\
+								<a href="#" class="btn btn-success btn-editar-cliente" data-cpf="' + value.cpf + '" data-nome="' + value.nome_cliente + '" data-id="' + value.id_cliente + '"><i class="fa fa-pencil"></i></a>\
+								<a href="#" class="btn btn-danger btn-excluir-cliente" data-cpf="' + value.cpf + '" data-id="' + value.id_cliente + '"><i class="fa fa-trash"></i></a>\
 							</td>\
 						</tr>\
 					');
@@ -655,12 +655,12 @@
 		if (newName != null) {
 			$.ajax({
 				// url: '/cliente',
-				url: $('#form_url').val(),
+				url: $('#form_url').val() + '/' + $(this).data('id'),
 				type: 'PUT',
 				dataType: 'JSON',
 				headers: {"Authorization": $('#form_token').val()},
 				data: {
-					cpf: $(this).data('id'),
+					cpf: $(this).data('cpf'),
 					nome_cliente: newName
 				},
 				success: function(retorno){
@@ -683,16 +683,14 @@
 	$(document).on('click', '.btn-excluir-cliente', function(e){
 		e.preventDefault();
 		var linha = $(this).parents('tr');
-		var cpf = $(this).data('id');
 		if (!confirm('Tem certeza que deseja excluir este cliente? Este processo é irreversivel.')) {
 			return false;
 		}
 		$.ajax({
-			url: $('#form_url').val(),
+			url: $('#form_url').val() + '/' + $(this).data('id'),
 			type: 'DELETE',
 			dataType: 'JSON',
 			headers: {"Authorization": $('#form_token').val()},
-			data: {cpf: cpf}, 
 			success: function(retorno){alert('Cliente excluido com sucesso!');$('#cliente-visualizar').DataTable().row(linha).remove().draw();},
 			error: function(error){console.log(error);},
 			complete: function(retorno){}
