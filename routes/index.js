@@ -368,11 +368,6 @@ router.get('/cliente/create', function(req, res, next) {
 	res.render('cliente/create', { title: 'Cadastrar Cliente' });
 });
 
-/* GET cliente edit page. */
-router.get('/cliente/edit', function(req, res, next) {
-	res.render('cliente/edit', { title: 'Editar Cliente' });
-});
-
 /* GET cliente read page. */
 router.get('/cliente/read', function(req, res, next) {
 	res.render('cliente/read', { title: 'Visualizar Clientes' });
@@ -532,6 +527,16 @@ router.put('/cliente/:id_cliente', (req, res, next) => {
 			}
 		}
 	});
+});
+
+/* GET titulo create page. */
+router.get('/titulo/create', function(req, res, next) {
+	res.render('titulo/create', { title: 'Cadastrar Titulo' });
+});
+
+/* GET titulo read page. */
+router.get('/titulo/read', function(req, res, next) {
+	res.render('titulo/read', { title: 'Visualizar Titulos' });
 });
 
 //faz um post e entao um insert na tabela cad_cliente do banco serasa
