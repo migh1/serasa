@@ -558,8 +558,8 @@ router.post('/titulo', (req, res, next) => {
 					if(!ajv.validate(schema_titulo, req.body)){
 						return res.status(400).json({success: false, http: 400, mensagem: 'JSON schema inválido, verifique.'});
 					} else {
-						var query_insert = client.query('INSERT INTO cad_titulo(id_parceiro, valor, descricao, situacao, data_emissao, data_pagamento) values($1, $2, $3, $4, $5, $6) RETURNING id_titulo', 
-							[req.body.id_parceiro, req.body.valor, req.body.descricao, req.body.situacao, req.body.data_emissao, req.body.data_pagamento],
+						var query_insert = client.query('INSERT INTO cad_titulo(id_parceiro, id_cliente, valor, descricao, situacao, data_emissao, data_pagamento) values($1, $2, $3, $4, $5, $6, $7) RETURNING id_titulo', 
+							[req.body.id_parceiro, req.body.id_cliente, req.body.valor, req.body.descricao, req.body.situacao, req.body.data_emissao, req.body.data_pagamento],
 							function(err, result){
 								done();
 								console.log(query_insert);
