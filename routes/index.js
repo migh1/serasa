@@ -646,9 +646,9 @@ router.delete('/titulo/:id_titulo', (req, res, next) => {
 					client.query('UPDATE cad_titulo SET situacao=($1) WHERE id_titulo=($2) AND situacao=($3)', ['0', id_titulo, '1'], function(err, result){
 						if (err) {
 							done();
-							return res.status(422).json({success: false, mensagem: 'Houve alguma falha no cancelamento do titulo, por favor contate o administrador do sistema.'});
+							return res.status(422).json({success: false, http:422, mensagem: 'Houve alguma falha no cancelamento do titulo, por favor contate o administrador do sistema.'});
 						} else if(result.rowCount == 0){
-							return res.status(304).json({success: false, mensagem: 'Não é possível cancelar este titulo, verifique se a situacao é 1 (Aberto)'});
+							return res.status(422).json({success: false, http:422, mensagem: 'Não é possível cancelar este titulo, verifique se a situacao é 1 (Aberto)'});
 						} else {
 							return res.json({success: true, mensagem: 'Sucesso ao cancelar!'});
 						}

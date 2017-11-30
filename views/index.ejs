@@ -862,7 +862,7 @@
 					$('.selector-btn-reload-titulos').trigger('click');
 				}, 500);
 			},
-			error: function(error){console.log(error);},
+			error: function(error){alert('Não foi possível cancelar o titulo, verifique se está com situacao em ABERTO (1).');},
 			complete: function(retorno){$('#retorno').html(JSON.stringify(retorno.responseJSON, null, 2));}
 		});		
 	});
