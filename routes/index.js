@@ -643,17 +643,10 @@ router.delete('/titulo/:id_titulo', (req, res, next) => {
 						return res.status(400).json({success: false, mensagem: err});
 					}
 
-					client.query('UPDATE cad_titulo SET situacao=($1) WHERE id_titulo=($2) AND situacao=($3)', ['0', id_titulo], '1');
-					var query = client.query('SELECT * FROM cad_titulo WHERE id_titulo=($1) AND situacao!=($2) ORDER BY id_titulo ASC', [id_titulo, '0']);
-					
-					query.on('row', (row) => {
-						results.push(row);
-					});
-
-					query.on('end', function() {
-						done();
-						if(results.length) {
-							return res.status(422).json({success: false, mensagem: 'Houve alguma falha na exclusão do cliente, por favor contate o administrador do sistema.'});
+					client.query('UPDATE cad_titulo SET situacao=($1) WHERE id_titulo=($2) AND situacao=($3)', ['0', id_titulo], '1'], function(err, result){
+						if (err) {
+							done();
+							return res.status(422).json({success: false, mensagem: 'Houve alguma falha no cancelamento do titulo, por favor contate o administrador do sistema.'});
 						} else {
 							return res.json({success: true, mensagem: 'Sucesso ao cancelar!'});
 						}
