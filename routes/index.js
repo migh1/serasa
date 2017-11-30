@@ -554,7 +554,7 @@ router.get('/titulo', (req, res, next) => {
 						success: false, mensagem: err
 					});
 				} else {
-					const query = client.query('SELECT *, cc.nome_cliente FROM cad_titulo ct inner join cad_parceiro cp ON cp.id_parceiro = ct.id_parceiro inner join cad_cliente cc ON cc.id_cliente ct.id_cliente WHERE cp.token=($1) AND cp.ativo=($2) ORDER BY ct.id_titulo ASC;', [req.headers.authorization, 'true']);
+					const query = client.query('SELECT *, cc.nome as nome_cliente FROM cad_titulo ct inner join cad_parceiro cp ON cp.id_parceiro = ct.id_parceiro inner join cad_cliente cc ON cc.id_cliente ct.id_cliente WHERE cp.token=($1) AND cp.ativo=($2) ORDER BY ct.id_titulo ASC;', [req.headers.authorization, 'true']);
 					query.on('row', (row) => {
 						results.push(row)
 					});
@@ -587,7 +587,7 @@ router.post('/titulo', (req, res, next) => {
 					return res.status(422).json({success: false, http: 422, mensagem: 'Parceiro ou Cliente não encontrado, verifique.'});
 				} else {
 					req.body.id_parceiro = ''+result.rows[0].id_parceiro;
-					console.log(req.body);
+
 					if(!ajv.validate(schema_titulo, req.body)){
 						return res.status(400).json({success: false, http: 400, mensagem: 'JSON schema inválido, verifique.'});
 					} else {
@@ -595,7 +595,6 @@ router.post('/titulo', (req, res, next) => {
 							[req.body.id_parceiro, req.body.id_cliente, req.body.valor, req.body.descricao, req.body.situacao, req.body.data_emissao, req.body.data_pagamento],
 							function(err, result){
 								done();
-								console.log(query_insert);
 								if(err) {
 									return res.status(422).json({success: false, http: 422, mensagem: 'Falha na gravação, por favor verifique o JSON enviado.'});
 								} else {
