@@ -464,6 +464,12 @@
 		if ($(this).data('id') == 'cadastrar') {
 			$("#conteudo-principal").load("titulo/create", function(){
 				$('.serasa-content').css('display', 'block');
+				if (sessionStorage.getItem("Sessao") != "null") {
+					$('#form_token').val(sessionStorage.getItem("Sessao"));
+				}
+				if (sessionStorage.getItem("url") != "null") {
+					$('#form_url').val(sessionStorage.getItem("url").replace("login", "titulo"));
+				}
 			});
 			// window.history.replaceState(null, null, '/create');
 		}
