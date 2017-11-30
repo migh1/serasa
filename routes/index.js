@@ -549,7 +549,7 @@ router.post('/titulo', (req, res, next) => {
 				return res.status(400).json({success: false, http: 400, mensagem: 'Erro ao se conectar com o banco.'});
 			}
 
-			const query = client.query("SELECT cp.id_parceiro, cc.cliente_id FROM cad_parceiro cp, cad_cliente cc WHERE cp.token=($1)",[req.headers.authorization], function(err, result){
+			const query = client.query("SELECT cp.id_parceiro, cc.id_cliente FROM cad_parceiro cp, cad_cliente cc WHERE cp.token=($1)",[req.headers.authorization], function(err, result){
 				done();
 
 				if (result.rowCount == 0) {
