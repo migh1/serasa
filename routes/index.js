@@ -643,7 +643,7 @@ router.delete('/titulo/:id_titulo', (req, res, next) => {
 						return res.status(400).json({success: false, mensagem: err});
 					}
 
-					client.query('UPDATE cad_titulo SET situacao=($1) WHERE id_titulo=($2) AND situacao=($3)', ['0', id_titulo], '1'], function(err, result){
+					client.query('UPDATE cad_titulo SET situacao=($1) WHERE id_titulo=($2) AND situacao=($3)', ['0', id_titulo, '1'], function(err, result){
 						if (err) {
 							done();
 							return res.status(422).json({success: false, mensagem: 'Houve alguma falha no cancelamento do titulo, por favor contate o administrador do sistema.'});
