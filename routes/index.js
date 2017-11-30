@@ -659,7 +659,12 @@ router.put('/titulo/:id_titulo', (req, res, next) => {
 
 function isLogado (token, callback){
 	const login = {token: token};
-	var loginSchema = {"token": {"type": "string"}};
+	var loginSchema = {
+		"properties": {
+			"token": {"type": "string"}
+		},
+		"required": ["token"]
+	};
 
   	if(ajv.validate(loginSchema, login)){
 		pg.connect(connectionString, (err, client, done) => {
