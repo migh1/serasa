@@ -574,7 +574,6 @@ router.get('/titulo', (req, res, next) => {
 					query.on('row', (row) => {
 						results.push(row)
 					});
-					console.log(query);
 					query.on('end', () => {
 						done();
 						if(!results.length) {
@@ -645,7 +644,7 @@ router.delete('/titulo/:id_titulo', (req, res, next) => {
 					}
 
 					client.query('UPDATE cad_titulo SET situacao=($1) WHERE id_titulo=($2)', ['0', id_titulo]);
-					var query = client.query('SELECT * FROM cad_cliente WHERE id_titulo=($1) ORDER BY id_titulo ASC', [id_titulo]);
+					var query = client.query('SELECT * FROM cad_titulo WHERE id_titulo=($1) ORDER BY id_titulo ASC', [id_titulo]);
 					
 					query.on('row', (row) => {
 						results.push(row);
