@@ -554,7 +554,7 @@ router.get('/titulo', (req, res, next) => {
 						success: false, mensagem: err
 					});
 				} else {
-					const query = client.query('SELECT * FROM cad_titulo ct inner join cad_parceiro cp ON cp.id_parceiro = ct.id_parceiro WHERE cp.token=($1) AND cp.ativo=($2) ORDER BY ct.id_titulo ASC;', [req.headers.authorization, 'true']);
+					const query = client.query('SELECT *, cc.nome_cliente FROM cad_titulo ct inner join cad_parceiro cp ON cp.id_parceiro = ct.id_parceiro inner join cad_cliente cc ON cc.id_cliente ct.id_cliente WHERE cp.token=($1) AND cp.ativo=($2) ORDER BY ct.id_titulo ASC;', [req.headers.authorization, 'true']);
 					query.on('row', (row) => {
 						results.push(row)
 					});
