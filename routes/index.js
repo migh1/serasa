@@ -643,7 +643,7 @@ router.delete('/titulo/:id_titulo', (req, res, next) => {
 						return res.status(400).json({success: false, mensagem: err});
 					}
 
-					client.query('UPDATE cad_titulo SET situacao=($1) WHERE id_titulo=($2)', ['0', id_titulo]);
+					client.query('UPDATE cad_titulo SET situacao=($1) WHERE id_titulo=($2) AND situacao=($3)', ['0', id_titulo], '1');
 					var query = client.query('SELECT * FROM cad_titulo WHERE id_titulo=($1) AND situacao!=($2) ORDER BY id_titulo ASC', [id_titulo, '0']);
 					
 					query.on('row', (row) => {
