@@ -495,35 +495,39 @@ router.put('/cliente/:id_cliente', (req, res, next) => {
 			if(!ajv.validate(edit_schema_cliente, req.body)){
 				return res.status(400).json({success: false, http: 400, mensagem: 'JSON schema inválido, verifique.'});
 			} else {
-				var id_cliente = req.params.id_cliente.length == 0 ? null : ''+req.params.id_cliente;
-				pg.connect(connectionString, (err, client, done) => {
-					if(err) {
-						done();
-						console.log(err);
-						return res.status(400).json({success: false, mensagem: err});
-					}
-					const query = client.query("SELECT * FROM cad_cliente WHERE id_cliente=($1)",[id_cliente], function(err, result){
-						done();
-						if (result.rowCount == 0) {
-							return res.status(422).json({success: false, http: 422, mensagem: 'ID do cliente enviado não existe, verifique.'});
-						} else {
-							client.query("SELECT * FROM cad_parceiro WHERE token=($1) AND ativo=($2)",[req.headers.authorization, 'true'], function(err, result){
-								if (result.rowCount == 0) {
-									return res.status(422).json({success: false, http: 422, mensagem: 'Parceiro inativo, verifique.'});
-								} else {
-									client.query('UPDATE cad_cliente SET nome=($1) WHERE id_cliente=($2)', [req.body.nome_cliente, id_cliente], function(err, result){
-										done();
-										if(err) {
-											return res.status(422).json({success: false, mensagem: 'Houve alguma falha na atualização do parceiro, por favor contate o administrador do sistema.'});
-										} else {
-											return res.json({success: true, mensagem: 'Sucesso ao atualizar cliente!'});
-										}
-									});
-								}
-							});
+				if (req.params.id_cliente == null) {
+					return res.status(400).json({success: false, http: 400, mensagem: 'Cliente ID inválido, verifique.'});
+				}else{
+					var id_cliente = req.params.id_cliente;
+					pg.connect(connectionString, (err, client, done) => {
+						if(err) {
+							done();
+							console.log(err);
+							return res.status(400).json({success: false, mensagem: err});
 						}
+						const query = client.query("SELECT * FROM cad_cliente WHERE id_cliente=($1)",[id_cliente], function(err, result){
+							done();
+							if (result.rowCount == 0) {
+								return res.status(422).json({success: false, http: 422, mensagem: 'ID do cliente enviado não existe, verifique.'});
+							} else {
+								client.query("SELECT * FROM cad_parceiro WHERE token=($1) AND ativo=($2)",[req.headers.authorization, 'true'], function(err, result){
+									if (result.rowCount == 0) {
+										return res.status(422).json({success: false, http: 422, mensagem: 'Parceiro inativo, verifique.'});
+									} else {
+										client.query('UPDATE cad_cliente SET nome=($1) WHERE id_cliente=($2)', [req.body.nome_cliente, id_cliente], function(err, result){
+											done();
+											if(err) {
+												return res.status(422).json({success: false, mensagem: 'Houve alguma falha na atualização do parceiro, por favor contate o administrador do sistema.'});
+											} else {
+												return res.json({success: true, mensagem: 'Sucesso ao atualizar cliente!'});
+											}
+										});
+									}
+								});
+							}
+						});
 					});
-				});
+				}
 			}
 		}
 	});
@@ -637,7 +641,7 @@ router.delete('/titulo/:id_titulo', (req, res, next) => {
 					return res.status(400).json({success: false, mensagem: err});
 				}
 
-				client.query('DELETE FROM cad_cliente WHERE id_titulo=($1)', [id_titulo]);
+				client.query('UPDATE cad_titulo SET situacao=($1) WHERE id_titulo=($2)', ['0', id_titulo]);
 				var query = client.query('SELECT * FROM cad_cliente WHERE id_titulo=($1) ORDER BY id_titulo ASC', [id_titulo]);
 				
 				query.on('row', (row) => {
