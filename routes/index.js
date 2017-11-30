@@ -597,10 +597,10 @@ router.post('/titulo', (req, res, next) => {
 				console.log(err);
 				return res.status(400).json({success: false, http: 400, mensagem: 'Erro ao se conectar com o banco.'});
 			}
-			const query = client.query("SELECT cp.id_parceiro, cc.id_cliente FROM cad_parceiro cp, cad_cliente cc WHERE cp.token=($1)",[req.headers.authorization], function(err, result){
+			const query = client.query("SELECT cp.id_parceiro, cc.id_cliente FROM cad_parceiro cp, cad_cliente cc WHERE cp.token=($1) AND cc.id_cliente=($2)",[req.headers.authorization, req.body.id_cliente], function(err, result){
 				done();
 				if (result.rowCount == 0) {
-					return res.status(422).json({success: false, http: 422, mensagem: 'Parceiro ou Cliente não encontrado, verifique.'});
+					return res.status(404).json({success: false, http: 404, mensagem: 'Parceiro ou Cliente não encontrado, verifique.'});
 				} else {
 					req.body.id_parceiro = ''+result.rows[0].id_parceiro;
 
