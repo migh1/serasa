@@ -552,6 +552,7 @@ router.post('/titulo', (req, res, next) => {
 			const query = client.query("SELECT id_parceiro FROM cad_parceiro WHERE token=($1)",[req.headers.authorization], function(err, result){
 				done();
 				console.log(result);
+				console.log(result.rows[0]);
 				if (result.rowCount == 0) {
 					return res.status(422).json({success: false, http: 422, mensagem: 'Parceiro não encontrado, verifique.'});
 				} else {
