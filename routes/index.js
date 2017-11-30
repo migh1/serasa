@@ -548,10 +548,8 @@ router.post('/titulo', (req, res, next) => {
 				console.log(err);
 				return res.status(400).json({success: false, http: 400, mensagem: 'Erro ao se conectar com o banco.'});
 			}
-
 			const query = client.query("SELECT cp.id_parceiro, cc.id_cliente FROM cad_parceiro cp, cad_cliente cc WHERE cp.token=($1)",[req.headers.authorization], function(err, result){
 				done();
-
 				if (result.rowCount == 0) {
 					return res.status(422).json({success: false, http: 422, mensagem: 'Parceiro ou Cliente não encontrado, verifique.'});
 				} else {
@@ -560,12 +558,13 @@ router.post('/titulo', (req, res, next) => {
 					if(!ajv.validate(schema_titulo, req.body)){
 						return res.status(400).json({success: false, http: 400, mensagem: 'JSON schema inválido, verifique.'});
 					} else {
-						client.query('INSERT INTO cad_titulo(id_parceiro, valor, descricao, situacao, data_emissao, data_pagamento) values($1, $2, $3, $4, $5, $6) RETURNING id_titulo', 
+						var query_insert = client.query('INSERT INTO cad_titulo(id_parceiro, valor, descricao, situacao, data_emissao, data_pagamento) values($1, $2, $3, $4, $5, $6) RETURNING id_titulo', 
 							[req.body.id_parceiro, req.body.valor, req.body.descricao, req.body.situacao, req.body.data_emissao, req.body.data_pagamento],
 							function(err, result){
 								done();
+								console.log(query_insert);
 								if(err) {
-									return res.status(422).json({success: false, http: 422, mensagem: 'Falha na validação dos dados, por favor verifique o JSON enviado.'});
+									return res.status(422).json({success: false, http: 422, mensagem: 'Falha na gravação, por favor verifique o JSON enviado.'});
 								} else {
 									return res.json({success: true, mensagem: result.rows[0].id_titulo});
 								}
