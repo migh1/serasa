@@ -539,6 +539,39 @@ router.get('/titulo/read', function(req, res, next) {
 	res.render('titulo/read', { title: 'Visualizar Titulos' });
 });
 
+//GET pega os dados dos clientes
+router.get('/titulo', (req, res, next) => {
+	isLogado(req.headers.authorization, function(err, valid){
+		if(!valid){
+			return res.status(401).json({success: false, http: 401, mensagem: 'Por favor, faça login novamente e repita o processo.'});
+		} else {
+			var results = [];
+			pg.connect(connectionString, (err, client, done) => {
+				if(err) {
+					done();
+					console.log(err);
+					return res.status(500).json({
+						success: false, mensagem: err
+					});
+				} else {
+					const query = client.query('SELECT * FROM cad_titulo ct inner join cad_parceiro cp ON cp.id_parceiro = ct.id_parceiro WHERE cp.token=($1) AND cp.ativo=($2) ORDER BY ct.id_titulo ASC;', [req.headers.authorization, 'true']);
+					query.on('row', (row) => {
+						results.push(row)
+					});
+					query.on('end', () => {
+						done();
+						if(!results.length) {
+							return res.status(500).json({success: false, mensagem: 'Parceiro inativo ou token invalida, verifique.'});
+						} else {
+							return res.status(200).json(results);
+						}
+					});
+				}
+			});
+		}
+	});
+});
+
 //faz um post e entao um insert na tabela cad_cliente do banco serasa
 router.post('/titulo', (req, res, next) => {
 	isLogado(req.headers.authorization, function(err, valid){
