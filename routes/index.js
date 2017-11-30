@@ -644,7 +644,7 @@ router.delete('/titulo/:id_titulo', (req, res, next) => {
 					}
 
 					client.query('UPDATE cad_titulo SET situacao=($1) WHERE id_titulo=($2)', ['0', id_titulo]);
-					var query = client.query('SELECT * FROM cad_titulo WHERE id_titulo=($1) AND situacao != "0" ORDER BY id_titulo ASC', [id_titulo]);
+					var query = client.query('SELECT * FROM cad_titulo WHERE id_titulo=($1) AND situacao!=($2) ORDER BY id_titulo ASC', [id_titulo, '0']);
 					
 					query.on('row', (row) => {
 						results.push(row);
@@ -655,7 +655,7 @@ router.delete('/titulo/:id_titulo', (req, res, next) => {
 						if(results.length) {
 							return res.status(422).json({success: false, mensagem: 'Houve alguma falha na exclusão do cliente, por favor contate o administrador do sistema.'});
 						} else {
-							return res.json({success: true, mensagem: 'Sucesso ao excluir!'});
+							return res.json({success: true, mensagem: 'Sucesso ao cancelar!'});
 						}
 					});
 				});
