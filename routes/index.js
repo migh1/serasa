@@ -514,7 +514,7 @@ router.put('/cliente/:id_cliente', (req, res, next) => {
 									if (result.rowCount == 0) {
 										return res.status(422).json({success: false, http: 422, mensagem: 'Parceiro inativo, verifique.'});
 									} else {
-										client.query('UPDATE cad_cliente SET nome=($1) WHERE id_cliente=($2)', [req.body.nome_cliente, id_cliente], function(err, result){
+										client.query('UPDATE cad_cliente SET nome=($1), cpf=($2) WHERE id_cliente=($3)', [req.body.nome_cliente, req.body.cpf, id_cliente], function(err, result){
 											done();
 											if(err) {
 												return res.status(422).json({success: false, mensagem: 'Houve alguma falha na atualização do parceiro, por favor contate o administrador do sistema.'});
