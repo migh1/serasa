@@ -173,7 +173,12 @@
 					<div class="collapse" id="cliente">
 						<a href="#" class="list-group-item cliente-menu" data-parent="#cliente" data-id="visualizar">Visualizar</a>
 						<a href="#" class="list-group-item cliente-menu" data-parent="#cliente" data-id="cadastrar">Cadastrar</a>
-						<a href="#" class="list-group-item cliente-menu" data-parent="#cliente" data-id="editar">Editar</a>
+					</div>
+					<a href="#titulo" class="list-group-item d-inline-block collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="fa fa-address-book-o"></i> <span class="d-none d-md-inline">Titulos</span> </a>
+					<div class="collapse" id="titulo">
+						<a href="#" class="list-group-item titulo-menu" data-parent="#titulo" data-id="visualizar">Visualizar</a>
+						<a href="#" class="list-group-item titulo-menu" data-parent="#titulo" data-id="cadastrar">Cadastrar</a>
+						<a href="#" class="list-group-item titulo-menu" data-parent="#titulo" data-id="editar">Editar</a>
 					</div>
 					<!-- <a href="#" class="list-group-item d-inline-block collapsed" data-parent="#sidebar"><i class="fa fa-film"></i> <span class="d-none d-md-inline">Item 2</span></a> -->
 					<!-- <a href="#menu3" class="list-group-item d-inline-block collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="fa fa-book"></i> <span class="d-none d-md-inline">Item 3 </span></a>
@@ -257,8 +262,8 @@
 	$(document).on('click', '.selector-btn-reload-clientes', function(e){
 		e.preventDefault();
 		$.ajax({
-			// url: '/parceiro',
-			// url: 'https://serasa.herokuapp.com/parceiro',
+			// url: '/cliente',
+			// url: 'https://serasa.herokuapp.com/cliente',
 			url: $('#form_url').val(),
 			type: 'GET',
 			headers: {"Authorization": $('#form_token').val()},
@@ -290,6 +295,50 @@
 		})
 		.then(function(data){
 			$('#cliente-visualizar').DataTable();
+		});
+	});
+
+	$(document).on('click', '.selector-btn-reload-titulos', function(e){
+		e.preventDefault();
+		$.ajax({
+			// url: '/titulo',
+			// url: 'https://serasa.herokuapp.com/titulo',
+			url: $('#form_url').val(),
+			type: 'GET',
+			headers: {"Authorization": $('#form_token').val()},
+			dataType: 'JSON',
+			success: function(retorno){
+				$('.serasa-content').css('display', 'block');
+				$('.selector-tbody-titulos').empty();
+				$.each(retorno, function(key, value){
+					$('.selector-tbody-titulos').append('\
+						<tr>\
+							<td>'+value.id_titulo+'</td>\
+							<td>'+value.nome_cliente+'</td>\
+							<td>'+value.valor+'</td>\
+							<td>'+value.situacao+'</td>\
+							<td>'+value.descricao+'</td>\
+							<td>'+value.data_emissao+'</td>\
+							<td>'+value.data_pagamento+'</td>\
+							<td>'+value.id_titulo+'</td>\
+							<td>\
+								<a href="#" class="btn btn-success btn-editar-titulo" data-id="' + value.id_titulo + '"><i class="fa fa-pencil"></i></a>\
+								<a href="#" class="btn btn-danger btn-excluir-titulo" data-id="' + value.id_titulo + '"><i class="fa fa-trash"></i></a>\
+							</td>\
+						</tr>\
+					');
+				});
+				// window.history.replaceState(null, null, '/read');
+			},
+			error: function(error){if(error.status == 401){alert(error.responseJSON.mensagem);/*$("#conteudo-principal").load("login");*/}
+			else{$('.alert-success').prop('hidden', true);$('.alert-danger').prop('hidden', false).html("<strong>Http Status:</strong> " + error.status + ", <br/><strong>Mensagem:</strong> " + error.responseJSON.mensagem);}
+			},
+			complete: function(retorno){
+				$('#retorno').html(JSON.stringify(retorno.responseJSON, null, 2));
+			}
+		})
+		.then(function(data){
+			$('#titulo-visualizar').DataTable();
 		});
 	});
 
@@ -412,6 +461,27 @@
 				}
 				if (sessionStorage.getItem("url") != "null") {
 					$('#form_url').val(sessionStorage.getItem("url").replace("login", "cliente"));
+				}
+			});
+			// window.history.replaceState(null, null, '/read');
+		}
+	});
+
+	$(document).on('click', '.titulo-menu', function(){
+		if ($(this).data('id') == 'cadastrar') {
+			$("#conteudo-principal").load("titulo/create", function(){
+				$('.serasa-content').css('display', 'block');
+			});
+			// window.history.replaceState(null, null, '/create');
+		}
+		if ($(this).data('id') == 'visualizar') {
+			$("#conteudo-principal").load("titulo/read", function(){
+				$('.serasa-content').css('display', 'block');
+				if (sessionStorage.getItem("Sessao") != "null") {
+					$('#form_token').val(sessionStorage.getItem("Sessao"));
+				}
+				if (sessionStorage.getItem("url") != "null") {
+					$('#form_url').val(sessionStorage.getItem("url").replace("login", "titulo"));
 				}
 			});
 			// window.history.replaceState(null, null, '/read');
@@ -695,7 +765,95 @@
 			headers: {"Authorization": $('#form_token').val()},
 			success: function(retorno){alert('Cliente excluido com sucesso!');$('#cliente-visualizar').DataTable().row(linha).remove().draw();},
 			error: function(error){console.log(error);},
-			complete: function(retorno){}
+			complete: function(retorno){$('#retorno').html(JSON.stringify(retorno.responseJSON, null, 2));}
+		});		
+	});
+
+	$(document).on('click', '.btn-cadastrar-titulo', function(e){
+		e.preventDefault();
+
+		if ($('#nome_cliente').val() == '') { alert('Há campos vazios, por favor preencha');$('#nome_cliente').focus();return false;}
+		if ($('#valor').val() == '') { alert('Há campos vazios, por favor preencha');$('#valor').focus();return false;}
+		if ($('#situacao').val() == '') { alert('Há campos vazios, por favor preencha');$('#situacao').focus();return false;}
+		if ($('#descricao').val() == '') { alert('Há campos vazios, por favor preencha');$('#descricao').focus();return false;}
+		if ($('#data_emissao').val() == '') { alert('Há campos vazios, por favor preencha');$('#data_emissao').focus();return false;}
+		if ($('#data_pagamento').val() == '') { alert('Há campos vazios, por favor preencha');$('#data_pagamento').focus();return false;}
+
+		$.ajax({
+			// url: '/titulo',
+			// url: 'https://serasa.herokuapp.com/titulo',
+			url: $('#form_url').val(),
+			type: 'POST',
+			dataType: 'JSON',
+			data: {
+				nome_cliente: $('#nome_cliente').val(),
+				valor: $('#valor').val(),
+				situacao: $('#situacao').val(),
+				descricao: $('#descricao').val(),
+				data_emissao: $('#data_emissao').val(),
+				data_pagamento: $('#data_pagamento').val()
+			},
+			success: function(retorno){/*if (retorno.success) {*/$('.alert-danger').prop('hidden', true);$('.alert-success').prop('hidden', false);/*}*/},
+			error: function(error){
+				if(error.status == 401){alert(error.responseJSON.mensagem);/*$("#conteudo-principal").load("login", function(){$('.serasa-content').css('display', 'block');});*/}
+				else{$('.alert-success').prop('hidden', true);$('.alert-danger').prop('hidden', false).html("<strong>Http Status:</strong> " + error.status + ", <br/><strong>Mensagem:</strong> " + error.responseJSON.mensagem);}
+			},
+			complete: function(retorno){
+				$('#retorno').html(JSON.stringify(retorno.responseJSON, null, 2));
+			}
+
+		});
+	});
+
+	$(document).on('click', '.btn-editar-titulo', function(e){
+		e.preventDefault();
+		var newName = prompt("Por favor entre com o novo nome:", $(this).data('nome'));
+		var url = $('#form_url').val() + '/' + $(this).data('id');
+		if (newName != null) {
+			$.ajax({
+				// url: '/titulo',
+				url: url,
+				type: 'PUT',
+				dataType: 'JSON',
+				headers: {"Authorization": $('#form_token').val()},
+				data: {
+					valor: $('#valor').val(),
+					situacao: $('#situacao').val(),
+					descricao: $('#descricao').val(),
+					data_pagamento: $('#data_pagamento').val()
+				},
+				success: function(retorno){
+					alert('Atualizado com sucesso.');
+					setTimeout(function(){
+						$('.selector-btn-reload-clientes').trigger('click');
+					}, 500);
+				},
+				error: function(error){
+					if(error.status == 401){alert(error.responseJSON.mensagem);/*$("#conteudo-principal").load("login", function(){$('.serasa-content').css('display', 'block');});*/}
+					else{$('.alert-success').prop('hidden', true);$('.alert-danger').prop('hidden', false);}
+				},
+				complete: function(retorno){
+					$('#retorno').html(JSON.stringify(retorno.responseJSON, null, 2));
+				}
+			});
+		}
+	});
+
+	$(document).on('click', '.btn-excluir-titulo', function(e){
+		e.preventDefault();
+		var linha = $(this).parents('tr');
+		var url = $('#form_url').val() + '/' + $(this).data('id');
+		if (!confirm('Tem certeza que deseja excluir este titulo? Este processo é irreversivel.')) {
+			return false;
+		}
+		$.ajax({
+			url: url,
+			type: 'DELETE',
+			dataType: 'JSON',
+			headers: {"Authorization": $('#form_token').val()},
+			success: function(retorno){alert('Cliente excluido com sucesso!');$('#titulo-visualizar').DataTable().row(linha).remove().draw();},
+			error: function(error){console.log(error);},
+			complete: function(retorno){$('#retorno').html(JSON.stringify(retorno.responseJSON, null, 2));}
 		});		
 	});
 

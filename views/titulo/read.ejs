@@ -6,18 +6,21 @@
 		<p>Bem vindo ao <%= title %>, CLIQUE NO BOTAO RECARREGAR LA EM BAIXO PARA VER OS CLIENTES (CONFIRA A URL E SE ESTÁ LOGADO)</p>
 
 		<div class="card pull-left" style="width: 80%;">
-			<div class="card-header"><h5>Lista de Clientes</h5></div>
+			<div class="card-header"><h5>Lista de Titulos</h5></div>
 			<div class="card-body">
-				<table class="table table-striped selector-table-clientes" id="cliente-visualizar">
+				<table class="table table-striped selector-table-titulos" id="titulo-visualizar">
 					<thead>
 						<tr>
 							<th>id</th>
-							<th>nome</th>
-							<th>cpf</th>
-							<th>opções</th>
+							<th>cliente</th>
+							<th>valor</th>
+							<th>situação</th>
+							<th>descrição</th>
+							<th>data emissão</th>
+							<th>data pagamento</th>
 						</tr>
 					</thead>
-					<tbody class="selector-tbody-clientes"></tbody>
+					<tbody class="selector-tbody-titulos"></tbody>
 				</table>
 			</div>
 		</div>
@@ -29,7 +32,7 @@
 			<div class="card-body">
 				<div class="col-md-12">
 					<label for="form_url"><strong>URL</strong></label>
-					<input type="text" class="form-control" name="form_url" id="form_url" value="https://serasa.herokuapp.com/cliente">
+					<input type="text" class="form-control" name="form_url" id="form_url" value="https://serasa.herokuapp.com/titulo">
 				</div>
 
 				<div class="col-md-12">
@@ -51,7 +54,7 @@
 
 			<div class="card-footer" style="margin-top: 25px;">
 				<div class="col-md-4 pull-right">
-					<button class="btn btn-success selector-btn-reload-clientes" name="submit">Recarregar</button>
+					<button class="btn btn-success selector-btn-reload-titulos" name="submit">Recarregar</button>
 				</div>
 			</div>
 		</div>

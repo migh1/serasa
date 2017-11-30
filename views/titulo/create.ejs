@@ -7,7 +7,7 @@
 
 		<div class="card pull-left" style="width: 40%;">
 			<div class="card-header">
-				<h5>Cadastro de Cliente</h5>
+				<h5>Cadastro de Titulos</h5>
 				<div class="alert alert-success" role="alert" style="margin-top: 25px;" hidden>
 					<strong>Sucesso!</strong> Cadastrado com perfeição.
 				</div>
@@ -15,16 +15,36 @@
 				</div>
 			</div>
 			<div class="card-body">
-				<form action="POST" method="/parceiro/create">
+				<form action="POST" method="/titulo/create">
 
 					<div class="col-md-12">
-						<label for="nome_cliente"><strong>Nome</strong></label>
-						<input type="text" class="form-control" name="nome_cliente" id="nome_cliente" value="Lucas">
+						<label for="id_cliente"><strong>Nome cliente</strong></label>
+						<input type="text" class="form-control" name="id_cliente" id="id_cliente" value="Lucas">
 					</div>
 
 					<div class="col-md-12">
-						<label for="cpf_cliente"><strong>CPF</strong></label>
-						<input type="text" class="form-control" name="cpf_cliente" id="cpf_cliente" value="51228554390">
+						<label for="valor"><strong>Valor</strong></label>
+						<input type="text" class="form-control" name="valor" id="valor" value="32,50">
+					</div>
+
+					<div class="col-md-12">
+						<label for="situacao"><strong>Situação</strong></label>
+						<input type="text" class="form-control" name="situacao" id="situacao" value="1 = pendente, 2 = pago">
+					</div>
+
+					<div class="col-md-12">
+						<label for="descricao"><strong>Descrição</strong></label>
+						<input type="text" class="form-control" name="descricao" id="descricao" value="Cliente burro">
+					</div>
+
+					<div class="col-md-12">
+						<label for="data_emissao"><strong>Data emissão</strong></label>
+						<input type="text" class="form-control" name="data_emissao" id="data_emissao" value="21/11/2017">
+					</div>
+
+					<div class="col-md-12">
+						<label for="data_pagamento"><strong>Data pagamento</strong></label>
+						<input type="text" class="form-control" name="data_pagamento" id="data_pagamento" value="21/12/2017">
 					</div>
 
 				</form>
@@ -32,7 +52,7 @@
 
 			<div class="card-footer" style="margin-top: 25px;">
 				<div class="col-md-4 pull-right">
-					<button class="btn btn-success btn-cadastrar-cliente" name="submit">Cadastrar</button>
+					<button class="btn btn-success btn-cadastrar-titulo" name="submit">Cadastrar</button>
 				</div>
 			</div>
 		</div>
@@ -44,7 +64,7 @@
 			<div class="card-body">
 				<div class="col-md-12">
 					<label for="form_url"><strong>URL</strong></label>
-					<input type="text" class="form-control" name="form_url" id="form_url" value="https://serasa.herokuapp.com/cliente">
+					<input type="text" class="form-control" name="form_url" id="form_url" value="https://serasa.herokuapp.com/titulo">
 				</div>
 
 				<div class="col-md-12">
