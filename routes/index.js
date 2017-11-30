@@ -647,8 +647,9 @@ router.delete('/titulo/:id_titulo', (req, res, next) => {
 						if (err) {
 							done();
 							return res.status(422).json({success: false, mensagem: 'Houve alguma falha no cancelamento do titulo, por favor contate o administrador do sistema.'});
+						} else if(result.rowCount == 0){
+							return res.status(304).json({success: false, mensagem: 'Não é possível cancelar este titulo, verifique se a situacao é 1 (Aberto)'});
 						} else {
-							console.log(result);
 							return res.json({success: true, mensagem: 'Sucesso ao cancelar!'});
 						}
 					});
