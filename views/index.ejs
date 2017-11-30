@@ -437,6 +437,12 @@
 		if ($(this).data('id') == 'cadastrar') {
 			$("#conteudo-principal").load("cliente/create", function(){
 				$('.serasa-content').css('display', 'block');
+				if (sessionStorage.getItem("Sessao") != "null") {
+					$('#form_token').val(sessionStorage.getItem("Sessao"));
+				}
+				if (sessionStorage.getItem("url") != "null") {
+					$('#form_url').val(sessionStorage.getItem("url").replace("login", "cliente"));
+				}
 			});
 			// window.history.replaceState(null, null, '/create');
 		}
@@ -696,6 +702,7 @@
 			url: $('#form_url').val(),
 			type: 'POST',
 			dataType: 'JSON',
+			headers: {"Authorization": $('#form_token').val()},
 			data: {
 				nome_cliente: $('#nome_cliente').val(),
 				cpf: $('#cpf_cliente').val()
@@ -777,6 +784,7 @@
 			url: $('#form_url').val(),
 			type: 'POST',
 			dataType: 'JSON',
+			headers: {"Authorization": $('#form_token').val()},
 			data: {
 				nome_cliente: $('#nome_cliente').val(),
 				valor: $('#valor').val(),
