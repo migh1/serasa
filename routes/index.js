@@ -556,7 +556,6 @@ router.post('/titulo', (req, res, next) => {
 					return res.status(422).json({success: false, http: 422, mensagem: 'Parceiro não encontrado, verifique.'});
 				} else {
 					req.body.id_parceiro = result.rows[0].id_parceiro;
-					console.log(req.body);
 
 					if(!ajv.validate(schema_titulo, req.body)){
 						return res.status(400).json({success: false, http: 400, mensagem: 'JSON schema inválido, verifique.'});
