@@ -417,7 +417,6 @@ router.get('/cliente', (req, res, next) => {
 router.post('/cliente', (req, res, next) => {
 	isLogado(req.headers.authorization, function(err, valid){
 		req.body.cpf = req.body.cpf.replace(/\D/g, '');
-		console.log(req.body.cpf);
 		if(!ajv.validate(schema_cliente, req.body)){
 			return res.status(400).json({success: false, http: 400, mensagem: 'JSON schema inválido, verifique.'});
 		} else {
@@ -492,6 +491,7 @@ router.put('/cliente/:id_cliente', (req, res, next) => {
 		if(!valid){
 			return res.status(401).json({success: false, http: 401, mensagem: 'Por favor, faça login novamente e repita o processo.'});
 		} else {
+			req.body.cpf = req.body.cpf.replace(/\D/g, '');
 			if(!ajv.validate(edit_schema_cliente, req.body)){
 				return res.status(400).json({success: false, http: 400, mensagem: 'JSON schema inválido, verifique.'});
 			} else {
