@@ -408,7 +408,7 @@ router.get('/cliente', (req, res, next) => {
 
 //faz um post e entao um insert na tabela cad_cliente do banco serasa
 router.post('/cliente', (req, res, next) => {
-	req.body.cpf.replace(/\D/g, '');
+	req.body.cpf.replace('.', '').replace('-', '');
 	console.log(req.body.cpf);
 	if(!ajv.validate(schema_cliente, req.body)){
 		return res.status(400).json({success: false, http: 400, mensagem: 'JSON schema inválido, verifique.'});
