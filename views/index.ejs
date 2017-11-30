@@ -533,7 +533,13 @@
 			email: 			$('#email').val(),
 			senha: 			$('#senha').val(),
 			nome_cliente: 	$('#nome_cliente').val(),
-			cpf: 			$('#cpf_cliente').val()
+			cpf: 			$('#cpf_cliente').val(),
+			id_cliente: 	$('#id_cliente').val(),
+			valor: 			$('#valor').val(),
+			descricao: 		$('#descricao').val(),
+			situacao: 		$('#situacao').val(),
+			data_emissao: 	$('#data_emissao').val(),
+			data_pagamento: $('#data_pagamento').val()
 		};
 
 		$('.form_json').html(JSON.stringify(json, null, 2));
@@ -777,7 +783,6 @@
 		if ($('#situacao').val() == '') { alert('Há campos vazios, por favor preencha');$('#situacao').focus();return false;}
 		if ($('#descricao').val() == '') { alert('Há campos vazios, por favor preencha');$('#descricao').focus();return false;}
 		if ($('#data_emissao').val() == '') { alert('Há campos vazios, por favor preencha');$('#data_emissao').focus();return false;}
-		if ($('#data_pagamento').val() == '') { alert('Há campos vazios, por favor preencha');$('#data_pagamento').focus();return false;}
 
 		$.ajax({
 			// url: '/titulo',
