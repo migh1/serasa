@@ -632,31 +632,35 @@ router.delete('/titulo/:id_titulo', (req, res, next) => {
 		if(!valid){
 			return res.status(401).json({success: false, http: 401, mensagem: 'Por favor, faça login novamente e repita o processo.'});
 		} else {
-			const results = [];
-			var id_titulo = req.params.id_titulo.length == 0 ? null : ''+req.params.id_titulo;
-			pg.connect(connectionString, (err, client, done) => {
-				if(err) {
-					done();
-					console.log(err);
-					return res.status(400).json({success: false, mensagem: err});
-				}
-
-				client.query('UPDATE cad_titulo SET situacao=($1) WHERE id_titulo=($2)', ['0', id_titulo]);
-				var query = client.query('SELECT * FROM cad_cliente WHERE id_titulo=($1) ORDER BY id_titulo ASC', [id_titulo]);
-				
-				query.on('row', (row) => {
-					results.push(row);
-				});
-
-				query.on('end', function() {
-					done();
-					if(results.length) {
-						return res.status(422).json({success: false, mensagem: 'Houve alguma falha na exclusão do cliente, por favor contate o administrador do sistema.'});
-					} else {
-						return res.json({success: true, mensagem: 'Sucesso ao excluir!'});
+			if (req.params.id_titulo == null) {
+				return res.status(400).json({success: false, http: 400, mensagem: 'ID do tituloe esta vazio, verifique.'});
+			} else {
+				const results = [];
+				var id_titulo = req.params.id_titulo;
+				pg.connect(connectionString, (err, client, done) => {
+					if(err) {
+						done();
+						console.log(err);
+						return res.status(400).json({success: false, mensagem: err});
 					}
+
+					client.query('UPDATE cad_titulo SET situacao=($1) WHERE id_titulo=($2)', ['0', id_titulo]);
+					var query = client.query('SELECT * FROM cad_cliente WHERE id_titulo=($1) ORDER BY id_titulo ASC', [id_titulo]);
+					
+					query.on('row', (row) => {
+						results.push(row);
+					});
+
+					query.on('end', function() {
+						done();
+						if(results.length) {
+							return res.status(422).json({success: false, mensagem: 'Houve alguma falha na exclusão do cliente, por favor contate o administrador do sistema.'});
+						} else {
+							return res.json({success: true, mensagem: 'Sucesso ao excluir!'});
+						}
+					});
 				});
-			});
+			}
 		}
 	});
 });
