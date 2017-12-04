@@ -537,7 +537,8 @@
 			descricao: 		$('#descricao').val(),
 			situacao: 		$('#situacao').val(),
 			data_emissao: 	$('#data_emissao').val(),
-			data_pagamento: $('#data_pagamento').val()
+			data_pagamento: $('#data_pagamento').val(),
+			id_parceiro: 	$('#id_parceiro').val()
 		};
 
 		$('.form_json').html(JSON.stringify(json, null, 2));
@@ -796,7 +797,8 @@
 				situacao: $('#situacao').val(),
 				descricao: $('#descricao').val(),
 				data_emissao: $('#data_emissao').val(),
-				data_pagamento: $('#data_pagamento').val()
+				data_pagamento: $('#data_pagamento').val(),
+				id_parceiro: $('#id_parceiro').val()
 			},
 			success: function(retorno){/*if (retorno.success) {*/$('.alert-danger').prop('hidden', true);$('.alert-success').prop('hidden', false);/*}*/},
 			error: function(error){

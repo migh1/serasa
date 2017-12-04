@@ -19,7 +19,19 @@ var schema_cliente = {
 		"nome_cliente": { "type": "string" },
 		"cpf": { "type": "string" }
 	},
-	"required": ["nome", "cpf"]
+	"required": ["nome_cliente", "cpf"]
+};
+var schema_titulo = {
+	"properties": {
+		"id_cliente": { "type": "string" },
+		"id_parceiro": { "type": "string" },
+		"valor": { "type": "string" },
+		"descricao": { "type": "string" },
+		"situacao": { "type": "string" },
+		"data_emissao": { "type": "string" },
+		"data_pagamento": { "type": "string" },
+	},
+	"required": ["id_cliente", "id_parceiro", "valor", "descricao", "situacao", "data_emissao"]
 };
 var edit_schema = {
 	"properties": {
@@ -356,11 +368,6 @@ router.get('/cliente/create', function(req, res, next) {
 	res.render('cliente/create', { title: 'Cadastrar Cliente' });
 });
 
-/* GET cliente edit page. */
-router.get('/cliente/edit', function(req, res, next) {
-	res.render('cliente/edit', { title: 'Editar Cliente' });
-});
-
 /* GET cliente read page. */
 router.get('/cliente/read', function(req, res, next) {
 	res.render('cliente/read', { title: 'Visualizar Clientes' });
@@ -378,7 +385,7 @@ router.get('/cliente', (req, res, next) => {
 					done();
 					console.log(err);
 					return res.status(500).json({
-						success: false, data: err
+						success: false, mensagem: err
 					});
 				} else {
 					const query = client.query('SELECT cc.id_cliente, cc.nome as nome_cliente, cc.cpf FROM cad_cliente cc, cad_parceiro cp WHERE cp.token=($1) ORDER BY cc.id_cliente ASC;', [req.headers.authorization]);
@@ -388,7 +395,7 @@ router.get('/cliente', (req, res, next) => {
 					query.on('end', () => {
 						done();
 						if(!results.length) {
-							return res.status(500).json({success: false, data: 'Não há clientes cadastrados ainda!'});
+							return res.status(500).json({success: false, mensagem: 'Não há clientes cadastrados ainda!'});
 						} else {
 							client.query('SELECT cc.id_cliente, cc.nome, cc.cpf FROM cad_cliente cc, cad_parceiro cp WHERE cp.token=($1) ORDER BY cc.id_cliente ASC;', [req.headers.authorization],  function(err, result){
 								done();
@@ -408,58 +415,58 @@ router.get('/cliente', (req, res, next) => {
 
 //faz um post e entao um insert na tabela cad_cliente do banco serasa
 router.post('/cliente', (req, res, next) => {
-	req.body.cpf.replace(/\D/g, '');
-	console.log(req.body.cpf);
-	if(!ajv.validate(schema_cliente, req.body)){
-		return res.status(400).json({success: false, http: 400, mensagem: 'JSON schema inválido, verifique.'});
-	} else {
-		pg.connect(connectionString, (err, client, done) => {
-			if(err) {
-				done();
-				console.log(err);
-				return res.status(400).json({success: false, http: 400, mensagem: 'Erro ao se conectar com o banco.'});
-			}
-
-			const query = client.query("SELECT * FROM cad_cliente WHERE cpf=($1)",[req.body.cpf], function(err, result){
-				done();
-				if (result.rowCount > 0) {
-					return res.status(409).json({success: false, http: 409, mensagem: 'CPF já cadastrado, verifique.'});
-				} else {
-					client.query('INSERT INTO cad_cliente(nome, cpf) values($1, $2) RETURNING id_cliente', 
-						[req.body.nome_cliente, req.body.cpf],
-						function(err, result){
-							done();
-							if(err) {
-								return res.status(422).json({success: false, http: 422, mensagem: 'Falha na validação dos dados, por favor verifique o JSON enviado.'});
-							} else {
-								return res.json({success: true, data: result.rows[0].id_cliente});
-							}
-						}
-					);
+	isLogado(req.headers.authorization, function(err, valid){
+		req.body.cpf = req.body.cpf.replace(/\D/g, '');
+		if(!ajv.validate(schema_cliente, req.body)){
+			return res.status(400).json({success: false, http: 400, mensagem: 'JSON schema inválido, verifique.'});
+		} else {
+			pg.connect(connectionString, (err, client, done) => {
+				if(err) {
+					done();
+					console.log(err);
+					return res.status(400).json({success: false, http: 400, mensagem: 'Erro ao se conectar com o banco.'});
 				}
+
+				const query = client.query("SELECT * FROM cad_cliente WHERE cpf=($1)",[req.body.cpf], function(err, result){
+					done();
+					if (result.rowCount > 0) {
+						return res.status(409).json({success: false, http: 409, mensagem: 'CPF já cadastrado, verifique.'});
+					} else {
+						client.query('INSERT INTO cad_cliente(nome, cpf) values($1, $2) RETURNING id_cliente', 
+							[req.body.nome_cliente, req.body.cpf],
+							function(err, result){
+								done();
+								if(err) {
+									return res.status(422).json({success: false, http: 422, mensagem: 'Falha na validação dos dados, por favor verifique o JSON enviado.'});
+								} else {
+									return res.json({success: true, mensagem: result.rows[0].id_cliente});
+								}
+							}
+						);
+					}
+				});
 			});
-		});
-	}
+		}
+	});
 });
 
 //faz um delete do cliente
-router.delete('/cliente', (req, res, next) => {
-	req.body.cpf.replace(/\D/g, '');
-	console.log(req.body.cpf);
+router.delete('/cliente/:id_cliente', (req, res, next) => {
 	isLogado(req.headers.authorization, function(err, valid){
 		if(!valid){
 			return res.status(401).json({success: false, http: 401, mensagem: 'Por favor, faça login novamente e repita o processo.'});
 		} else {
 			const results = [];
+			var id_cliente = req.params.id_cliente.length == 0 ? null : ''+req.params.id_cliente;
 			pg.connect(connectionString, (err, client, done) => {
 				if(err) {
 					done();
 					console.log(err);
-					return res.status(400).json({success: false, data: err});
+					return res.status(400).json({success: false, mensagem: err});
 				}
 
-				client.query('DELETE FROM cad_cliente WHERE cpf=($1)', [req.body.cpf]);
-				var query = client.query('SELECT * FROM cad_cliente WHERE cpf=($1) ORDER BY cpf ASC', [req.body.cpf]);
+				client.query('DELETE FROM cad_cliente WHERE id_cliente=($1)', [id_cliente]);
+				var query = client.query('SELECT * FROM cad_cliente WHERE id_cliente=($1) ORDER BY id_cliente ASC', [id_cliente]);
 				
 				query.on('row', (row) => {
 					results.push(row);
@@ -468,9 +475,9 @@ router.delete('/cliente', (req, res, next) => {
 				query.on('end', function() {
 					done();
 					if(results.length) {
-						return res.status(422).json({success: false, data: 'Houve alguma falha na exclusão do cliente, por favor contate o administrador do sistema.'});
+						return res.status(422).json({success: false, mensagem: 'Houve alguma falha na exclusão do cliente, por favor contate o administrador do sistema.'});
 					} else {
-						return res.json({success: true, data: 'Sucesso ao excluir!'});
+						return res.json({success: true, mensagem: 'Sucesso ao excluir!'});
 					}
 				});
 			});
@@ -479,8 +486,181 @@ router.delete('/cliente', (req, res, next) => {
 });
 
 //faz um update no parceiro
-router.put('/cliente', (req, res, next) => {
-	console.log(req.body);
+router.put('/cliente/:id_cliente', (req, res, next) => {
+	isLogado(req.headers.authorization, function(err, valid){
+		if(!valid){
+			return res.status(401).json({success: false, http: 401, mensagem: 'Por favor, faça login novamente e repita o processo.'});
+		} else {
+			req.body.cpf = req.body.cpf.replace(/\D/g, '');
+			if(!ajv.validate(edit_schema_cliente, req.body)){
+				return res.status(400).json({success: false, http: 400, mensagem: 'JSON schema inválido, verifique.'});
+			} else {
+				if (req.params.id_cliente == null) {
+					return res.status(400).json({success: false, http: 400, mensagem: 'Cliente ID inválido, verifique.'});
+				}else{
+					var id_cliente = req.params.id_cliente;
+					pg.connect(connectionString, (err, client, done) => {
+						if(err) {
+							done();
+							console.log(err);
+							return res.status(400).json({success: false, mensagem: err});
+						}
+						const query = client.query("SELECT * FROM cad_cliente WHERE id_cliente=($1)",[id_cliente], function(err, result){
+							done();
+							if (result.rowCount == 0) {
+								return res.status(422).json({success: false, http: 422, mensagem: 'ID do cliente enviado não existe, verifique.'});
+							} else {
+								client.query("SELECT * FROM cad_parceiro WHERE token=($1) AND ativo=($2)",[req.headers.authorization, 'true'], function(err, result){
+									if (result.rowCount == 0) {
+										return res.status(422).json({success: false, http: 422, mensagem: 'Parceiro inativo, verifique.'});
+									} else {
+										client.query('UPDATE cad_cliente SET nome=($1), cpf=($2) WHERE id_cliente=($3)', [req.body.nome_cliente, req.body.cpf, id_cliente], function(err, result){
+											done();
+											if(err) {
+												return res.status(422).json({success: false, mensagem: 'Houve alguma falha na atualização do parceiro, por favor contate o administrador do sistema.'});
+											} else {
+												return res.json({success: true, mensagem: 'Sucesso ao atualizar cliente!'});
+											}
+										});
+									}
+								});
+							}
+						});
+					});
+				}
+			}
+		}
+	});
+});
+
+/* GET titulo create page. */
+router.get('/titulo/create', function(req, res, next) {
+	res.render('titulo/create', { title: 'Cadastrar Titulo' });
+});
+
+/* GET titulo read page. */
+router.get('/titulo/read', function(req, res, next) {
+	res.render('titulo/read', { title: 'Visualizar Titulos' });
+});
+
+//GET pega os dados dos clientes
+router.get('/titulo', (req, res, next) => {
+	isLogado(req.headers.authorization, function(err, valid){
+		if(!valid){
+			return res.status(401).json({success: false, http: 401, mensagem: 'Por favor, faça login novamente e repita o processo.'});
+		} else {
+			var results = [];
+			pg.connect(connectionString, (err, client, done) => {
+				if(err) {
+					done();
+					console.log(err);
+					return res.status(500).json({
+						success: false, mensagem: err
+					});
+				} else {
+					const query = client.query('SELECT \
+													*,\
+													cc.nome as nome_cliente\
+												FROM \
+													cad_titulo ct\
+													inner join cad_parceiro cp ON cp.id_parceiro = ct.id_parceiro\
+													inner join cad_cliente cc ON cc.id_cliente = ct.id_cliente\
+												WHERE \
+													cp.token=($1) AND cp.ativo=($2) \
+												ORDER BY \
+													ct.id_titulo ASC;', 
+												[req.headers.authorization, 'true']
+												);
+					query.on('row', (row) => {
+						results.push(row)
+					});
+					query.on('end', () => {
+						done();
+						if(!results.length) {
+							return res.status(500).json({success: false, mensagem: 'Parceiro inativo ou token invalida, verifique.'});
+						} else {
+							return res.status(200).json(results);
+						}
+					});
+				}
+			});
+		}
+	});
+});
+
+//faz um post e entao um insert na tabela cad_cliente do banco serasa
+router.post('/titulo', (req, res, next) => {
+	isLogado(req.headers.authorization, function(err, valid){
+		pg.connect(connectionString, (err, client, done) => {
+			if(err) {
+				done();
+				console.log(err);
+				return res.status(400).json({success: false, http: 400, mensagem: 'Erro ao se conectar com o banco.'});
+			}
+			const query = client.query("SELECT cp.id_parceiro, cc.id_cliente FROM cad_parceiro cp, cad_cliente cc WHERE cp.token=($1) AND cc.id_cliente=($2)",[req.headers.authorization, req.body.id_cliente], function(err, result){
+				done();
+				if (result.rowCount == 0) {
+					return res.status(404).json({success: false, http: 404, mensagem: 'Parceiro ou Cliente não encontrado, verifique.'});
+				} else {
+					req.body.id_parceiro = ''+result.rows[0].id_parceiro;
+
+					if(!ajv.validate(schema_titulo, req.body)){
+						return res.status(400).json({success: false, http: 400, mensagem: 'JSON schema inválido, verifique.'});
+					} else {
+						var query_insert = client.query('INSERT INTO cad_titulo(id_parceiro, id_cliente, valor, descricao, situacao, data_emissao, data_pagamento) values($1, $2, $3, $4, $5, $6, $7) RETURNING id_titulo', 
+							[req.body.id_parceiro, req.body.id_cliente, req.body.valor, req.body.descricao, req.body.situacao, req.body.data_emissao, req.body.data_pagamento],
+							function(err, result){
+								done();
+								if(err) {
+									return res.status(422).json({success: false, http: 422, mensagem: 'Falha na gravação, por favor verifique o JSON enviado.'});
+								} else {
+									return res.json({success: true, mensagem: result.rows[0].id_titulo});
+								}
+							}
+						);
+					}
+				}
+			});
+		});
+	});
+});
+
+//faz um delete do cliente
+router.delete('/titulo/:id_titulo', (req, res, next) => {
+	isLogado(req.headers.authorization, function(err, valid){
+		if(!valid){
+			return res.status(401).json({success: false, http: 401, mensagem: 'Por favor, faça login novamente e repita o processo.'});
+		} else {
+			if (req.params.id_titulo == null) {
+				return res.status(400).json({success: false, http: 400, mensagem: 'ID do tituloe esta vazio, verifique.'});
+			} else {
+				const results = [];
+				var id_titulo = req.params.id_titulo;
+				pg.connect(connectionString, (err, client, done) => {
+					if(err) {
+						done();
+						console.log(err);
+						return res.status(400).json({success: false, mensagem: err});
+					}
+
+					client.query('UPDATE cad_titulo SET situacao=($1) WHERE id_titulo=($2) AND situacao=($3)', ['0', id_titulo, '1'], function(err, result){
+						if (err) {
+							done();
+							return res.status(422).json({success: false, http:422, mensagem: 'Houve alguma falha no cancelamento do titulo, por favor contate o administrador do sistema.'});
+						} else if(result.rowCount == 0){
+							return res.status(422).json({success: false, http:422, mensagem: 'Não é possível cancelar este titulo, verifique se a situacao é 1 (Aberto)'});
+						} else {
+							return res.json({success: true, mensagem: 'Sucesso ao cancelar!'});
+						}
+					});
+				});
+			}
+		}
+	});
+});
+
+//faz um update no parceiro
+router.put('/titulo/:id_titulo', (req, res, next) => {
 	isLogado(req.headers.authorization, function(err, valid){
 		if(!valid){
 			return res.status(401).json({success: false, http: 401, mensagem: 'Por favor, faça login novamente e repita o processo.'});
@@ -488,32 +668,30 @@ router.put('/cliente', (req, res, next) => {
 			if(!ajv.validate(edit_schema_cliente, req.body)){
 				return res.status(400).json({success: false, http: 400, mensagem: 'JSON schema inválido, verifique.'});
 			} else {
+				var id_titulo = req.params.id_titulo.length == 0 ? null : ''+req.params.id_titulo;
 				pg.connect(connectionString, (err, client, done) => {
 					if(err) {
 						done();
 						console.log(err);
-						return res.status(400).json({success: false, data: err});
+						return res.status(400).json({success: false, mensagem: err});
 					}
-					const query = client.query("SELECT * FROM cad_cliente WHERE cpf=($1)",[req.body.cpf], function(err, result){
+					const query = client.query("SELECT * FROM cad_cliente WHERE id_titulo=($1)",[id_titulo], function(err, result){
 						done();
 						if (result.rowCount == 0) {
-							return res.status(422).json({success: false, http: 422, mensagem: 'CPF enviado não existe, verifique.'});
+							return res.status(422).json({success: false, http: 422, mensagem: 'ID do cliente enviado não existe, verifique.'});
 						} else {
 							client.query("SELECT * FROM cad_parceiro WHERE token=($1) AND ativo=($2)",[req.headers.authorization, 'true'], function(err, result){
 								if (result.rowCount == 0) {
 									return res.status(422).json({success: false, http: 422, mensagem: 'Parceiro inativo, verifique.'});
 								} else {
-									client.query('UPDATE cad_cliente SET nome=($1) WHERE cpf=($2)',
-										[req.body.nome_cliente, req.body.cpf],
-										function(err, result){
-											done();
-											if(err) {
-												return res.status(422).json({success: false, data: 'Houve alguma falha na atualização do parceiro, por favor contate o administrador do sistema.'});
-											} else {
-												return res.json({success: true, data: 'Sucesso ao atualizar cliente!'});
-											}
+									client.query('UPDATE cad_cliente SET nome=($1) WHERE id_titulo=($2)', [req.body.nome_cliente, id_titulo], function(err, result){
+										done();
+										if(err) {
+											return res.status(422).json({success: false, mensagem: 'Houve alguma falha na atualização do parceiro, por favor contate o administrador do sistema.'});
+										} else {
+											return res.json({success: true, mensagem: 'Sucesso ao atualizar cliente!'});
 										}
-									);
+									});
 								}
 							});
 						}
@@ -526,7 +704,12 @@ router.put('/cliente', (req, res, next) => {
 
 function isLogado (token, callback){
 	const login = {token: token};
-	var loginSchema = {"token": {"type": "string"}};
+	var loginSchema = {
+		"properties": {
+			"token": {"type": "string"}
+		},
+		"required": ["token"]
+	};
 
   	if(ajv.validate(loginSchema, login)){
 		pg.connect(connectionString, (err, client, done) => {
