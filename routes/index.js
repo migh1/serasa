@@ -766,8 +766,8 @@ router.get('/consulta/cliente', function(req, res, next) {
 	res.render('consulta/read', { title: 'Consultas' });
 });
 
-//GET pega os dados do titulo especifico POR CPF
-router.get('/titulo/:cpf', (req, res, next) => {
+//GET pega os dados do consulta especifico POR CPF
+router.get('/consulta/cliente/:cpf', (req, res, next) => {
 	req.params.cpf = req.params.cpf.replace(/\D/g, '');
 	var results = [];
 	pg.connect(connectionString, (err, client, done) => {
