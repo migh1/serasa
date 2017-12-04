@@ -740,6 +740,7 @@ router.put('/titulo/:id_titulo', (req, res, next) => {
 							return res.status(422).json({success: false, http: 422, mensagem: 'ID do cliente enviado não existe, verifique.'});
 						} else {
 							client.query("SELECT * FROM cad_parceiro WHERE token=($1) AND ativo=($2)",[req.headers.authorization, 'true'], function(err, result){
+								console.log(result);
 								if (result.rowCount == 0) {
 									return res.status(422).json({success: false, http: 422, mensagem: 'Parceiro inativo, verifique.'});
 								} else {
