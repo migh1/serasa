@@ -826,14 +826,14 @@ router.get('/consulta/parceiro/:cpf', (req, res, next) => {
 			});
 		} else {
 			const query = client.query('SELECT \
-											id_titulo,\
-											id_parceiro,\
-											id_cliente,\
-											descricao,\
-											situacao,\
-											valor,\
-											data_emissao,\
-											data_pagamento\
+											ct.id_titulo,\
+											cp.id_parceiro,\
+											cc.id_cliente,\
+											ct.descricao,\
+											ct.situacao,\
+											ct.valor,\
+											ct.data_emissao,\
+											ct.data_pagamento\
 										FROM \
 											cad_titulo ct\
 											inner join cad_parceiro cp ON cp.id_parceiro = ct.id_parceiro\
