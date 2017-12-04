@@ -761,6 +761,49 @@ router.put('/titulo/:id_titulo', (req, res, next) => {
 	});
 });
 
+//GET pega os dados do titulo especifico POR CPF
+router.get('/titulo/:cpf', (req, res, next) => {
+	req.params.cpf = req.params.cpf.replace(/\D/g, '');
+	var results = [];
+	pg.connect(connectionString, (err, client, done) => {
+		if(err) {
+			done();
+			console.log(err);
+			return res.status(500).json({
+				success: false, mensagem: err
+			});
+		} else {
+			const query = client.query('SELECT \
+											id_titulo,\
+											descricao,\
+											valor,\
+											data_emissao,\
+											data_pagamento,\
+										FROM \
+											cad_titulo ct\
+											inner join cad_parceiro cp ON cp.id_parceiro = ct.id_parceiro\
+											inner join cad_cliente cc ON cc.id_cliente = ct.id_cliente\
+										WHERE \
+											cc.cpf=($1)\
+										ORDER BY \
+											ct.id_titulo ASC;', 
+										[req.params.cpf]
+										);
+			query.on('row', (row) => {
+				results.push(row);
+			});
+			query.on('end', () => {
+				done();
+				if(!results.length) {
+					return res.status(500).json({success: false, mensagem: 'CPF errado, verifique.'});
+				} else {
+					return res.status(200).json(results);
+				}
+			});
+		}
+	});
+});
+
 function isLogado (token, callback){
 	const login = {token: token};
 	var loginSchema = {

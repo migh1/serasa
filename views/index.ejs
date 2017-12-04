@@ -179,6 +179,10 @@
 						<a href="#" class="list-group-item titulo-menu" data-parent="#titulo" data-id="visualizar">Visualizar</a>
 						<a href="#" class="list-group-item titulo-menu" data-parent="#titulo" data-id="cadastrar">Cadastrar</a>
 					</div>
+					<a href="#consulta" class="list-group-item d-inline-block collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="fa fa-file-text-o"></i> <span class="d-none d-md-inline">Consultas</span> </a>
+					<div class="collapse" id="consulta">
+						<a href="#" class="list-group-item consulta-menu" data-parent="#consulta" data-id="porcpf">Por CPF</a>
+					</div>
 				</div>
 			</div>
 			<main class="col-md-9 float-left col px-5 pl-md-2 pt-2 main" id="conteudo-principal"></main>
@@ -310,6 +314,43 @@
 								<a href="#" class="btn btn-success btn-atualizar-titulo" data-id="' + value.id_titulo + '"><i class="fa fa-pencil"></i></a>\
 								<a href="#" class="btn btn-danger btn-excluir-titulo" data-id="' + value.id_titulo + '"><i class="fa fa-trash"></i></a>\
 							</td>\
+						</tr>\
+					');
+				});
+				// window.history.replaceState(null, null, '/read');
+			},
+			error: function(error){if(error.status == 401){alert(error.responseJSON.mensagem);/*$("#conteudo-principal").load("login");*/}
+			else{$('.alert-success').prop('hidden', true);$('.alert-danger').prop('hidden', false).html("<strong>Http Status:</strong> " + error.status + ", <br/><strong>Mensagem:</strong> " + error.responseJSON.mensagem);}
+			},
+			complete: function(retorno){
+				$('#retorno').html(JSON.stringify(retorno.responseJSON, null, 2));
+			}
+		})
+		.then(function(data){
+			$('#titulo-visualizar').DataTable();
+		});
+	});
+
+	$(document).on('click', '.selector-btn-reload-consultas', function(e){
+		e.preventDefault();
+		$.ajax({
+			// url: '/titulo',
+			// url: 'https://serasa.herokuapp.com/titulo',
+			url: $('#form_url').val(),
+			type: 'GET',
+			headers: {"Authorization": $('#form_token').val()},
+			dataType: 'JSON',
+			success: function(retorno){
+				$('.serasa-content').css('display', 'block');
+				$('.selector-tbody-titulos').empty();
+				$.each(retorno, function(key, value){
+					$('.selector-tbody-consultas').append('\
+						<tr>\
+							<td>'+value.valor+'</td>\
+							<td>'+value.situacao+'</td>\
+							<td>'+value.descricao+'</td>\
+							<td>'+value.data_emissao+'</td>\
+							<td>'+value.data_pagamento+'</td>\
 						</tr>\
 					');
 				});
@@ -483,18 +524,33 @@
 			});
 			// window.history.replaceState(null, null, '/read');
 		}
-		// if ($(this).data('id') == 'editar') {
-		// 	$("#conteudo-principal").load("titulo/edit", function(){
-		// 		$('.serasa-content').css('display', 'block');
-		// 		if (sessionStorage.getItem("Sessao") != "null") {
-		// 			$('#form_token').val(sessionStorage.getItem("Sessao"));
-		// 		}
-		// 		if (sessionStorage.getItem("url") != "null") {
-		// 			$('#form_url').val(sessionStorage.getItem("url").replace("login", "titulo"));
-		// 		}
-		// 	});
-		// 	// window.history.replaceState(null, null, '/read');
-		// }
+	});
+
+	$(document).on('click', '.consulta-menu', function(){
+		if ($(this).data('id') == 'porcpf') {
+			$("#conteudo-principal").load("consulta/cliente", function(){
+				$('.serasa-content').css('display', 'block');
+				if (sessionStorage.getItem("Sessao") != "null") {
+					$('#form_token').val(sessionStorage.getItem("Sessao"));
+				}
+				if (sessionStorage.getItem("url") != "null") {
+					$('#form_url').val(sessionStorage.getItem("url").replace("login", "consulta"));
+				}
+			});
+			// window.history.replaceState(null, null, '/consulta/cliente');
+		}
+		if ($(this).data('id') == 'visualizar') {
+			$("#conteudo-principal").load("consulta/read", function(){
+				$('.serasa-content').css('display', 'block');
+				if (sessionStorage.getItem("Sessao") != "null") {
+					$('#form_token').val(sessionStorage.getItem("Sessao"));
+				}
+				if (sessionStorage.getItem("url") != "null") {
+					$('#form_url').val(sessionStorage.getItem("url").replace("login", "consulta"));
+				}
+			});
+			// window.history.replaceState(null, null, '/read');
+		}
 	});
 
 	$(document).on('click', '.btn-cadastrar-parceiro', function(e){
@@ -550,7 +606,8 @@
 			descricao: 		$('#descricao').val(),
 			situacao: 		$('#situacao').val(),
 			data_emissao: 	$('#data_emissao').val(),
-			data_pagamento: $('#data_pagamento').val()
+			data_pagamento: $('#data_pagamento').val(),
+			form_cpf: 		$('#form_cpf').val()
 		};
 
 		$('.form_json').html(JSON.stringify(json, null, 2));
