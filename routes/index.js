@@ -623,7 +623,7 @@ router.get('/titulo/:id_titulo', (req, res, next) => {
 													cp.token=($1) AND cp.ativo=($2) AND cp.id_titulo=($3)\
 												ORDER BY \
 													ct.id_titulo ASC;', 
-												[req.headers.authorization, 'true', id_titulo]
+												[req.headers.authorization, 'true', req.params.id_titulo]
 												);
 					query.on('row', (row) => {
 						results.push(row)
