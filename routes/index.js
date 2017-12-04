@@ -727,14 +727,14 @@ router.put('/titulo/:id_titulo', (req, res, next) => {
 			if(!ajv.validate(edit_schema_titulo, req.body)){
 				return res.status(400).json({success: false, http: 400, mensagem: 'JSON schema inválido, verifique.'});
 			} else {
-				var id_titulo = req.params.id_titulo.length == 0 ? null : ''+req.params.id_titulo;
+
 				pg.connect(connectionString, (err, client, done) => {
 					if(err) {
 						done();
 						console.log(err);
 						return res.status(400).json({success: false, mensagem: err});
 					}
-					const query = client.query("SELECT * FROM cad_cliente WHERE id_titulo=($1)",[id_titulo], function(err, result){
+					const query = client.query("SELECT * FROM cad_cliente WHERE id_titulo=($1)",[req.params.id_titulo], function(err, result){
 						done();
 						if (result.rowCount == 0) {
 							return res.status(422).json({success: false, http: 422, mensagem: 'ID do cliente enviado não existe, verifique.'});
@@ -743,7 +743,7 @@ router.put('/titulo/:id_titulo', (req, res, next) => {
 								if (result.rowCount == 0) {
 									return res.status(422).json({success: false, http: 422, mensagem: 'Parceiro inativo, verifique.'});
 								} else {
-									client.query('UPDATE cad_cliente SET nome=($1) WHERE id_titulo=($2)', [req.body.nome_cliente, id_titulo], function(err, result){
+									client.query('UPDATE cad_cliente SET nome=($1) WHERE id_titulo=($2)', [req.body.nome_cliente, req.params.id_titulo], function(err, result){
 										done();
 										if(err) {
 											return res.status(422).json({success: false, mensagem: 'Houve alguma falha na atualização do parceiro, por favor contate o administrador do sistema.'});
