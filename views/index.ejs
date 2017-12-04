@@ -371,6 +371,7 @@
 	$(document).on('click', '.selector-btn-reload-parceiro-consultas', function(e){
 		e.preventDefault();
 		var url = $('#form_url').val() + '/' + $('#form_cpf').val();
+		console.log(url);
 		$.ajax({
 			// url: '/titulo',
 			// url: 'https://serasa.herokuapp.com/titulo',

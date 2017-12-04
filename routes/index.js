@@ -815,44 +815,102 @@ router.get('/consulta/parceiro', function(req, res, next) {
 
 //GET pega os dados do consulta especifico POR CPF
 router.get('/consulta/parceiro/:cpf', (req, res, next) => {
-	req.params.cpf = req.params.cpf.replace(/\D/g, '').toString();
-	var results = [];
-	pg.connect(connectionString, (err, client, done) => {
-		if(err) {
-			done();
-			console.log(err);
-			return res.status(500).json({
-				success: false, mensagem: err
-			});
+	isLogado(req.headers.authorization, function(err, valid){
+		if(!valid){
+			return res.status(401).json({success: false, http: 401, mensagem: 'Por favor, faça login novamente e repita o processo.'});
 		} else {
-			const query = client.query('SELECT \
-											ct.id_titulo,\
-											cp.id_parceiro,\
-											cc.id_cliente,\
-											ct.descricao,\
-											ct.situacao,\
-											ct.valor,\
-											ct.data_emissao,\
-											ct.data_pagamento\
-										FROM \
-											cad_titulo ct\
-											inner join cad_parceiro cp ON cp.id_parceiro = ct.id_parceiro\
-											inner join cad_cliente cc ON cc.id_cliente = ct.id_cliente\
-										WHERE \
-											cc.cpf=($1)\
-										ORDER BY \
-											ct.id_titulo ASC;', 
-										[req.params.cpf]
-										);
-			query.on('row', (row) => {
-				results.push(row);
-			});
-			query.on('end', () => {
-				done();
-				if(!results.length) {
-					return res.status(500).json({success: false, mensagem: 'CPF errado, verifique.'});
+			req.params.cpf = req.params.cpf.replace(/\D/g, '').toString();
+			var results = [];
+			pg.connect(connectionString, (err, client, done) => {
+				if(err) {
+					done();
+					console.log(err);
+					return res.status(500).json({
+						success: false, mensagem: err
+					});
 				} else {
-					return res.status(200).json(results);
+					const query = client.query('SELECT \
+													ct.id_titulo,\
+													cp.id_parceiro,\
+													cc.id_cliente,\
+													ct.descricao,\
+													ct.situacao,\
+													ct.valor,\
+													ct.data_emissao,\
+													ct.data_pagamento\
+												FROM \
+													cad_titulo ct\
+													inner join cad_parceiro cp ON cp.id_parceiro = ct.id_parceiro\
+													inner join cad_cliente cc ON cc.id_cliente = ct.id_cliente\
+												WHERE \
+													cc.cpf=($1)\
+												ORDER BY \
+													ct.id_titulo ASC;', 
+												[req.params.cpf]
+												);
+					query.on('row', (row) => {
+						results.push(row);
+					});
+					query.on('end', () => {
+						done();
+						if(!results.length) {
+							return res.status(500).json({success: false, mensagem: 'CPF inválido, verifique.'});
+						} else {
+							return res.status(200).json(results);
+						}
+					});
+				}
+			});
+		}
+	});
+});
+
+//GET pega os dados do consulta especifico POR CPF
+router.get('/consulta/parceiro/:cpf/:id_titulo', (req, res, next) => {
+	isLogado(req.headers.authorization, function(err, valid){
+		if(!valid){
+			return res.status(401).json({success: false, http: 401, mensagem: 'Por favor, faça login novamente e repita o processo.'});
+		} else {
+			req.params.cpf = req.params.cpf.replace(/\D/g, '').toString();
+			var results = [];
+			pg.connect(connectionString, (err, client, done) => {
+				if(err) {
+					done();
+					console.log(err);
+					return res.status(500).json({
+						success: false, mensagem: err
+					});
+				} else {
+					const query = client.query('SELECT \
+													ct.id_titulo,\
+													cp.id_parceiro,\
+													cc.id_cliente,\
+													ct.descricao,\
+													ct.situacao,\
+													ct.valor,\
+													ct.data_emissao,\
+													ct.data_pagamento\
+												FROM \
+													cad_titulo ct\
+													inner join cad_parceiro cp ON cp.id_parceiro = ct.id_parceiro\
+													inner join cad_cliente cc ON cc.id_cliente = ct.id_cliente\
+												WHERE \
+													cc.cpf=($1) AND ct.id_titulo=($2)\
+												ORDER BY \
+													ct.id_titulo ASC;', 
+												[req.params.cpf, req.params.id_titulo]
+												);
+					query.on('row', (row) => {
+						results.push(row);
+					});
+					query.on('end', () => {
+						done();
+						if(!results.length) {
+							return res.status(500).json({success: false, mensagem: 'CPF ou ID titulo inválido, verifique.'});
+						} else {
+							return res.status(200).json(results);
+						}
+					});
 				}
 			});
 		}
