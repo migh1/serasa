@@ -356,14 +356,13 @@
 				// window.history.replaceState(null, null, '/read');
 			},
 			error: function(error){if(error.status == 401){alert(error.responseJSON.mensagem);/*$("#conteudo-principal").load("login");*/}
-			else{$('.alert-success').prop('hidden', true);$('.alert-danger').prop('hidden', false).html("<strong>Http Status:</strong> " + error.status + ", <br/><strong>Mensagem:</strong> " + error.responseJSON.mensagem);}
+			else{alert("<strong>Http Status:</strong> " + error.status + ", <br/><strong>Mensagem:</strong> " + error.responseJSON.mensagem);$('.alert-success').prop('hidden', true);$('.alert-danger').prop('hidden', false).html("<strong>Http Status:</strong> " + error.status + ", <br/><strong>Mensagem:</strong> " + error.responseJSON.mensagem);}
 			},
 			complete: function(retorno){
 				$('#retorno').html(JSON.stringify(retorno.responseJSON, null, 2));
 			}
 		})
 		.then(function(data){
-			$('#consulta-visualizar').DataTable().destroy();
 			$('#consulta-visualizar').DataTable();
 		});
 	});
