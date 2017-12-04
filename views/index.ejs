@@ -840,12 +840,12 @@
 					if (sessionStorage.getItem("url") != "null") {
 						$('#form_url').val(sessionStorage.getItem("url").replace("login", "titulo"));
 					}
+					$('#valor').val(retorno.valor);
+					$('#descricao').val(retorno.descricao);
+					$('#situacao').val(retorno.situacao);
+					$('#data_emissao').val(retorno.data_emissao);
+					$('#data_pagamento').val(retorno.data_pagamento);
 				});
-				$('#valor').val(retorno.valor);
-				$('#descricao').val(retorno.descricao);
-				$('#situacao').val(retorno.situacao);
-				$('#data_emissao').val(retorno.data_emissao);
-				$('#data_pagamento').val(retorno.data_pagamento);
 			},
 			error: function(error){},
 			complete: function(retorno){

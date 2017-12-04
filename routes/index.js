@@ -547,6 +547,11 @@ router.get('/titulo/create', function(req, res, next) {
 	res.render('titulo/create', { title: 'Cadastrar Titulo' });
 });
 
+/* GET titulo edit page. */
+router.get('/titulo/edit', function(req, res, next) {
+	res.render('titulo/edit', { title: 'Cadastrar Titulo' });
+});
+
 /* GET titulo read page. */
 router.get('/titulo/read', function(req, res, next) {
 	res.render('titulo/read', { title: 'Visualizar Titulos' });
@@ -603,7 +608,7 @@ router.get('/titulo/:id_titulo', (req, res, next) => {
 		if(!valid){
 			return res.status(401).json({success: false, http: 401, mensagem: 'Por favor, faça login novamente e repita o processo.'});
 		} else {
-			var results = [];
+			var results;
 			pg.connect(connectionString, (err, client, done) => {
 				if(err) {
 					done();
@@ -626,11 +631,11 @@ router.get('/titulo/:id_titulo', (req, res, next) => {
 												[req.headers.authorization, 'true', req.params.id_titulo]
 												);
 					query.on('row', (row) => {
-						results.push(row)
+						results = row;
 					});
 					query.on('end', () => {
 						done();
-						if(!results.length) {
+						if(results.length == 0) {
 							return res.status(500).json({success: false, mensagem: 'Parceiro inativo ou id_titulo inexistente, verifique.'});
 						} else {
 							return res.status(200).json(results);
