@@ -333,12 +333,12 @@
 
 	$(document).on('click', '.selector-btn-reload-consultas', function(e){
 		e.preventDefault();
+		var url = $('#form_url').val() + '/' + $('#form_cpf').val();
 		$.ajax({
 			// url: '/titulo',
 			// url: 'https://serasa.herokuapp.com/titulo',
-			url: $('#form_url').val(),
+			url: url,
 			type: 'GET',
-			headers: {"Authorization": $('#form_token').val()},
 			dataType: 'JSON',
 			success: function(retorno){
 				$('.serasa-content').css('display', 'block');
