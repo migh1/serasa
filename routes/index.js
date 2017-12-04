@@ -736,12 +736,10 @@ router.put('/titulo/:id_titulo', (req, res, next) => {
 					}
 					const query = client.query("SELECT * FROM cad_titulo WHERE id_titulo=($1)",[req.params.id_titulo], function(err, result){
 						done();
-						console.log(result);
 						if (result.rowCount == 0) {
 							return res.status(422).json({success: false, http: 422, mensagem: 'ID do titulo enviado não existe, verifique.'});
 						} else {
 							client.query("SELECT * FROM cad_parceiro WHERE token=($1) AND ativo=($2)",[req.headers.authorization, 'true'], function(err, result){
-								console.log(result);
 								if (result.rowCount == 0) {
 									return res.status(422).json({success: false, http: 422, mensagem: 'Parceiro inativo, verifique.'});
 								} else {
