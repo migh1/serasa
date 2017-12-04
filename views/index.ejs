@@ -178,7 +178,6 @@
 					<div class="collapse" id="titulo">
 						<a href="#" class="list-group-item titulo-menu" data-parent="#titulo" data-id="visualizar">Visualizar</a>
 						<a href="#" class="list-group-item titulo-menu" data-parent="#titulo" data-id="cadastrar">Cadastrar</a>
-						<a href="#" class="list-group-item titulo-menu" data-parent="#titulo" data-id="editar">Editar</a>
 					</div>
 				</div>
 			</div>
@@ -857,7 +856,7 @@
 
 	$(document).on('click', '.btn-editar-titulo', function(e){
 		e.preventDefault();
-		var url = $('#form_url').val() + '/' + $(this).data('id');
+		var url = $('#form_url').val() + '/' + $('#id_titulo').val();
 			$.ajax({
 				// url: '/titulo',
 				url: url,
@@ -865,17 +864,14 @@
 				dataType: 'JSON',
 				headers: {"Authorization": $('#form_token').val()},
 				data: {
-					id_titulo: $('#id_titulo').val(),
 					valor: $('#valor').val(),
-					situacao: $('#situacao').val(),
 					descricao: $('#descricao').val(),
+					situacao: $('#situacao').val(),
+					data_emissao: $('#data_emissao').val(),
 					data_pagamento: $('#data_pagamento').val()
 				},
 				success: function(retorno){
 					alert('Atualizado com sucesso.');
-					setTimeout(function(){
-						$('.selector-btn-reload-clientes').trigger('click');
-					}, 500);
 				},
 				error: function(error){
 					if(error.status == 401){alert(error.responseJSON.mensagem);/*$("#conteudo-principal").load("login", function(){$('.serasa-content').css('display', 'block');});*/}
