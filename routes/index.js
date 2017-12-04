@@ -770,7 +770,6 @@ router.get('/consulta/cliente', function(req, res, next) {
 router.get('/consulta/cliente/:cpf', (req, res, next) => {
 	req.params.cpf = req.params.cpf.replace(/\D/g, '').toString();
 	var results = [];
-	console.log(req.params.cpf);
 	pg.connect(connectionString, (err, client, done) => {
 		if(err) {
 			done();

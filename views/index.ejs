@@ -363,6 +363,7 @@
 			}
 		})
 		.then(function(data){
+			$('#consulta-visualizar').DataTable().destroy();
 			$('#consulta-visualizar').DataTable();
 		});
 	});
