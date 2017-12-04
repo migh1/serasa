@@ -761,6 +761,11 @@ router.put('/titulo/:id_titulo', (req, res, next) => {
 	});
 });
 
+/* GET consulta read page. */
+router.get('/consulta/cliente', function(req, res, next) {
+	res.render('consulta/read', { title: 'Consultas' });
+});
+
 //GET pega os dados do titulo especifico POR CPF
 router.get('/titulo/:cpf', (req, res, next) => {
 	req.params.cpf = req.params.cpf.replace(/\D/g, '');
