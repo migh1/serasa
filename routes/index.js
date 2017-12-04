@@ -549,7 +549,7 @@ router.get('/titulo/create', function(req, res, next) {
 
 /* GET titulo edit page. */
 router.get('/titulo/edit', function(req, res, next) {
-	res.render('titulo/edit', { title: 'Cadastrar Titulo' });
+	res.render('titulo/edit', { title: 'Editar Titulo' });
 });
 
 /* GET titulo read page. */
