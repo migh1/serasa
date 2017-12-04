@@ -782,6 +782,7 @@ router.get('/consulta/cliente/:cpf', (req, res, next) => {
 											id_titulo,\
 											descricao,\
 											valor,\
+											situacao,\
 											data_emissao,\
 											data_pagamento\
 										FROM \
