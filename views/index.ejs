@@ -844,9 +844,7 @@
 
 	$(document).on('click', '.btn-editar-titulo', function(e){
 		e.preventDefault();
-		var newName = prompt("Por favor entre com o novo nome:", $(this).data('nome'));
 		var url = $('#form_url').val() + '/' + $(this).data('id');
-		if (newName != null) {
 			$.ajax({
 				// url: '/titulo',
 				url: url,
@@ -874,7 +872,6 @@
 					$('#retorno').html(JSON.stringify(retorno.responseJSON, null, 2));
 				}
 			});
-		}
 	});
 
 	$(document).on('click', '.btn-excluir-titulo', function(e){
