@@ -377,6 +377,7 @@
 			// url: 'https://serasa.herokuapp.com/titulo',
 			url: url,
 			type: 'GET',
+			headers: {"Authorization": $('#form_token').val()},
 			dataType: 'JSON',
 			success: function(retorno){
 				$('.serasa-content').css('display', 'block');
