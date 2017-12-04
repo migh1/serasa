@@ -308,7 +308,7 @@
 							<td>'+value.data_emissao+'</td>\
 							<td>'+value.data_pagamento+'</td>\
 							<td>\
-								<a href="#" class="btn btn-success btn-editar-titulo" data-id="' + value.id_titulo + '"><i class="fa fa-pencil"></i></a>\
+								<a href="#" class="btn btn-success btn-atualizar-titulo" data-id="' + value.id_titulo + '"><i class="fa fa-pencil"></i></a>\
 								<a href="#" class="btn btn-danger btn-excluir-titulo" data-id="' + value.id_titulo + '"><i class="fa fa-trash"></i></a>\
 							</td>\
 						</tr>\
@@ -484,35 +484,18 @@
 			});
 			// window.history.replaceState(null, null, '/read');
 		}
-		if ($(this).data('id') == 'editar') {
-			$("#conteudo-principal").load("titulo/edit", function(){
-				$('.serasa-content').css('display', 'block');
-				if (sessionStorage.getItem("Sessao") != "null") {
-					$('#form_token').val(sessionStorage.getItem("Sessao"));
-				}
-				if (sessionStorage.getItem("url") != "null") {
-					$('#form_url').val(sessionStorage.getItem("url").replace("login", "titulo"));
-				}
-				$.ajax({
-					url: $('#form_url').val() + '/' + $(this).data('id'),
-					type: 'GET',
-					headers: {"Authorization": sessionStorage.getItem("Sessao")},
-					dataType: 'JSON',
-					success: function(retorno){
-						$('#valor').val(retorno.valor);
-						$('#descricao').val(retorno.descricao);
-						$('#situacao').val(retorno.situacao);
-						$('#data_emissao').val(retorno.data_emissao);
-						$('#data_pagamento').val(retorno.data_pagamento);
-					},
-					error: function(error){},
-					complete: function(retorno){
-						$('#retorno').html(JSON.stringify(retorno.responseJSON, null, 2));
-					}
-				});
-			});
-			// window.history.replaceState(null, null, '/read');
-		}
+		// if ($(this).data('id') == 'editar') {
+		// 	$("#conteudo-principal").load("titulo/edit", function(){
+		// 		$('.serasa-content').css('display', 'block');
+		// 		if (sessionStorage.getItem("Sessao") != "null") {
+		// 			$('#form_token').val(sessionStorage.getItem("Sessao"));
+		// 		}
+		// 		if (sessionStorage.getItem("url") != "null") {
+		// 			$('#form_url').val(sessionStorage.getItem("url").replace("login", "titulo"));
+		// 		}
+		// 	});
+		// 	// window.history.replaceState(null, null, '/read');
+		// }
 	});
 
 	$(document).on('click', '.btn-cadastrar-parceiro', function(e){
@@ -839,6 +822,35 @@
 				$('#retorno').html(JSON.stringify(retorno.responseJSON, null, 2));
 			}
 
+		});
+	});
+
+	$(document).on('click', '.btn-atualizar-titulo', function(){
+		$.ajax({
+			url: $('#form_url').val() + '/' + $(this).data('id'),
+			type: 'GET',
+			headers: {"Authorization": sessionStorage.getItem("Sessao")},
+			dataType: 'JSON',
+			success: function(retorno){
+				$("#conteudo-principal").load("titulo/edit", function(){
+					$('.serasa-content').css('display', 'block');
+					if (sessionStorage.getItem("Sessao") != "null") {
+						$('#form_token').val(sessionStorage.getItem("Sessao"));
+					}
+					if (sessionStorage.getItem("url") != "null") {
+						$('#form_url').val(sessionStorage.getItem("url").replace("login", "titulo"));
+					}
+				});
+				$('#valor').val(retorno.valor);
+				$('#descricao').val(retorno.descricao);
+				$('#situacao').val(retorno.situacao);
+				$('#data_emissao').val(retorno.data_emissao);
+				$('#data_pagamento').val(retorno.data_pagamento);
+			},
+			error: function(error){},
+			complete: function(retorno){
+				$('#retorno').html(JSON.stringify(retorno.responseJSON, null, 2));
+			}
 		});
 	});
 
