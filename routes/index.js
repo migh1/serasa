@@ -781,10 +781,8 @@ router.get('/consulta/cliente/:cpf', (req, res, next) => {
 			const query = client.query('SELECT \
 											id_titulo,\
 											descricao,\
-											valor,\
 											situacao,\
-											data_emissao,\
-											data_pagamento\
+											valor\
 										FROM \
 											cad_titulo ct\
 											inner join cad_parceiro cp ON cp.id_parceiro = ct.id_parceiro\

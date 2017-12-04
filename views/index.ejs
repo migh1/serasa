@@ -346,11 +346,10 @@
 				$.each(retorno, function(key, value){
 					$('.selector-tbody-consultas').append('\
 						<tr>\
+							<td>'+value.id_titulo+'</td>\
 							<td>'+value.valor+'</td>\
 							<td>'+value.situacao+'</td>\
 							<td>'+value.descricao+'</td>\
-							<td>'+value.data_emissao+'</td>\
-							<td>'+value.data_pagamento+'</td>\
 						</tr>\
 					');
 				});
