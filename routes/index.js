@@ -734,17 +734,18 @@ router.put('/titulo/:id_titulo', (req, res, next) => {
 						console.log(err);
 						return res.status(400).json({success: false, mensagem: err});
 					}
-					const query = client.query("SELECT * FROM cad_cliente WHERE id_titulo=($1)",[req.params.id_titulo], function(err, result){
+					const query = client.query("SELECT * FROM cad_titulo WHERE id_titulo=($1)",[req.params.id_titulo], function(err, result){
 						done();
+						console.log(result);
 						if (result.rowCount == 0) {
-							return res.status(422).json({success: false, http: 422, mensagem: 'ID do cliente enviado não existe, verifique.'});
+							return res.status(422).json({success: false, http: 422, mensagem: 'ID do titulo enviado não existe, verifique.'});
 						} else {
 							client.query("SELECT * FROM cad_parceiro WHERE token=($1) AND ativo=($2)",[req.headers.authorization, 'true'], function(err, result){
 								console.log(result);
 								if (result.rowCount == 0) {
 									return res.status(422).json({success: false, http: 422, mensagem: 'Parceiro inativo, verifique.'});
 								} else {
-									client.query('UPDATE cad_cliente SET nome=($1) WHERE id_titulo=($2)', [req.body.nome_cliente, req.params.id_titulo], function(err, result){
+									client.query('UPDATE cad_titulo SET valor=($1), descricao=($2), situacao=($3), data_pagamento=($4) WHERE id_titulo=($5)', [req.body.valor, req.body.descricao, req.body.situacao, req.body.data_pagamento, req.params.id_titulo], function(err, result){
 										done();
 										if(err) {
 											return res.status(422).json({success: false, mensagem: 'Houve alguma falha na atualização do parceiro, por favor contate o administrador do sistema.'});
