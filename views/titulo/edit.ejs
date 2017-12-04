@@ -1,0 +1,92 @@
+<div class="serasa-content" style="display: none;">
+	<a href="#" data-target="#sidebar" data-toggle="collapse"><i class="fa fa-navicon fa-2x py-2 p-1"></i></a>
+	<button class="btn btn-danger pull-right btn-logout" name="submit">Sair</button>
+	<div class="container">
+
+		<h1><%= title %></h1>
+		<p>Bem vindo ao <%= title %></p>
+
+		<div class="card pull-left" style="width: 40%;">
+			<div class="card-header">
+				<h5>Atualização de Titulo</h5>
+				<div class="alert alert-success" role="alert" style="margin-top: 25px;" hidden>
+					<strong>Sucesso!</strong> Atualizado com perfeição.
+				</div>
+				<div class="alert alert-danger" role="alert" style="margin-top: 25px;" hidden>
+					<strong>Erro!</strong> Falha ao atualizar, contate o administrador.
+				</div>
+			</div>
+			<div class="card-body">
+
+				<div class="col-md-12 pull-left">
+					<label for="id_titulo"><strong>ID titulo</strong></label>
+					<input type="text" class="form-control" name="id_titulo" id="id_titulo" value="">
+				</div>	
+
+				<div class="col-md-12 pull-left">
+					<label for="valor"><strong>Valor</strong></label>
+					<input type="text" class="form-control" name="valor" id="valor" value="">
+				</div>		
+
+				<div class="col-md-12 pull-left">
+					<label for="descricao"><strong>Descrição</strong></label>
+					<input type="text" class="form-control" name="descricao" id="descricao" value="">
+				</div>
+
+				<div class="col-md-12 pull-left">
+					<label for="situacao"><strong>Situação</strong></label>
+					<input type="text" class="form-control" name="situacao" id="situacao" value="">
+				</div>
+
+				<div class="col-md-12 pull-left">
+					<label for="data_emissao"><strong>Data emissão</strong></label>
+					<input type="text" class="form-control" name="data_emissao" id="data_emissao" value="">
+				</div>
+
+				<div class="col-md-12 pull-left">
+					<label for="data_pagamento"><strong>Data pagamento</strong></label>
+					<input type="text" class="form-control" name="data_pagamento" id="data_pagamento" value="">
+				</div>
+
+			</div>
+
+			<div class="card-footer" style="margin-top: 25px;">
+				<div class="col-md-4 pull-right">
+					<button class="btn btn-success btn-editar-titulo" name="submit">Atualizar</button>
+				</div>
+				<div class="col-md-4 pull-right">
+					<button class="btn btn-danger btn-excluir-titulo" name="submit">Excluir</button>
+				</div>
+			</div>
+		</div>
+
+		<div class="card pull-left" style="width: 40%;margin-left: 25px;">
+			<div class="card-header">
+				<h5>Servidor de requisição</h5>
+			</div>
+			<div class="card-body">
+				<div class="col-md-12">
+					<label for="form_url"><strong>URL</strong></label>
+					<input type="text" class="form-control" name="form_url" id="form_url" value="https://serasa.herokuapp.com/titulo">
+				</div>
+
+				<div class="col-md-12">
+					<label for="form_token"><strong>Token</strong></label>
+					<input type="text" class="form-control" name="form_token" id="form_token" value="">
+				</div>
+
+				<div class="col-md-12">
+					<label for="form_json"><strong>JSON Enviado</strong></label>
+					<pre class="form-control form_json" name="form_json" id="form_json" style="min-height:200px" disabled></pre>
+				</div>
+
+				<div class="col-md-12">
+					<label for="retorno"><strong>JSON Retornado</strong></label>
+					<pre class="form-control retorno" name="retorno" id="retorno" style="min-height:200px" disabled></pre>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>
+

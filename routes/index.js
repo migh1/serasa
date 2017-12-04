@@ -49,6 +49,15 @@ var edit_schema_cliente = {
 	},
 	"required": ["cpf", "nome_cliente"]
 };
+var edit_schema_titulo = {
+	"properties": {
+		"valor": { "type": "string" },
+		"descricao": { "type": "string" },
+		"situacao": { "type": "string" },
+		"data_emissao": { "type": "string" },
+		"data_pagamento": { "type": "string" }
+	}
+};
 var login_schema = {
 	"properties": {
 		"nome_usuario": {"type": "string"},
@@ -543,7 +552,7 @@ router.get('/titulo/read', function(req, res, next) {
 	res.render('titulo/read', { title: 'Visualizar Titulos' });
 });
 
-//GET pega os dados dos clientes
+//GET pega os dados dos titulo
 router.get('/titulo', (req, res, next) => {
 	isLogado(req.headers.authorization, function(err, valid){
 		if(!valid){
@@ -578,6 +587,51 @@ router.get('/titulo', (req, res, next) => {
 						done();
 						if(!results.length) {
 							return res.status(500).json({success: false, mensagem: 'Parceiro inativo ou token invalida, verifique.'});
+						} else {
+							return res.status(200).json(results);
+						}
+					});
+				}
+			});
+		}
+	});
+});
+
+//GET pega os dados do titulo especifico
+router.get('/titulo/:id_titulo', (req, res, next) => {
+	isLogado(req.headers.authorization, function(err, valid){
+		if(!valid){
+			return res.status(401).json({success: false, http: 401, mensagem: 'Por favor, faça login novamente e repita o processo.'});
+		} else {
+			var results = [];
+			pg.connect(connectionString, (err, client, done) => {
+				if(err) {
+					done();
+					console.log(err);
+					return res.status(500).json({
+						success: false, mensagem: err
+					});
+				} else {
+					const query = client.query('SELECT \
+													*,\
+													cc.nome as nome_cliente\
+												FROM \
+													cad_titulo ct\
+													inner join cad_parceiro cp ON cp.id_parceiro = ct.id_parceiro\
+													inner join cad_cliente cc ON cc.id_cliente = ct.id_cliente\
+												WHERE \
+													cp.token=($1) AND cp.ativo=($2) AND cp.id_titulo=($3)\
+												ORDER BY \
+													ct.id_titulo ASC;', 
+												[req.headers.authorization, 'true', id_titulo]
+												);
+					query.on('row', (row) => {
+						results.push(row)
+					});
+					query.on('end', () => {
+						done();
+						if(!results.length) {
+							return res.status(500).json({success: false, mensagem: 'Parceiro inativo ou id_titulo inexistente, verifique.'});
 						} else {
 							return res.status(200).json(results);
 						}
@@ -665,7 +719,7 @@ router.put('/titulo/:id_titulo', (req, res, next) => {
 		if(!valid){
 			return res.status(401).json({success: false, http: 401, mensagem: 'Por favor, faça login novamente e repita o processo.'});
 		} else {
-			if(!ajv.validate(edit_schema_cliente, req.body)){
+			if(!ajv.validate(edit_schema_titulo, req.body)){
 				return res.status(400).json({success: false, http: 400, mensagem: 'JSON schema inválido, verifique.'});
 			} else {
 				var id_titulo = req.params.id_titulo.length == 0 ? null : ''+req.params.id_titulo;
