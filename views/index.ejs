@@ -858,6 +858,7 @@
 			type: 'DELETE',
 			dataType: 'JSON',
 			headers: {"Authorization": $('#form_token').val()},
+			data: {id_parceiro: $('#id_parceiro').val()},
 			success: function(retorno){
 				alert('Titulo cancelado com sucesso!');
 				setTimeout(function(){
