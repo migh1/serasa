@@ -815,6 +815,8 @@ router.get('/consulta/parceiro', function(req, res, next) {
 
 //GET pega os dados do consulta especifico POR CPF
 router.get('/consulta/parceiro/:cpf', (req, res, next) => {
+	console.log('oi11');
+	console.log(req.headers.token);
 	isLogado(req.headers.authorization, function(err, valid){
 		if(!valid){
 			return res.status(401).json({success: false, http: 401, mensagem: 'Por favor, faça login novamente e repita o processo.'});
@@ -867,6 +869,8 @@ router.get('/consulta/parceiro/:cpf', (req, res, next) => {
 
 //GET pega os dados do consulta especifico POR CPF
 router.get('/consulta/parceiro/:cpf/:id_titulo', (req, res, next) => {
+	console.log('oi');
+	console.log(req.headers.token);
 	isLogado(req.headers.authorization, function(err, valid){
 		if(!valid){
 			return res.status(401).json({success: false, http: 401, mensagem: 'Por favor, faça login novamente e repita o processo.'});
