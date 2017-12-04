@@ -620,7 +620,7 @@ router.get('/titulo/:id_titulo', (req, res, next) => {
 													inner join cad_parceiro cp ON cp.id_parceiro = ct.id_parceiro\
 													inner join cad_cliente cc ON cc.id_cliente = ct.id_cliente\
 												WHERE \
-													cp.token=($1) AND cp.ativo=($2) AND cp.id_titulo=($3)\
+													cp.token=($1) AND cp.ativo=($2) AND ct.id_titulo=($3)\
 												ORDER BY \
 													ct.id_titulo ASC;', 
 												[req.headers.authorization, 'true', req.params.id_titulo]
