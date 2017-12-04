@@ -783,7 +783,7 @@ router.get('/consulta/cliente/:cpf', (req, res, next) => {
 											descricao,\
 											valor,\
 											data_emissao,\
-											data_pagamento,\
+											data_pagamento\
 										FROM \
 											cad_titulo ct\
 											inner join cad_parceiro cp ON cp.id_parceiro = ct.id_parceiro\
