@@ -984,11 +984,6 @@
 		var data_emissao 	= $(linha[5]).data('data_emissao');
 		var data_pagamento 	= $(linha[6]).data('data_pagamento');
 
-		console.log(linha);
-		console.log($(linha));
-		console.log($(linha).data('valor'));
-		console.log(valor);
-
 		$("#conteudo-principal").load("titulo/edit", function(){
 			$('.serasa-content').css('display', 'block');
 			if (sessionStorage.getItem("Sessao") != "null") {
