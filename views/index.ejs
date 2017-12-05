@@ -976,7 +976,7 @@
 
 	$(document).on('click', '.btn-atualizar-titulo', function(e){
 		e.preventDefault();
-		var linha 			= $(this).parents('td');
+		var linha 			= $(this).parents('tr').find('td');
 		console.log(linha);
 		var id_titulo 		= linha.data('titulo');
 		console.log(id_titulo);
