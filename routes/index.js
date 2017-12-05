@@ -867,10 +867,13 @@ router.get('/consulta/parceiro/:cpf', (req, res, next) => {
 	});
 });
 
+/* GET consulta read page. */
+router.get('/consulta/situacao', function(req, res, next) {
+	res.render('consulta/reads', { title: 'Consultas' });
+});
+
 //GET pega os dados do consulta especifico POR CPF
-router.get('/consulta/parceiro/:cpf/:id_titulo', (req, res, next) => {
-	console.log('oi');
-	console.log(req.headers.token);
+router.get('/consulta/situacao/:cpf/:situacao', (req, res, next) => {
 	isLogado(req.headers.authorization, function(err, valid){
 		if(!valid){
 			return res.status(401).json({success: false, http: 401, mensagem: 'Por favor, faça login novamente e repita o processo.'});
@@ -899,10 +902,10 @@ router.get('/consulta/parceiro/:cpf/:id_titulo', (req, res, next) => {
 													inner join cad_parceiro cp ON cp.id_parceiro = ct.id_parceiro\
 													inner join cad_cliente cc ON cc.id_cliente = ct.id_cliente\
 												WHERE \
-													cc.cpf=($1) AND ct.id_titulo=($2)\
+													cc.cpf=($1) AND ct.situacao=($2)\
 												ORDER BY \
 													ct.id_titulo ASC;', 
-												[req.params.cpf, req.params.id_titulo]
+												[req.params.cpf, req.params.situacao]
 												);
 					query.on('row', (row) => {
 						results.push(row);

@@ -181,8 +181,9 @@
 					</div>
 					<a href="#consulta" class="list-group-item d-inline-block collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="fa fa-search"></i> <span class="d-none d-md-inline">Consultas</span> </a>
 					<div class="collapse" id="consulta">
-						<a href="#" class="list-group-item consulta-menu" data-parent="#consulta" data-id="porcpf">Por CPF (Clientes)</a>
-						<a href="#" class="list-group-item consulta-menu" data-parent="#consulta" data-id="porcpfp">Por CPF (Parceiros)</a>
+						<a href="#" class="list-group-item consulta-menu" data-parent="#consulta" data-id="cpfcliente">Por CPF (Clientes)</a>
+						<a href="#" class="list-group-item consulta-menu" data-parent="#consulta" data-id="cpfparceiro">Por CPF (Parceiros)</a>
+						<a href="#" class="list-group-item consulta-menu" data-parent="#consulta" data-id="cpfsituacaoparceiro">Por Situação (Parceiros)</a>
 					</div>
 				</div>
 			</div>
@@ -371,7 +372,6 @@
 	$(document).on('click', '.selector-btn-reload-parceiro-consultas', function(e){
 		e.preventDefault();
 		var url = $('#form_url').val() + '/' + $('#form_cpf').val();
-		console.log(url);
 		$.ajax({
 			// url: '/titulo',
 			// url: 'https://serasa.herokuapp.com/titulo',
@@ -399,7 +399,7 @@
 				// window.history.replaceState(null, null, '/read');
 			},
 			error: function(error){if(error.status == 401){alert(error.responseJSON.mensagem);/*$("#conteudo-principal").load("login");*/}
-			else{alert("Http Status: " + error.status + ",Mensagem: " + error.responseJSON.mensagem);$('.alert-success').prop('hidden', true);$('.alert-danger').prop('hidden', false).html("<strong>Http Status:</strong> " + error.status + ", <br/><strong>Mensagem:</strong> " + error.responseJSON.mensagem);}
+			else{alert("Http Status: " + error.status + ", Mensagem: " + error.responseJSON.mensagem);$('.alert-success').prop('hidden', true);$('.alert-danger').prop('hidden', false).html("<strong>Http Status:</strong> " + error.status + ", <br/><strong>Mensagem:</strong> " + error.responseJSON.mensagem);}
 			},
 			complete: function(retorno){
 				$('#retorno').html(JSON.stringify(retorno.responseJSON, null, 2));
@@ -407,6 +407,47 @@
 		})
 		.then(function(data){
 			$('#parceiro-consulta-visualizar').DataTable();
+		});
+	});
+
+	$(document).on('click', '.selector-btn-reload-situacao-consultas', function(e){
+		e.preventDefault();
+		var url = $('#form_url').val() + '/' + $('#form_cpf').val();
+		$.ajax({
+			// url: '/titulo',
+			// url: 'https://serasa.herokuapp.com/titulo',
+			url: url,
+			type: 'GET',
+			headers: {"Authorization": $('#form_token').val()},
+			dataType: 'JSON',
+			success: function(retorno){
+				$('.serasa-content').css('display', 'block');
+				$('.selector-tbody-situacao-consultas').empty();
+				$.each(retorno, function(key, value){
+					$('.selector-tbody-situacao-consultas').append('\
+						<tr>\
+							<td>'+value.id_titulo+'</td>\
+							<td>'+value.id_parceiro+'</td>\
+							<td>'+value.id_cliente+'</td>\
+							<td>'+value.descricao+'</td>\
+							<td>'+value.situacao+'</td>\
+							<td>'+value.valor+'</td>\
+							<td>'+value.data_emissao+'</td>\
+							<td>'+value.data_pagamento+'</td>\
+						</tr>\
+					');
+				});
+				// window.history.replaceState(null, null, '/read');
+			},
+			error: function(error){if(error.status == 401){alert(error.responseJSON.mensagem);/*$("#conteudo-principal").load("login");*/}
+			else{alert("Http Status: " + error.status + ", Mensagem: " + error.responseJSON.mensagem);$('.alert-success').prop('hidden', true);$('.alert-danger').prop('hidden', false).html("<strong>Http Status:</strong> " + error.status + ", <br/><strong>Mensagem:</strong> " + error.responseJSON.mensagem);}
+			},
+			complete: function(retorno){
+				$('#retorno').html(JSON.stringify(retorno.responseJSON, null, 2));
+			}
+		})
+		.then(function(data){
+			$('#situacao-consulta-visualizar').DataTable();
 		});
 	});
 
@@ -569,7 +610,7 @@
 	});
 
 	$(document).on('click', '.consulta-menu', function(){
-		if ($(this).data('id') == 'porcpf') {
+		if ($(this).data('id') == 'cpfcliente') {
 			$("#conteudo-principal").load("consulta/cliente", function(){
 				$('.serasa-content').css('display', 'block');
 				if (sessionStorage.getItem("Sessao") != "null") {
@@ -581,7 +622,7 @@
 			});
 			// window.history.replaceState(null, null, '/consulta/cliente');
 		}
-		if ($(this).data('id') == 'porcpfp') {
+		if ($(this).data('id') == 'cpfparceiro') {
 			$("#conteudo-principal").load("consulta/parceiro", function(){
 				$('.serasa-content').css('display', 'block');
 				if (sessionStorage.getItem("Sessao") != "null") {
@@ -589,6 +630,18 @@
 				}
 				if (sessionStorage.getItem("url") != "null") {
 					$('#form_url').val(sessionStorage.getItem("url").replace("login", "consulta/parceiro"));
+				}
+			});
+			// window.history.replaceState(null, null, '/consulta/cliente');
+		}
+		if ($(this).data('id') == 'cpfsituacaoparceiro') {
+			$("#conteudo-principal").load("consulta/situacao", function(){
+				$('.serasa-content').css('display', 'block');
+				if (sessionStorage.getItem("Sessao") != "null") {
+					$('#form_token').val(sessionStorage.getItem("Sessao"));
+				}
+				if (sessionStorage.getItem("url") != "null") {
+					$('#form_url').val(sessionStorage.getItem("url").replace("login", "consulta/situacao"));
 				}
 			});
 			// window.history.replaceState(null, null, '/consulta/cliente');
