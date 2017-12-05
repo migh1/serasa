@@ -913,7 +913,7 @@ router.get('/consulta/situacao/:cpf/:situacao', (req, res, next) => {
 					query.on('end', () => {
 						done();
 						if(!results.length) {
-							return res.status(500).json({success: false, mensagem: 'CPF ou ID titulo inválido, verifique.'});
+							return res.status(500).json({success: false, mensagem: 'CPF ou situacao inválido, verifique.'});
 						} else {
 							return res.status(200).json(results);
 						}
