@@ -977,12 +977,12 @@
 	$(document).on('click', '.btn-atualizar-titulo', function(e){
 		e.preventDefault();
 		var linha 			= $(this).parents('tr').find('td');
-		var id_titulo 		= $(linha).data('titulo');
-		var valor 			= $(linha).data('valor');
-		var descricao 		= $(linha).data('descricao');
-		var situacao 		= $(linha).data('situacao');
-		var data_emissao 	= $(linha).data('data_emissao');
-		var data_pagamento 	= $(linha).data('data_pagamento');
+		var id_titulo 		= $(linha[0]).data('titulo');
+		var valor 			= $(linha[2]).data('valor');
+		var situacao 		= $(linha[3]).data('situacao');
+		var descricao 		= $(linha[4]).data('descricao');
+		var data_emissao 	= $(linha[5]).data('data_emissao');
+		var data_pagamento 	= $(linha[6]).data('data_pagamento');
 
 		console.log(linha);
 		console.log($(linha));
