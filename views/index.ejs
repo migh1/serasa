@@ -977,15 +977,17 @@
 	$(document).on('click', '.btn-atualizar-titulo', function(e){
 		e.preventDefault();
 		var linha 			= $(this).parents('tr').find('td');
+		var id_titulo 		= $(linha).data('titulo');
+		var valor 			= $(linha).data('valor');
+		var descricao 		= $(linha).data('descricao');
+		var situacao 		= $(linha).data('situacao');
+		var data_emissao 	= $(linha).data('data_emissao');
+		var data_pagamento 	= $(linha).data('data_pagamento');
+
 		console.log(linha);
-		var id_titulo 		= linha.data('titulo');
-		console.log(id_titulo);
-		var valor 			= linha.data('valor');
+		console.log($(linha));
+		console.log($(linha).data('valor'));
 		console.log(valor);
-		var descricao 		= linha.data('descricao');
-		var situacao 		= linha.data('situacao');
-		var data_emissao 	= linha.data('data_emissao');
-		var data_pagamento 	= linha.data('data_pagamento');
 
 		$("#conteudo-principal").load("titulo/edit", function(){
 			$('.serasa-content').css('display', 'block');
