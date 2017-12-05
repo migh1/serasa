@@ -305,13 +305,13 @@
 				$.each(retorno, function(key, value){
 					$('.selector-tbody-titulos').append('\
 						<tr>\
-							<td>'+value.id_titulo+'</td>\
-							<td>'+value.nome_cliente+'</td>\
-							<td>'+value.valor+'</td>\
-							<td>'+value.situacao+'</td>\
-							<td>'+value.descricao+'</td>\
-							<td>'+value.data_emissao+'</td>\
-							<td>'+value.data_pagamento+'</td>\
+							<td data-titulo="'+value.id_titulo+'">'+value.id_titulo+'</td>\
+							<td data-nome_cliente="'+value.nome_cliente+'">'+value.nome_cliente+'</td>\
+							<td data-valor="'+value.valor+'">'+value.valor+'</td>\
+							<td data-situacao="'+value.situacao+'">'+value.situacao+'</td>\
+							<td data-descricao="'+value.descricao+'">'+value.descricao+'</td>\
+							<td data-data_emissao="'+value.data_emissao+'">'+value.data_emissao+'</td>\
+							<td data-data_pagamento="'+value.data_pagamento+'">'+value.data_pagamento+'</td>\
 							<td>\
 								<a href="#" class="btn btn-success btn-atualizar-titulo" data-id="' + value.id_titulo + '"><i class="fa fa-pencil"></i></a>\
 								<a href="#" class="btn btn-danger btn-excluir-titulo" data-id="' + value.id_titulo + '"><i class="fa fa-trash"></i></a>\
@@ -975,32 +975,29 @@
 	});
 
 	$(document).on('click', '.btn-atualizar-titulo', function(){
-		$.ajax({
-			url: $('#form_url').val() + '/' + $(this).data('id'),
-			type: 'GET',
-			headers: {"Authorization": sessionStorage.getItem("Sessao")},
-			dataType: 'JSON',
-			success: function(retorno){
-				$("#conteudo-principal").load("titulo/edit", function(){
-					$('.serasa-content').css('display', 'block');
-					if (sessionStorage.getItem("Sessao") != "null") {
-						$('#form_token').val(sessionStorage.getItem("Sessao"));
-					}
-					if (sessionStorage.getItem("url") != "null") {
-						$('#form_url').val(sessionStorage.getItem("url").replace("login", "titulo"));
-					}
-					$('#id_titulo').val(retorno.id_titulo);
-					$('#valor').val(retorno.valor);
-					$('#descricao').val(retorno.descricao);
-					$('#situacao').val(retorno.situacao);
-					$('#data_emissao').val(retorno.data_emissao);
-					$('#data_pagamento').val(retorno.data_pagamento);
-				});
-			},
-			error: function(error){},
-			complete: function(retorno){
-				$('#retorno').html(JSON.stringify(retorno.responseJSON, null, 2));
+		var linha 			= $(this).parents('td');
+		var id_titulo 		= linha.data('titulo');
+		var nome_cliente 	= linha.data('nome_cliente');
+		var valor 			= linha.data('valor');
+		var descricao 		= linha.data('descricao');
+		var situacao 		= linha.data('situacao');
+		var data_emissao 	= linha.data('data_emissao');
+		var data_pagamento 	= linha.data('data_pagamento');
+
+		$("#conteudo-principal").load("titulo/edit", function(){
+			$('.serasa-content').css('display', 'block');
+			if (sessionStorage.getItem("Sessao") != "null") {
+				$('#form_token').val(sessionStorage.getItem("Sessao"));
 			}
+			if (sessionStorage.getItem("url") != "null") {
+				$('#form_url').val(sessionStorage.getItem("url").replace("login", "titulo"));
+			}
+			$('#id_titulo').val(id_titulo);
+			$('#valor').val(valor);
+			$('#descricao').val(descricao);
+			$('#situacao').val(situacao);
+			$('#data_emissao').val(data_emissao);
+			$('#data_pagamento').val(data_pagamento);
 		});
 	});
 
