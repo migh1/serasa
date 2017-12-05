@@ -974,11 +974,14 @@
 		});
 	});
 
-	$(document).on('click', '.btn-atualizar-titulo', function(){
+	$(document).on('click', '.btn-atualizar-titulo', function(e){
+		e.preventDefault();
 		var linha 			= $(this).parents('td');
+		console.log(linha);
 		var id_titulo 		= linha.data('titulo');
-		var nome_cliente 	= linha.data('nome_cliente');
+		console.log(id_titulo);
 		var valor 			= linha.data('valor');
+		console.log(valor);
 		var descricao 		= linha.data('descricao');
 		var situacao 		= linha.data('situacao');
 		var data_emissao 	= linha.data('data_emissao');
